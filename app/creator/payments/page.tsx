@@ -22,11 +22,14 @@ declare global {
 
 interface RazorpayOptions {
   key: string;
-  subscription_id: string;
+  amount: number;
+  currency: string;
+  order_id: string;
   name: string;
   description: string;
   theme: { color: string };
-  handler: (response: { razorpay_payment_id: string; razorpay_subscription_id: string; razorpay_signature: string }) => void;
+  prefill?: { email?: string };
+  handler: (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => void;
 }
 
 interface RazorpayInstance {
@@ -76,7 +79,8 @@ export default function PaymentsPage() {
     if (planId === 'free') return;
     setUpgrading(planId);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/subscribe`, {
+      // Step 1: Create a Razorpay Order on backend
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/create-order`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ plan: planId }),
@@ -84,39 +88,38 @@ export default function PaymentsPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
-      if (data.data.keyId === 'mock') {
-        // Mock payment flow for missing Razorpay config
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/verify`, {
-          method: 'POST', headers,
-          body: JSON.stringify({ isMock: true, razorpay_payment_id: 'mock_payment', razorpay_subscription_id: data.data.subscriptionId }),
-        });
-        toast('🎉 Subscription activated (Mock Mode)!', 'success');
-        window.location.reload();
-        return;
-      }
+      const { orderId, amount, currency, keyId, planName } = data.data;
 
+      // Step 2: Open Razorpay checkout modal
       const rzp = new window.Razorpay({
-        key: data.data.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
-        subscription_id: data.data.subscriptionId,
+        key: keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
+        amount,
+        currency,
+        order_id: orderId,
         name: 'DynamoDM',
-        description: `${planId.charAt(0).toUpperCase() + planId.slice(1)} Plan Subscription`,
+        description: `${planName} — Monthly Subscription`,
         theme: { color: '#8b5cf6' },
         handler: async (response) => {
-          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/verify`, {
-            method: 'POST', headers,
+          // Step 3: Verify payment signature on backend — activates subscription
+          const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/verify`, {
+            method: 'POST',
+            headers,
             body: JSON.stringify(response),
           });
-          toast('🎉 Subscription activated!', 'success');
+          const verifyData = await verifyRes.json();
+          if (!verifyRes.ok) throw new Error(verifyData.message);
+          toast('🎉 Payment successful! Subscription activated.', 'success');
           window.location.reload();
         },
       });
       rzp.open();
     } catch (err: unknown) {
-      toast(err instanceof Error ? err.message : 'Payment failed', 'error');
+      toast(err instanceof Error ? err.message : 'Payment failed. Please try again.', 'error');
     } finally {
       setUpgrading(null);
     }
   };
+
 
   const handleCancel = async () => {
     if (!confirm('Cancel your subscription? It will remain active until the end of the billing period.')) return;
