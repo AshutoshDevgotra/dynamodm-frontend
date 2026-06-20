@@ -5,13 +5,21 @@ export const metadata: Metadata = {
   title: 'Creator Profile | DynamoDM',
 };
 
+interface CreatorProfile {
+  name?: string;
+  bio?: string;
+  instagramUsername?: string;
+  followersCount?: number;
+  links: Array<{ url: string; label: string; cta?: boolean }>;
+}
+
 // In production, this fetches from the API
-async function getCreatorProfile(username: string) {
+async function getCreatorProfile(username: string): Promise<CreatorProfile | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/creators/${username}`, { next: { revalidate: 60 } });
     const data = await res.json();
     if (!res.ok) return null;
-    return data.data.profile;
+    return data.data.profile as CreatorProfile;
   } catch (e) {
     return null;
   }
