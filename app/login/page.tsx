@@ -63,12 +63,10 @@ export default function LoginPage() {
           <p style={{ color: 'var(--text-muted)', fontSize: 14, textAlign: 'center', marginBottom: 28 }}>Sign in to your DynamoDM account</p>
 
           {/* Google OAuth */}
-          <a href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google`}>
-            <button className="btn-secondary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 20 }}>
-              <Globe size={18} />
-              Continue with Google
-            </button>
-          </a>
+          <button type="button" onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`} className="btn-secondary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 20 }}>
+            <Globe size={18} />
+            Continue with Google
+          </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
             <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
