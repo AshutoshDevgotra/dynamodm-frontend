@@ -76,10 +76,11 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: 16 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Email</label>
+              <label htmlFor="email" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Email</label>
               <input
                 id="email"
                 type="email"
+                autoComplete="email"
                 placeholder="you@example.com"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -89,11 +90,12 @@ export default function LoginPage() {
             </div>
 
             <div style={{ marginBottom: 8 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Password</label>
+              <label htmlFor="password" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Password</label>
               <div style={{ position: 'relative' }}>
                 <input
                   id="password"
                   type={showPass ? 'text' : 'password'}
+                  autoComplete="current-password"
                   placeholder="••••••••"
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}

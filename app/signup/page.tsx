@@ -87,21 +87,21 @@ export default function SignupPage() {
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: 16 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Full Name</label>
-              <input id="name" type="text" placeholder="Priya Sharma" value={form.name}
+              <label htmlFor="name" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Full Name</label>
+              <input id="name" type="text" autoComplete="name" placeholder="Priya Sharma" value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })} className="input-field" required />
             </div>
 
             <div style={{ marginBottom: 16 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Email</label>
-              <input id="email" type="email" placeholder="you@example.com" value={form.email}
+              <label htmlFor="email" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Email</label>
+              <input id="email" type="email" autoComplete="email" placeholder="you@example.com" value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })} className="input-field" required />
             </div>
 
             <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Password</label>
+              <label htmlFor="password" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Password</label>
               <div style={{ position: 'relative' }}>
-                <input id="password" type={showPass ? 'text' : 'password'} placeholder="Min 8 characters" value={form.password}
+                <input id="password" type={showPass ? 'text' : 'password'} autoComplete="new-password" placeholder="Min 8 characters" value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })} className="input-field" style={{ paddingRight: 44 }} required />
                 <button type="button" onClick={() => setShowPass(!showPass)}
                   style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
