@@ -19,17 +19,17 @@ export default function SettingsPage() {
   };
 
   return (
-    <div style={{ maxWidth: 640 }}>
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>Settings</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Manage your account preferences.</p>
+    <div className="max-w-[640px]">
+      <div className="creator-page-header">
+        <h1 className="creator-page-title">Settings</h1>
+        <p className="creator-page-description">Manage your account preferences.</p>
       </div>
 
       {/* Security */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="card" style={{ padding: 28, marginBottom: 16 }}>
+        <div className="creator-card creator-card--padded mb-4">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-            <Lock size={18} color="#8b5cf6" />
+            <Lock size={18} className="text-[var(--brand-from)]" />
             <h2 style={{ fontSize: 16, fontWeight: 700 }}>Change Password</h2>
           </div>
           <form onSubmit={handlePasswordChange}>
@@ -49,9 +49,9 @@ export default function SettingsPage() {
 
       {/* Notifications */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-        <div className="card" style={{ padding: 28, marginBottom: 16 }}>
+        <div className="creator-card creator-card--padded mb-4">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-            <Bell size={18} color="#06b6d4" />
+            <Bell size={18} className="text-[var(--brand-mid)]" />
             <h2 style={{ fontSize: 16, fontWeight: 700 }}>Notifications</h2>
           </div>
           {[
@@ -65,7 +65,7 @@ export default function SettingsPage() {
                 <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>{pref.desc}</div>
               </div>
               <button onClick={() => { setNotifications({ ...notifications, [pref.key]: !notifications[pref.key as keyof typeof notifications] }); toast('Preference saved', 'success'); }}
-                style={{ background: notifications[pref.key as keyof typeof notifications] ? '#8b5cf6' : 'var(--bg-card)', border: `1px solid ${notifications[pref.key as keyof typeof notifications] ? '#8b5cf6' : 'var(--border-default)'}`, borderRadius: 20, width: 44, height: 24, cursor: 'pointer', position: 'relative', transition: 'all 0.3s' }}>
+                style={{ background: notifications[pref.key as keyof typeof notifications] ? 'var(--brand-from)' : 'var(--bg-card)', border: `1px solid ${notifications[pref.key as keyof typeof notifications] ? 'var(--brand-from)' : 'var(--border-default)'}`, borderRadius: 20, width: 44, height: 24, cursor: 'pointer', position: 'relative', transition: 'all 0.3s' }}>
                 <div style={{ width: 18, height: 18, borderRadius: '50%', background: 'white', position: 'absolute', top: 2, left: notifications[pref.key as keyof typeof notifications] ? 22 : 2, transition: 'left 0.3s' }} />
               </button>
             </div>
@@ -75,10 +75,10 @@ export default function SettingsPage() {
 
       {/* Danger Zone */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-        <div style={{ padding: 24, borderRadius: 14, border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.04)' }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: '#ef4444', marginBottom: 8 }}>⚠️ Danger Zone</h2>
+        <div className="creator-danger-zone">
+          <h2 className="mb-2 text-[15px] font-bold text-[var(--danger)]">Danger Zone</h2>
           <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>Permanently delete your account and all associated data. This action cannot be undone.</p>
-          <button onClick={() => toast('Contact support@dynamodm.io to delete your account.', 'info')} style={{ padding: '8px 18px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.4)', borderRadius: 8, color: '#ef4444', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
+          <button onClick={() => toast('Contact support@dynamodm.io to delete your account.', 'info')} className="rounded-[var(--radius-sm)] border border-[var(--danger-border)] bg-[var(--danger-subtle)] px-[18px] py-2 text-[13px] font-semibold text-[var(--danger)]">
             Delete Account
           </button>
         </div>

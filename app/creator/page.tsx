@@ -26,15 +26,11 @@ interface StatCardProps {
 function StatCard({ title, value, sub, icon: Icon, color, delay = 0 }: StatCardProps) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.5 }}>
-      <div className="card" style={{ padding: 24 }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
-          <div style={{ width: 44, height: 44, borderRadius: 12, background: `${color}15`, border: `1px solid ${color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Icon size={20} color={color} />
-          </div>
-        </div>
-        <div style={{ fontSize: 32, fontWeight: 800, marginBottom: 4 }}>{value}</div>
-        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 2 }}>{title}</div>
-        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{sub}</div>
+      <div className="creator-card creator-stat-card">
+        <div className="creator-icon-tile" style={{ color }}><Icon size={20} /></div>
+        <div className="mb-1 mt-3 text-[32px] font-extrabold">{value}</div>
+        <div className="mb-0.5 text-[13px] font-semibold text-[var(--text-secondary)]">{title}</div>
+        <div className="text-xs text-[var(--text-muted)]">{sub}</div>
       </div>
     </motion.div>
   );
@@ -64,47 +60,43 @@ export default function CreatorDashboard() {
   }, []);
 
   const quickActions = [
-    { label: 'New Automation', href: '/creator/automations/new', icon: Zap, color: '#8b5cf6' },
-    { label: 'View Leads', href: '/creator/leads', icon: Users, color: '#06b6d4' },
-    { label: 'Analytics', href: '/creator/analytics', icon: TrendingUp, color: '#10b981' },
-    { label: 'Upgrade Plan', href: '/creator/payments/subscriptions', icon: Target, color: '#ec4899' },
+    { label: 'New Automation', href: '/creator/automations/new', icon: Zap, color: 'var(--brand-from)' },
+    { label: 'View Leads', href: '/creator/leads', icon: Users, color: 'var(--brand-mid)' },
+    { label: 'Analytics', href: '/creator/analytics', icon: TrendingUp, color: 'var(--success)' },
+    { label: 'Upgrade Plan', href: '/creator/payments/subscriptions', icon: Target, color: 'var(--brand-to)' },
   ];
 
   if (loading) return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 400 }}>
-      <div style={{ width: 36, height: 36, border: '3px solid rgba(139,92,246,0.3)', borderTopColor: '#8b5cf6', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-    </div>
+    <div className="flex h-[400px] items-center justify-center"><div className="h-9 w-9 animate-spin rounded-full border-[3px] border-[var(--brand-border)] border-t-[var(--brand-from)]" /></div>
   );
 
   return (
-    <div>
-      {/* Welcome */}
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>
+    <div className="creator-dashboard">
+      <motion.div className="creator-page-header" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="creator-page-title">
           Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'} 👋
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Here&apos;s what&apos;s happening with your automations in the last 30 days.</p>
+        <p className="creator-page-description">Here&apos;s what&apos;s happening with your automations in the last 30 days.</p>
       </motion.div>
 
       {/* Instagram Alert */}
       {!igConnected && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginBottom: 24 }}>
-          <div style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 12, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <motion.div className="creator-alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <div className="creator-alert__inner">
             <AlertCircle size={18} color="#fbbf24" />
-            <div style={{ flex: 1 }}>
-              <span style={{ fontSize: 14, fontWeight: 600 }}>Instagram not connected </span>
-              <span style={{ fontSize: 14, color: 'var(--text-muted)' }}>— connect your account to start automations.</span>
+            <div className="creator-alert__content">
+              <span className="creator-alert__title">Instagram not connected </span>
+              <span className="creator-alert__message">— connect your account to start automations.</span>
             </div>
             <Link href="/creator/instagram">
-              <button className="btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}>Connect Now</button>
+              <button className="btn-primary creator-alert__action">Connect Now</button>
             </Link>
           </div>
         </motion.div>
       )}
 
       {/* Stats Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+      <div className="creator-stat-grid">
         <StatCard title="DMs Sent" value={stats?.dmsSent?.toLocaleString() || '0'} sub="Last 30 days" icon={MessageSquare} color="#8b5cf6" delay={0} />
         <StatCard title="Total Leads" value={stats?.leadsTotal?.toLocaleString() || '0'} sub={`+${stats?.leadsNew || 0} this month`} icon={Users} color="#06b6d4" delay={0.1} />
         <StatCard title="Comments" value={stats?.commentsReceived?.toLocaleString() || '0'} sub="Received & processed" icon={Activity} color="#10b981" delay={0.2} />
@@ -112,30 +104,20 @@ export default function CreatorDashboard() {
       </div>
 
       {/* Quick Actions + Recent Activity */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <div className="creator-dashboard-columns">
         {/* Quick Actions */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>
-          <div className="card" style={{ padding: 24 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Quick Actions</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card creator-panel">
+            <h2 className="creator-panel__title">Quick Actions</h2>
+            <div className="creator-action-list">
               {quickActions.map((action) => (
                 <Link key={action.label} href={action.href} style={{ textDecoration: 'none' }}>
-                  <div style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '12px 14px', borderRadius: 10,
-                    border: '1px solid var(--border-subtle)',
-                    cursor: 'pointer', transition: 'all 0.2s',
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--bg-card-hover)'; e.currentTarget.style.borderColor = 'var(--border-default)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 32, height: 32, borderRadius: 8, background: `${action.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <action.icon size={15} color={action.color} />
-                      </div>
-                      <span style={{ fontSize: 14, fontWeight: 500 }}>{action.label}</span>
+                  <div className="creator-list__row items-center rounded-[var(--radius-md)] border border-[var(--border-subtle)] p-3 transition-colors hover:border-[var(--border-default)] hover:bg-[var(--bg-card-hover)]">
+                    <div className="flex items-center gap-2.5">
+                      <div className="creator-icon-tile h-8 w-8 rounded-[var(--radius-sm)]" style={{ color: action.color }}><action.icon size={15} /></div>
+                      <span className="text-sm font-medium">{action.label}</span>
                     </div>
-                    <ArrowRight size={14} color="var(--text-muted)" />
+                    <ArrowRight size={14} className="ml-auto text-[var(--text-muted)]" />
                   </div>
                 </Link>
               ))}
@@ -145,9 +127,9 @@ export default function CreatorDashboard() {
 
         {/* Getting Started */}
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-          <div className="card" style={{ padding: 24 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Getting Started</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="card creator-panel">
+            <h2 className="creator-panel__title">Getting Started</h2>
+            <div className="creator-checklist">
               {[
                 { label: 'Connect Instagram account', href: '/creator/instagram', done: igConnected },
                 { label: 'Create first automation', href: '/creator/automations/new', done: (stats?.automationsActive || 0) > 0 },
@@ -155,11 +137,11 @@ export default function CreatorDashboard() {
                 { label: 'Upgrade to Pro plan', href: '/creator/payments/subscriptions', done: false },
               ].map((item) => (
                 <Link key={item.label} href={item.href} style={{ textDecoration: 'none' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0' }}>
-                    <div style={{ width: 20, height: 20, borderRadius: '50%', border: `2px solid ${item.done ? '#22c55e' : 'var(--border-default)'}`, background: item.done ? '#22c55e20' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.3s' }}>
-                      {item.done && <CheckCircle size={12} color="#22c55e" />}
+                  <div className="flex items-center gap-2.5 py-2">
+                    <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${item.done ? 'border-[var(--success)] bg-[var(--success-subtle)]' : 'border-[var(--border-default)]'}`}>
+                      {item.done && <CheckCircle size={12} className="text-[var(--success)]" />}
                     </div>
-                    <span style={{ fontSize: 14, color: item.done ? 'var(--text-muted)' : 'var(--text-secondary)', textDecoration: item.done ? 'line-through' : 'none' }}>{item.label}</span>
+                    <span className={`text-sm ${item.done ? 'text-[var(--text-muted)] line-through' : 'text-[var(--text-secondary)]'}`}>{item.label}</span>
                   </div>
                 </Link>
               ))}
@@ -168,7 +150,6 @@ export default function CreatorDashboard() {
         </motion.div>
       </div>
 
-      <style>{`@media(max-width:1024px){div[style*="grid-template-columns: repeat(4"]{grid-template-columns:repeat(2,1fr)!important;}}`}</style>
     </div>
   );
 }

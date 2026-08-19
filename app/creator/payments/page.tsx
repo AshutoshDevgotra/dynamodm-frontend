@@ -54,7 +54,7 @@ export default function CreatorPaymentsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Onboarding Form */}
-        <div className="bg-white border border-black/6 rounded-2xl p-8">
+        <div className="creator-card creator-card--padded">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
               <Landmark size={20} />
@@ -134,14 +134,14 @@ export default function CreatorPaymentsPage() {
 
         {/* Info Column */}
         <div className="space-y-6">
-          <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+          <div className="rounded-[var(--radius-xl)] border border-[var(--brand-border)] bg-[var(--brand-subtle)] p-6">
             <h3 className="text-blue-400 font-semibold mb-2">Platform Fee Notice</h3>
             <p className="text-zinc-600 text-sm leading-relaxed">
               DynamoDM charges a flat <strong>5% platform fee</strong> on all incoming brand sponsorships and affiliate commission payouts. This covers our AI operational costs and Razorpay processing fees. The fee is automatically deducted before transfer.
             </p>
           </div>
 
-          <div className="bg-white border border-black/6 rounded-2xl p-6">
+          <div className="creator-card creator-card--padded">
             <h3 className="font-semibold mb-4">Recent transactions</h3>
             <div className="text-center py-8">
               <p className="text-zinc-500 text-sm">No transactions yet.</p>

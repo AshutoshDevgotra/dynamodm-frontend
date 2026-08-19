@@ -82,14 +82,14 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
   }
 
   return (
-    <div className="flex min-h-screen bg-[var(--bg-base)]">
+    <div className="creator-shell">
       <motion.aside
         animate={{ width: collapsed ? 72 : 248 }}
         transition={{ duration: 0.22, ease: 'easeInOut' }}
-        className="fixed inset-y-0 left-0 z-30 flex flex-col overflow-hidden border-r border-black/6 bg-white"
+        className={`creator-sidebar ${collapsed ? 'creator-sidebar--collapsed' : ''}`}
       >
-        <div className="flex h-16 items-center gap-2.5 border-b border-black/6 px-4">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--brand-from)] text-white">
+        <div className="creator-sidebar__brand">
+          <div className="creator-brand-mark">
             <Zap size={15} fill="currentColor" />
           </div>
           <AnimatePresence>
@@ -101,13 +101,12 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
           </AnimatePresence>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-2">
+        <nav className="creator-sidebar__nav">
           {navItems.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
               href={href}
-              className={`sidebar-link ${isActive(href) ? 'active' : ''}`}
-              style={{ justifyContent: collapsed ? 'center' : 'flex-start', padding: collapsed ? 10 : '9px 12px' }}
+              className={`sidebar-link creator-nav-link ${isActive(href) ? 'active' : ''}`}
             >
               <Icon size={18} className="shrink-0" />
               <AnimatePresence>
@@ -121,9 +120,9 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
           ))}
         </nav>
 
-        <div className="border-t border-black/6 p-2">
-          <div className="flex items-center gap-2.5 rounded-xl p-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--brand-from)] text-xs font-bold text-white">
+        <div className="creator-sidebar__footer">
+          <div className="creator-user-summary">
+            <div className="creator-user-avatar">
               {user.name?.[0]?.toUpperCase()}
             </div>
             {!collapsed && (
@@ -136,8 +135,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
           <button
             type="button"
             onClick={handleLogout}
-            className="sidebar-link mt-1 w-full border-none bg-transparent text-rose-500"
-            style={{ justifyContent: collapsed ? 'center' : 'flex-start' }}
+            className="sidebar-link creator-logout-link mt-1 w-full border-none bg-transparent text-rose-500"
           >
             <LogOut size={16} />
             {!collapsed && <span>Log out</span>}
@@ -147,29 +145,29 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         <button
           type="button"
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute top-5 -right-3 flex h-6 w-6 items-center justify-center rounded-full border border-black/10 bg-white text-zinc-500"
+          className="creator-sidebar-toggle"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
         </button>
       </motion.aside>
 
-      <div className="flex min-h-screen flex-1 flex-col" style={{ marginLeft: collapsed ? 72 : 248, transition: 'margin-left 0.22s ease' }}>
-        <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-black/6 bg-white/85 px-6 backdrop-blur-xl">
+      <div className={`creator-main ${collapsed ? 'creator-main--collapsed' : ''}`}>
+        <header className="creator-topbar">
           <div className="text-sm font-medium text-zinc-500">
             {navItems.find((n) => isActive(n.href))?.label || 'Dashboard'}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="creator-topbar__actions">
             <button type="button" className="relative flex h-9 w-9 items-center justify-center rounded-full border border-black/8 text-zinc-500" aria-label="Notifications">
               <Bell size={15} />
               <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-[var(--brand-from)]" />
             </button>
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--brand-from)] text-xs font-bold text-white">
+            <div className="creator-topbar__avatar">
               {user.name?.[0]?.toUpperCase()}
             </div>
           </div>
         </header>
-        <main className="flex-1 p-6">{children}</main>
+        <main className="creator-content">{children}</main>
       </div>
     </div>
   );

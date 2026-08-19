@@ -54,29 +54,24 @@ export default function AutomationsPage() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
+      <div className="creator-page-header--actions">
         <div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>Automations</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Build and manage your Instagram DM automation rules.</p>
+          <h1 className="creator-page-title">Automations</h1>
+          <p className="creator-page-description">Build and manage your Instagram DM automation rules.</p>
         </div>
         <Link href="/creator/automations/new">
-          <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
+          <button className="btn-primary">
             <Plus size={16} /> New Automation
           </button>
         </Link>
       </div>
 
       {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: 80 }}>
-          <div style={{ width: 36, height: 36, border: '3px solid rgba(139,92,246,0.3)', borderTopColor: '#8b5cf6', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-          <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-        </div>
+        <div className="flex justify-center py-20"><div className="h-9 w-9 animate-spin rounded-full border-[3px] border-[var(--brand-border)] border-t-[var(--brand-from)]" /></div>
       ) : automations.length === 0 ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <div className="glass" style={{ padding: 64, textAlign: 'center', borderRadius: 20 }}>
-            <div style={{ width: 64, height: 64, borderRadius: 16, background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-              <Zap size={28} color="#8b5cf6" />
-            </div>
+          <div className="creator-card creator-empty-state">
+            <div className="creator-icon-tile mx-auto mb-5 h-16 w-16 rounded-[var(--radius-lg)]"><Zap size={28} /></div>
             <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 10 }}>No automations yet</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: 24 }}>Create your first automation rule and start converting comments into leads.</p>
             <Link href="/creator/automations/new">
@@ -85,16 +80,16 @@ export default function AutomationsPage() {
           </div>
         </motion.div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="creator-list">
           {automations.map((auto, i) => (
             <motion.div key={auto._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-              <div className="card" style={{ padding: 20 }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 10, background: auto.isActive ? 'rgba(139,92,246,0.15)' : 'var(--bg-card)', border: `1px solid ${auto.isActive ? 'rgba(139,92,246,0.3)' : 'var(--border-subtle)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Zap size={18} color={auto.isActive ? '#8b5cf6' : 'var(--text-muted)'} />
+              <div className="creator-card creator-card--padded">
+                <div className="creator-list__row">
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: auto.isActive ? 'var(--brand-subtle)' : 'var(--bg-card)', border: `1px solid ${auto.isActive ? 'var(--brand-border)' : 'var(--border-subtle)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Zap size={18} color={auto.isActive ? 'var(--brand-from)' : 'var(--text-muted)'} />
                   </div>
 
-                  <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="creator-list__content">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
                       <h3 style={{ fontSize: 15, fontWeight: 700 }}>{auto.name}</h3>
                       <span className={`badge ${auto.isActive ? 'badge-success' : ''}`} style={!auto.isActive ? { background: 'var(--bg-card)', color: 'var(--text-muted)', border: '1px solid var(--border-subtle)' } : {}}>
@@ -102,9 +97,9 @@ export default function AutomationsPage() {
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
+                    <div className="creator-list__meta mb-3">
                       <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--text-secondary)' }}>
-                        <Target size={12} /> Keywords: <strong style={{ color: '#a78bfa' }}>&quot;{auto.keywords?.join(', ')}&quot;</strong>
+                        <Target size={12} /> Keywords: <strong style={{ color: 'var(--brand-from)' }}>&quot;{auto.keywords?.join(', ')}&quot;</strong>
                       </span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--text-muted)' }}>
                         <MessageCircle size={12} /> {auto.triggerType === 'dm' ? 'Direct Message' : 'Post Comment'} ({matchTypeLabels[auto.matchType]})
@@ -130,7 +125,7 @@ export default function AutomationsPage() {
                   </div>
 
                   {/* Stats */}
-                  <div style={{ display: 'flex', gap: 20, flexShrink: 0 }}>
+                  <div className="creator-list__stats">
                     {[{ label: 'Triggered', value: auto.stats.triggered }, { label: 'DMs Sent', value: auto.stats.dmsSent }, { label: 'Failed', value: auto.stats.failed }].map((s) => (
                       <div key={s.label} style={{ textAlign: 'center' }}>
                         <div style={{ fontSize: 20, fontWeight: 800 }}>{s.value}</div>
@@ -140,14 +135,14 @@ export default function AutomationsPage() {
                   </div>
 
                   {/* Actions */}
-                  <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-                    <button onClick={() => handleToggle(auto._id)} title={auto.isActive ? 'Pause' : 'Activate'} style={{ background: 'none', border: 'none', cursor: 'pointer', color: auto.isActive ? '#8b5cf6' : 'var(--text-muted)', padding: 4 }}>
+                  <div className="creator-list__actions">
+                    <button onClick={() => handleToggle(auto._id)} title={auto.isActive ? 'Pause' : 'Activate'} className={`creator-list__action ${auto.isActive ? 'creator-list__action--active' : ''}`}>
                       {auto.isActive ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
                     </button>
                     <Link href={`/creator/automations/${auto._id}/edit`}>
-                      <button title="Edit" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 4 }}><Edit size={16} /></button>
+                      <button title="Edit" className="creator-list__action"><Edit size={16} /></button>
                     </Link>
-                    <button onClick={() => handleDelete(auto._id)} title="Delete" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 4 }}><Trash2 size={16} /></button>
+                    <button onClick={() => handleDelete(auto._id)} title="Delete" className="creator-list__action creator-list__action--danger"><Trash2 size={16} /></button>
                   </div>
                 </div>
               </div>

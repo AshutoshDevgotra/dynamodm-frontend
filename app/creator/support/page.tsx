@@ -35,25 +35,25 @@ export default function SupportPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const links = [
-    { icon: Book, label: 'Documentation', desc: 'Setup guides and API docs', href: '#', color: '#8b5cf6' },
+    { icon: Book, label: 'Documentation', desc: 'Setup guides and API docs', href: '#', color: 'var(--brand-from)' },
     { icon: MessageCircle, label: 'Live Chat', desc: 'Chat with our team (Pro+)', href: '#', color: '#06b6d4' },
     { icon: Mail, label: 'Email Support', desc: 'support@dynamodm.io', href: 'mailto:support@dynamodm.io', color: '#10b981' },
   ];
 
   return (
-    <div style={{ maxWidth: 720 }}>
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>Help & Support</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Find answers or get in touch with our team.</p>
+    <div className="max-w-[720px]">
+      <div className="creator-page-header">
+        <h1 className="creator-page-title">Help & Support</h1>
+        <p className="creator-page-description">Find answers or get in touch with our team.</p>
       </div>
 
       {/* Support Links */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 36 }}>
+      <div className="mb-9 grid gap-4 sm:grid-cols-3">
         {links.map((link) => (
           <motion.a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             style={{ textDecoration: 'none' }}>
-            <div className="card" style={{ padding: 20, textAlign: 'center' }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: `${link.color}15`, border: `1px solid ${link.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+            <div className="creator-card creator-card--padded text-center">
+              <div className="creator-icon-tile mx-auto mb-3" style={{ color: link.color }}>
                 <link.icon size={20} color={link.color} />
               </div>
               <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{link.label}</div>
@@ -66,7 +66,7 @@ export default function SupportPage() {
       {/* FAQ */}
       <div>
         <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <HelpCircle size={20} color="#8b5cf6" /> Frequently Asked Questions
+          <HelpCircle size={20} className="text-[var(--brand-from)]" /> Frequently Asked Questions
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {faqs.map((faq, i) => (

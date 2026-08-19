@@ -32,20 +32,20 @@ export default function InvoicesPage() {
   };
 
   return (
-    <div style={{ maxWidth: 800 }}>
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>Invoices</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Your payment history and receipts.</p>
+    <div className="max-w-[800px]">
+      <div className="creator-page-header">
+        <h1 className="creator-page-title">Invoices</h1>
+        <p className="creator-page-description">Your payment history and receipts.</p>
       </div>
 
       {loading ? <div style={{ textAlign: 'center', padding: 60, color: 'var(--text-muted)' }}>Loading...</div> : payments.length === 0 ? (
-        <div className="glass" style={{ padding: 64, textAlign: 'center', borderRadius: 20 }}>
+        <div className="creator-card creator-empty-state">
           <Download size={48} color="var(--text-muted)" style={{ margin: '0 auto 16px' }} />
           <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>No invoices yet</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Your payment receipts will appear here.</p>
         </div>
       ) : (
-        <div className="card" style={{ overflow: 'hidden' }}>
+        <div className="creator-card creator-table-wrap">
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
@@ -70,7 +70,7 @@ export default function InvoicesPage() {
                   </td>
                   <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>{new Date(p.createdAt).toLocaleDateString()}</td>
                   <td style={{ padding: '14px 16px' }}>
-                    <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, fontSize: 12 }} title="Download receipt">
+                    <button className="creator-list__action" title="Download receipt">
                       <Download size={14} />
                     </button>
                   </td>

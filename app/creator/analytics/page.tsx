@@ -56,15 +56,15 @@ export default function AnalyticsPage() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
+      <div className="creator-toolbar">
         <div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>Analytics</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Track your automation performance and growth.</p>
+          <h1 className="creator-page-title">Analytics</h1>
+          <p className="creator-page-description">Track your automation performance and growth.</p>
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div className="flex gap-2">
           {[7, 30, 90].map((d) => (
             <button key={d} onClick={() => setDays(d)}
-              style={{ padding: '7px 16px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', border: 'none', background: days === d ? 'var(--gradient-brand)' : 'var(--bg-card)', color: days === d ? 'white' : 'var(--text-muted)', transition: 'all 0.2s' }}>
+              className={`creator-period-button ${days === d ? 'creator-period-button--active' : ''}`}>
               {d}d
             </button>
           ))}
@@ -72,18 +72,16 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Summary Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+      <div className="creator-stat-grid">
         {[
-          { icon: MessageSquare, label: 'DMs Sent', value: summary?.dmsSent?.toLocaleString() || '0', color: '#8b5cf6', sub: `${summary?.successRate || 0}% success` },
-          { icon: Users, label: 'New Leads', value: summary?.leadsNew?.toLocaleString() || '0', color: '#06b6d4', sub: `${summary?.leadsTotal?.toLocaleString() || '0'} total` },
+          { icon: MessageSquare, label: 'DMs Sent', value: summary?.dmsSent?.toLocaleString() || '0', color: 'var(--brand-from)', sub: `${summary?.successRate || 0}% success` },
+          { icon: Users, label: 'New Leads', value: summary?.leadsNew?.toLocaleString() || '0', color: 'var(--brand-mid)', sub: `${summary?.leadsTotal?.toLocaleString() || '0'} total` },
           { icon: TrendingUp, label: 'Link Clicks', value: summary?.linkClicks?.toLocaleString() || '0', color: '#f59e0b', sub: 'Affiliate & Storefront' },
           { icon: Target, label: 'Active Rules', value: summary?.automationsActive || '0', color: '#10b981', sub: 'Running automations' },
         ].map((stat, i) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
-            <div className="card" style={{ padding: 20 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 10, background: `${stat.color}15`, border: `1px solid ${stat.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                <stat.icon size={18} color={stat.color} />
-              </div>
+            <div className="creator-card creator-stat-card">
+              <div className="creator-icon-tile mb-3" style={{ color: stat.color }}><stat.icon size={18} /></div>
               <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 2 }}>{stat.value}</div>
               <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>{stat.label}</div>
               <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{stat.sub}</div>
@@ -95,7 +93,7 @@ export default function AnalyticsPage() {
       {loading && <div style={{ textAlign: 'center', padding: 60, color: 'var(--text-muted)' }}>Loading chart data...</div>}
 
       {!loading && chartData.length === 0 && (
-        <div className="glass" style={{ padding: 60, textAlign: 'center', borderRadius: 20 }}>
+        <div className="creator-card creator-empty-state">
           <BarChart3 size={48} color="var(--text-muted)" style={{ margin: '0 auto 16px' }} />
           <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>No data yet</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Once your automations start firing, your metrics will appear here.</p>
@@ -105,14 +103,14 @@ export default function AnalyticsPage() {
       {!loading && chartData.length > 0 && (
         <>
           {/* DMs + Leads Area Chart */}
-          <div className="card" style={{ padding: 24, marginBottom: 16 }}>
+          <div className="creator-card creator-card--padded mb-4">
             <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20 }}>Performance Overview</h2>
             <ResponsiveContainer width="100%" height={280}>
               <AreaChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 5 }}>
                 <defs>
                   <linearGradient id="dmsGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="var(--brand-from)" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="var(--brand-from)" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="leadsGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3} />
@@ -123,14 +121,14 @@ export default function AnalyticsPage() {
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#475569' }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: '#475569' }} axisLine={false} tickLine={false} />
                 <Tooltip contentStyle={customTooltipStyle} />
-                <Area type="monotone" dataKey="dms" name="DMs Sent" stroke="#8b5cf6" fill="url(#dmsGrad)" strokeWidth={2} dot={false} />
+                <Area type="monotone" dataKey="dms" name="DMs Sent" stroke="var(--brand-from)" fill="url(#dmsGrad)" strokeWidth={2} dot={false} />
                 <Area type="monotone" dataKey="leads" name="Leads" stroke="#06b6d4" fill="url(#leadsGrad)" strokeWidth={2} dot={false} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
 
           {/* Comments Bar Chart */}
-          <div className="card" style={{ padding: 24 }}>
+          <div className="creator-card creator-card--padded">
             <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20 }}>Comments Received</h2>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 5 }}>
@@ -145,7 +143,6 @@ export default function AnalyticsPage() {
         </>
       )}
 
-      <style>{`@media(max-width:900px){div[style*="repeat(4, 1fr)"]{grid-template-columns:repeat(2,1fr)!important;}}`}</style>
     </div>
   );
 }

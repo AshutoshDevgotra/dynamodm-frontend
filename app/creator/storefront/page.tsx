@@ -25,21 +25,21 @@ export default function StorefrontDashboard() {
       </div>
 
       <div className="mb-6 grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-black/6 bg-white p-5">
+        <div className="creator-card creator-stat-card">
           <div className="mb-2 flex items-center gap-2 text-sm text-zinc-500">
             <Activity size={16} className="text-[var(--brand-from)]" />
             Total clicks (30d)
           </div>
           <p className="text-3xl font-semibold">213</p>
         </div>
-        <div className="rounded-2xl border border-black/6 bg-white p-5">
+        <div className="creator-card creator-stat-card">
           <div className="mb-2 flex items-center gap-2 text-sm text-zinc-500">
             <ShoppingBag size={16} className="text-emerald-500" />
             Active products
           </div>
           <p className="text-3xl font-semibold">2</p>
         </div>
-        <div className="rounded-2xl border border-black/6 bg-white p-5">
+        <div className="creator-card creator-stat-card">
           <div className="mb-2 flex items-center gap-2 text-sm text-zinc-500">
             <LinkIcon size={16} className="text-sky-500" />
             Top link
@@ -49,11 +49,11 @@ export default function StorefrontDashboard() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-black/6 bg-white">
+      <div className="creator-card overflow-hidden">
         <div className="border-b border-black/6 px-5 py-4">
           <h2 className="text-base font-semibold">Your products</h2>
         </div>
-        <div className="divide-y divide-black/6">
+        <div className="divide-y divide-[var(--border-subtle)]">
           {products.map((product) => (
             <div key={product.id} className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
