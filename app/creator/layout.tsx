@@ -38,19 +38,31 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
   const [user, setUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    if (!token || !userData) { router.push('/login'); return; }
-    const parsed = JSON.parse(userData) as AuthUser;
-    if (parsed.role !== 'creator' && parsed.role !== 'admin') { router.push('/login'); return; }
-    setUser(parsed);
-
     const params = new URLSearchParams(window.location.search);
     const urlToken = params.get('token');
-    if (urlToken) {
-      localStorage.setItem('token', urlToken);
-      router.replace('/creator');
+    const token = urlToken || localStorage.getItem('token');
+    if (urlToken) localStorage.setItem('token', urlToken);
+    if (!token) { router.push('/login'); return; }
+
+    const userData = localStorage.getItem('user');
+    if (userData && !urlToken) {
+      const parsed = JSON.parse(userData) as AuthUser;
+      if (parsed.role !== 'CREATOR' && parsed.role !== 'ADMIN') { router.push('/login'); return; }
+      setUser(parsed);
+      return;
     }
+
+    fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Unable to load account.');
+        const data = await response.json();
+        const authenticatedUser = data.data.user as AuthUser;
+        if (authenticatedUser.role !== 'CREATOR' && authenticatedUser.role !== 'ADMIN') throw new Error('Invalid account role.');
+        localStorage.setItem('user', JSON.stringify(authenticatedUser));
+        setUser(authenticatedUser);
+        if (urlToken) router.replace('/creator');
+      })
+      .catch(() => router.push('/login'));
   }, [router]);
 
   const handleLogout = () => {

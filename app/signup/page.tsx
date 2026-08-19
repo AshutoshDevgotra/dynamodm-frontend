@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -31,7 +33,7 @@ export default function SignupPage() {
     if (form.password.length < 8) { toast('Password must be at least 8 characters.', 'error'); return; }
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -67,7 +69,7 @@ export default function SignupPage() {
 
           <button
             type="button"
-            onClick={() => { window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`; }}
+            onClick={() => { window.location.href = '/api/auth/google'; }}
             className="btn-secondary w-full"
           >
             Continue with Google

@@ -46,12 +46,17 @@ export default function CreatorDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const oauthToken = new URLSearchParams(window.location.search).get('token');
+    if (oauthToken) {
+      localStorage.setItem('token', oauthToken);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    const token = oauthToken || localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
 
     Promise.all([
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/analytics/summary?days=30`, { headers }).then((r) => r.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/meta/status`, { headers }).then((r) => r.json()),
+      fetch('/api/analytics/summary?days=30', { headers }).then((r) => r.json()),
+      fetch('/api/meta/status', { headers }).then((r) => r.json()),
     ]).then(([analyticsRes, metaRes]) => {
       if (analyticsRes.success) setStats(analyticsRes.data);
       if (metaRes.success) setIgConnected(metaRes.data.account?.isConnected || false);
