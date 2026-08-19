@@ -1,54 +1,54 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Camera, Zap, Users, BarChart3, Bot, Shield, MessageCircle, Target, TrendingUp } from 'lucide-react';
+import { BarChart3, Bot, Camera, MessageCircle, Shield, Target, TrendingUp, Users, Zap } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Features',
-  description: 'Explore all DynamoDM features — Instagram automation, lead capture, analytics, and more.',
+  description: 'Explore DynamoDM features — Instagram automation, lead capture, analytics, and storefronts.',
 };
 
 const features = [
   {
-    icon: MessageCircle, title: 'Instagram DM Automation', color: '#8b5cf6',
-    desc: 'Automatically send personalized DMs to anyone who comments a trigger keyword on your Instagram posts. Works 24/7, even while you sleep.',
-    points: ['Instant response within seconds', 'Personalized message templates', 'PDF, link, and image attachments', 'Cooldown to prevent spam'],
+    icon: MessageCircle, title: 'Instagram DM automation',
+    desc: 'Send a personal DM the moment someone comments a keyword — 24/7.',
+    points: ['Response in seconds', 'Templates with links & PDFs', 'Cooldowns to prevent spam'],
   },
   {
-    icon: Target, title: 'Smart Keyword Matching', color: '#ec4899',
-    desc: 'Flexible keyword matching lets you handle any comment style your audience uses.',
-    points: ['Exact match', 'Contains keyword', 'Starts with keyword', 'Advanced regex patterns'],
+    icon: Target, title: 'Smart keyword matching',
+    desc: 'Cover every way your audience comments, without a dozen duplicate rules.',
+    points: ['Exact, contains, starts with', 'Regex for campaigns', 'Multiple keywords per rule'],
   },
   {
-    icon: Users, title: 'Lead Capture CRM', color: '#06b6d4',
-    desc: 'Every interaction automatically creates a lead in your dashboard with full contact details and conversation history.',
-    points: ['Auto-capture Instagram usernames', 'Tag and segment leads', 'CSV export', 'Conversion tracking'],
+    icon: Users, title: 'Lead capture CRM',
+    desc: 'Every interaction becomes a lead with username, tags, and history.',
+    points: ['Auto-capture handles', 'Tag and segment', 'CSV export'],
   },
   {
-    icon: BarChart3, title: 'Analytics Dashboard', color: '#10b981',
-    desc: 'Beautiful time-series charts and metric cards give you full visibility into your automation performance.',
-    points: ['DMs sent & failed', 'Lead growth over time', 'Comment volume tracking', 'Conversion funnel'],
+    icon: BarChart3, title: 'Analytics',
+    desc: 'See what is working: DMs, clicks, and conversions over time.',
+    points: ['Delivery vs failures', 'Lead growth', 'Campaign funnels'],
   },
   {
-    icon: Bot, title: 'BullMQ Queue Engine', color: '#f59e0b',
-    desc: 'Enterprise-grade message queue ensures your DMs are delivered reliably even at scale.',
-    points: ['Automatic retries on failure', 'Instagram rate limit compliance', '200 DMs/hour per account', 'Failure logging & alerts'],
+    icon: Bot, title: 'Reliable delivery',
+    desc: 'A queue with retries and Meta rate limits so DMs actually go out.',
+    points: ['Automatic retries', 'Hourly caps', 'Failure logs'],
   },
   {
-    icon: Shield, title: 'Meta-Compliant', color: '#ef4444',
-    desc: 'Built on the official Meta Graph API with proper OAuth, HMAC verification, and webhook handling.',
-    points: ['Official Meta API', 'HMAC webhook verification', 'Encrypted token storage', 'Proper permission scopes'],
+    icon: Shield, title: 'Meta-compliant',
+    desc: 'Official Graph API, HMAC webhooks, encrypted tokens.',
+    points: ['OAuth login', 'Webhook verification', 'Least-privilege scopes'],
   },
   {
-    icon: Camera, title: 'Business Account Support', color: '#833ab4',
-    desc: 'Works with Instagram Business and Creator accounts connected to Facebook Pages.',
-    points: ['Business accounts', 'Creator accounts', 'Facebook Page integration', 'Multi-account ready (Premium)'],
+    icon: Camera, title: 'Business accounts',
+    desc: 'Works with Instagram Business and Creator accounts on a Facebook Page.',
+    points: ['Business & Creator', 'Page connection', 'Multi-account on Premium'],
   },
   {
-    icon: TrendingUp, title: 'Campaign Management', color: '#06b6d4',
-    desc: 'Group automation rules into campaigns tied to specific posts or promotions.',
-    points: ['Multiple rules per campaign', 'Campaign-level analytics', 'Post URL tracking', 'Campaign scheduling'],
+    icon: TrendingUp, title: 'Campaigns',
+    desc: 'Group automations around a reel, launch, or collab.',
+    points: ['Rules per campaign', 'Campaign analytics', 'Post URL tracking'],
   },
 ];
 
@@ -56,60 +56,44 @@ export default function FeaturesPage() {
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: 100 }}>
+      <main className="pt-28 pb-16">
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: 72 }}>
-            <span className="badge badge-brand" style={{ marginBottom: 20, display: 'inline-flex' }}>
-              <Zap size={13} /> All Features
+          <div className="mx-auto mb-14 max-w-2xl text-center">
+            <span className="badge badge-brand mb-4">
+              <Zap size={13} /> All features
             </span>
-            <h1 style={{ fontSize: 'clamp(36px, 6vw, 60px)', fontWeight: 900, marginBottom: 16 }}>
-              Everything you need to <br /><span className="gradient-text">automate and grow</span>
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
+              Everything to
+              <span className="block font-serif italic font-normal">automate and grow</span>
             </h1>
-            <p style={{ color: 'var(--text-secondary)', fontSize: 18, maxWidth: 560, margin: '0 auto' }}>
-              A complete Instagram automation platform built for creators who mean business.
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
+              A complete Instagram automation platform for creators who mean business.
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {features.map((feature, i) => (
-              <div key={feature.title} style={{
-                display: 'grid', gridTemplateColumns: i % 2 === 0 ? '1fr 1fr' : '1fr 1fr',
-                gap: 48, padding: '56px 0',
-                borderBottom: i < features.length - 1 ? '1px solid var(--border-subtle)' : 'none',
-              }}>
-                <div style={{ order: i % 2 === 0 ? 1 : 2 }}>
-                  <div style={{ width: 56, height: 56, borderRadius: 14, background: `${feature.color}18`, border: `1px solid ${feature.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
-                    <feature.icon size={26} color={feature.color} />
-                  </div>
-                  <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 12 }}>{feature.title}</h2>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: 16, lineHeight: 1.7, marginBottom: 20 }}>{feature.desc}</p>
-                  <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {feature.points.map((p) => (
-                      <li key={p} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: 'var(--text-secondary)' }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: feature.color, flexShrink: 0 }} />
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
+          <div className="grid gap-5 md:grid-cols-2">
+            {features.map((feature) => (
+              <div key={feature.title} className="rounded-[28px] border border-black/6 bg-white p-8">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-subtle)] text-[var(--brand-from)]">
+                  <feature.icon size={22} />
                 </div>
-                <div style={{ order: i % 2 === 0 ? 2 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <div className="glass" style={{ width: '100%', aspectRatio: '4/3', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ width: 80, height: 80, borderRadius: 20, background: `${feature.color}18`, border: `1px solid ${feature.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <feature.icon size={40} color={feature.color} />
-                    </div>
-                    <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at center, ${feature.color}08 0%, transparent 70%)` }} />
-                  </div>
-                </div>
+                <h2 className="text-xl font-semibold">{feature.title}</h2>
+                <p className="mt-2 text-[var(--text-secondary)]">{feature.desc}</p>
+                <ul className="mt-5 space-y-2">
+                  {feature.points.map((p) => (
+                    <li key={p} className="flex items-center gap-2 text-sm text-zinc-600">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-from)]" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
 
-          <div style={{ textAlign: 'center', paddingTop: 64, paddingBottom: 64 }}>
-            <h2 style={{ fontSize: 36, fontWeight: 800, marginBottom: 16 }}>Ready to get started?</h2>
-            <Link href="/signup">
-              <button className="btn-primary animate-pulse-glow" style={{ fontSize: 16, padding: '14px 32px' }}>
-                Start Free — No Credit Card
-              </button>
+          <div className="mt-16 text-center">
+            <Link href="/signup" className="btn-primary">
+              Start free — no credit card
             </Link>
           </div>
         </div>

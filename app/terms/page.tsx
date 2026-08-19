@@ -19,15 +19,15 @@ export default function TermsPage() {
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: 100 }}>
-        <div className="container-sm" style={{ paddingTop: 48, paddingBottom: 80 }}>
-          <h1 style={{ fontSize: 44, fontWeight: 900, marginBottom: 8 }}>Terms of Service</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: 48 }}>Last updated: June 2026</p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+      <main className="pt-28 pb-16">
+        <div className="container-sm">
+          <h1 className="text-4xl font-semibold tracking-tight">Terms of Service</h1>
+          <p className="mt-2 mb-10 text-sm text-[var(--text-muted)]">Last updated: June 2026</p>
+          <div className="space-y-8">
             {sections.map((s) => (
               <div key={s.title}>
-                <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 10 }}>{s.title}</h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: 15, lineHeight: 1.8 }}>{s.content}</p>
+                <h2 className="mb-2 text-lg font-semibold">{s.title}</h2>
+                <p className="text-[15px] leading-8 text-[var(--text-secondary)]">{s.content}</p>
               </div>
             ))}
           </div>

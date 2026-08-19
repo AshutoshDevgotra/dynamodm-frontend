@@ -1,225 +1,154 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CreditCard, Check, Zap, ArrowRight, AlertCircle } from 'lucide-react';
-import { toast } from '../../components/ui/Toaster';
+import { Landmark, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
-interface Subscription {
-  plan: string;
-  status: string;
-  currentPeriodEnd?: string;
-  cancelAtPeriodEnd: boolean;
-  features: { maxAutomations: number; maxLeads: number; maxDmsPerMonth: number };
-}
+export default function CreatorPaymentsPage() {
+  const [onboardingStatus, setOnboardingStatus] = useState<'IDLE' | 'LOADING' | 'SUCCESS'>('IDLE');
+  const [accountId, setAccountId] = useState<string | null>(null);
+  
+  // Dummy data for MVP onboarding
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: ''
+  });
 
-declare global {
-  interface Window {
-    Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
-  }
-}
+  const handleOnboard = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setOnboardingStatus('LOADING');
 
-interface RazorpayOptions {
-  key: string;
-  amount: number;
-  currency: string;
-  order_id: string;
-  name: string;
-  description: string;
-  theme: { color: string };
-  prefill?: { email?: string };
-  handler: (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => void;
-}
-
-interface RazorpayInstance {
-  open: () => void;
-}
-
-const plans = [
-  {
-    id: 'free', name: 'Free', price: '₹0', period: '/month',
-    features: ['1 Automation', '100 Leads/month', '500 DMs/month', '7-day analytics'],
-    color: '#64748b', highlighted: false,
-  },
-  {
-    id: 'pro', name: 'Pro', price: '₹999', period: '/month',
-    features: ['10 Automations', '5,000 Leads', '10,000 DMs/month', '30-day analytics', 'CSV export', 'PDF attachments'],
-    color: '#8b5cf6', highlighted: true, badge: 'Most Popular',
-  },
-  {
-    id: 'premium', name: 'Premium', price: '₹2,499', period: '/month',
-    features: ['Unlimited Everything', '1-year analytics', 'Custom branding', 'Priority support', 'API access'],
-    color: '#ec4899', highlighted: false,
-  },
-];
-
-export default function PaymentsPage() {
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [upgrading, setUpgrading] = useState<string | null>(null);
-
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
-  const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
-
-  useEffect(() => {
-    // Load Razorpay script
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    document.head.appendChild(script);
-
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/subscription`, { headers })
-      .then(r => r.json())
-      .then(d => { if (d.success) setSubscription(d.data.subscription); })
-      .finally(() => setLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleUpgrade = async (planId: string) => {
-    if (planId === 'free') return;
-    setUpgrading(planId);
     try {
-      // Step 1: Create a Razorpay Order on backend
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/create-order`, {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/onboard`, {
         method: 'POST',
-        headers,
-        body: JSON.stringify({ plan: planId }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-
-      const { orderId, amount, currency, keyId, planName } = data.data;
-
-      // Step 2: Open Razorpay checkout modal
-      const rzp = new window.Razorpay({
-        key: keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
-        amount,
-        currency,
-        order_id: orderId,
-        name: 'DynamoDM',
-        description: `${planName} — Monthly Subscription`,
-        theme: { color: '#8b5cf6' },
-        handler: async (response) => {
-          // Step 3: Verify payment signature on backend — activates subscription
-          const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/verify`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(response),
-          });
-          const verifyData = await verifyRes.json();
-          if (!verifyRes.ok) throw new Error(verifyData.message);
-          toast('🎉 Payment successful! Subscription activated.', 'success');
-          window.location.reload();
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
+        body: JSON.stringify(formData)
       });
-      rzp.open();
-    } catch (err: unknown) {
-      toast(err instanceof Error ? err.message : 'Payment failed. Please try again.', 'error');
-    } finally {
-      setUpgrading(null);
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        setOnboardingStatus('SUCCESS');
+        setAccountId(data.data?.accountId || data.accountId);
+      } else {
+        alert(data.message || 'Failed to onboard');
+        setOnboardingStatus('IDLE');
+      }
+    } catch (err) {
+      console.error(err);
+      setOnboardingStatus('IDLE');
     }
   };
 
-
-  const handleCancel = async () => {
-    if (!confirm('Cancel your subscription? It will remain active until the end of the billing period.')) return;
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/cancel`, { method: 'POST', headers });
-    toast('Subscription will cancel at period end', 'success');
-    setSubscription(prev => prev ? { ...prev, cancelAtPeriodEnd: true } : null);
-  };
-
-  if (loading) return <div style={{ textAlign: 'center', padding: 80, color: 'var(--text-muted)' }}>Loading...</div>;
-
   return (
-    <div>
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>Subscription & Billing</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Manage your DynamoDM subscription plan.</p>
+    <div className="max-w-4xl mx-auto pb-12">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-white tracking-tight">Payments & Bank</h1>
+        <p className="text-zinc-400 mt-2">Connect your bank account to receive automated payouts from brand campaigns and affiliate commissions.</p>
       </div>
 
-      {/* Current Plan Banner */}
-      {subscription && (
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 32 }}>
-          <div style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.25)', borderRadius: 16, padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Zap size={22} color="white" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Onboarding Form */}
+        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+              <Landmark size={20} />
             </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 15, fontWeight: 700 }}>Current Plan: <span className="gradient-text">{subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1)}</span></div>
-              <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2 }}>
-                Status: {subscription.status} {subscription.currentPeriodEnd && `· Renews ${new Date(subscription.currentPeriodEnd).toLocaleDateString()}`}
-                {subscription.cancelAtPeriodEnd && ' · Will cancel at period end'}
-              </div>
-            </div>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <Link href="/creator/payments/invoices">
-                <button className="btn-secondary" style={{ fontSize: 13, padding: '8px 16px', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <CreditCard size={14} /> Invoices
-                </button>
-              </Link>
-              {subscription.plan !== 'free' && !subscription.cancelAtPeriodEnd && (
-                <button onClick={handleCancel} style={{ fontSize: 13, padding: '8px 16px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, color: '#ef4444', cursor: 'pointer', fontWeight: 600 }}>
-                  Cancel Plan
-                </button>
-              )}
-            </div>
+            <h2 className="text-xl font-semibold text-white">Bank Payouts Setup</h2>
           </div>
-          {subscription.cancelAtPeriodEnd && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.25)', borderRadius: 10, marginTop: 8 }}>
-              <AlertCircle size={14} color="#fbbf24" />
-              <span style={{ fontSize: 13, color: '#fbbf24' }}>Your subscription is set to cancel. Reactivate anytime by choosing a plan below.</span>
-            </div>
-          )}
-        </motion.div>
-      )}
 
-      {/* Plan Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-        {plans.map((plan, i) => {
-          const isCurrent = subscription?.plan === plan.id;
-          return (
-            <motion.div key={plan.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
-              <div
-                className={plan.highlighted ? 'gradient-border' : 'card'}
-                style={{ padding: 28, position: 'relative', ...(plan.highlighted && { transform: 'scale(1.02)' }) }}
-              >
-                {plan.badge && (
-                  <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: 'var(--gradient-brand)', color: 'white', fontSize: 10, fontWeight: 700, padding: '4px 14px', borderRadius: 999, whiteSpace: 'nowrap' }}>
-                    {plan.badge}
-                  </div>
-                )}
-
-                <div style={{ marginBottom: 20 }}>
-                  <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>{plan.name}</h3>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                    <span style={{ fontSize: 36, fontWeight: 900 }}>{plan.price}</span>
-                    <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{plan.period}</span>
-                  </div>
-                </div>
-
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 9, marginBottom: 24 }}>
-                  {plan.features.map((f) => (
-                    <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-secondary)' }}>
-                      <Check size={14} color={plan.color} /> {f}
-                    </li>
-                  ))}
-                </ul>
-
-                {isCurrent ? (
-                  <div style={{ padding: '10px', borderRadius: 10, background: `${plan.color}15`, border: `1px solid ${plan.color}30`, textAlign: 'center', fontSize: 13, fontWeight: 600, color: plan.color }}>
-                    ✓ Current Plan
-                  </div>
-                ) : (
-                  <button onClick={() => handleUpgrade(plan.id)} disabled={upgrading === plan.id}
-                    className={plan.highlighted ? 'btn-primary' : 'btn-secondary'}
-                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                    {upgrading === plan.id ? 'Processing...' : <><span>Upgrade to {plan.name}</span><ArrowRight size={14} /></>}
-                  </button>
-                )}
+          {onboardingStatus === 'SUCCESS' ? (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center py-8"
+            >
+              <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle2 size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Account Linked!</h3>
+              <p className="text-zinc-400 mb-6">Your Razorpay Route account is active. You are now ready to receive automated payouts.</p>
+              <div className="bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50 inline-block text-left">
+                <p className="text-xs text-zinc-500 mb-1">Razorpay Account ID</p>
+                <p className="text-white font-mono text-sm">{accountId}</p>
               </div>
             </motion.div>
-          );
-        })}
+          ) : (
+            <form onSubmit={handleOnboard}>
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-zinc-400 mb-1.5">Legal Full Name</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="As per bank records"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-zinc-400 mb-1.5">Email Address</label>
+                  <input
+                    required
+                    type="email"
+                    placeholder="creator@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-zinc-400 mb-1.5">Phone Number</label>
+                  <input
+                    required
+                    type="tel"
+                    placeholder="9999999999"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              <button 
+                type="submit"
+                disabled={onboardingStatus === 'LOADING'}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {onboardingStatus === 'LOADING' ? 'Connecting to Razorpay...' : 'Connect Bank Account'} 
+                <ArrowRight size={18} />
+              </button>
+              
+              <div className="mt-4 flex items-center justify-center gap-2 text-xs text-zinc-500">
+                <ShieldCheck size={14} /> Secured by Razorpay
+              </div>
+            </form>
+          )}
+        </div>
+
+        {/* Info Column */}
+        <div className="space-y-6">
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+            <h3 className="text-blue-400 font-semibold mb-2">Platform Fee Notice</h3>
+            <p className="text-zinc-300 text-sm leading-relaxed">
+              DynamoDM charges a flat <strong>5% platform fee</strong> on all incoming brand sponsorships and affiliate commission payouts. This covers our AI operational costs and Razorpay processing fees. The fee is automatically deducted before transfer.
+            </p>
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+            <h3 className="text-white font-semibold mb-4">Recent Transactions</h3>
+            <div className="text-center py-8">
+              <p className="text-zinc-500 text-sm">No transactions yet.</p>
+              <p className="text-zinc-600 text-xs mt-1">Connect your account to start receiving payments.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

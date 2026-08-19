@@ -8,6 +8,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 interface Summary {
   dmsSent: number; dmsFailed: number; leadsTotal: number; leadsNew: number;
   commentsReceived: number; automationsActive: number; successRate: number;
+  linkClicks: number;
 }
 
 interface TimeSeriesPoint { _id: { date: string; eventType: string }; count: number; }
@@ -75,8 +76,8 @@ export default function AnalyticsPage() {
         {[
           { icon: MessageSquare, label: 'DMs Sent', value: summary?.dmsSent?.toLocaleString() || '0', color: '#8b5cf6', sub: `${summary?.successRate || 0}% success` },
           { icon: Users, label: 'New Leads', value: summary?.leadsNew?.toLocaleString() || '0', color: '#06b6d4', sub: `${summary?.leadsTotal?.toLocaleString() || '0'} total` },
-          { icon: TrendingUp, label: 'Comments', value: summary?.commentsReceived?.toLocaleString() || '0', color: '#10b981', sub: 'Received & processed' },
-          { icon: Target, label: 'Active Rules', value: summary?.automationsActive || '0', color: '#f59e0b', sub: 'Running automations' },
+          { icon: TrendingUp, label: 'Link Clicks', value: summary?.linkClicks?.toLocaleString() || '0', color: '#f59e0b', sub: 'Affiliate & Storefront' },
+          { icon: Target, label: 'Active Rules', value: summary?.automationsActive || '0', color: '#10b981', sub: 'Running automations' },
         ].map((stat, i) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
             <div className="card" style={{ padding: 20 }}>
@@ -105,7 +106,7 @@ export default function AnalyticsPage() {
         <>
           {/* DMs + Leads Area Chart */}
           <div className="card" style={{ padding: 24, marginBottom: 16 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20 }}>DMs Sent vs Leads Captured</h2>
+            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20 }}>Performance Overview</h2>
             <ResponsiveContainer width="100%" height={280}>
               <AreaChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 5 }}>
                 <defs>

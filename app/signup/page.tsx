@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Eye, EyeOff, Zap, ArrowRight, Globe, Check } from 'lucide-react';
+import { ArrowRight, Check, Eye, EyeOff } from 'lucide-react';
 import { toast } from '../components/ui/Toaster';
+import Logo from '../components/Logo';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function SignupPage() {
   };
 
   const strength = passwordStrength(form.password);
-  const strengthColors = ['#ef4444', '#f59e0b', '#10b981', '#8b5cf6'];
+  const strengthColors = ['#ef4444', '#f59e0b', '#10b981', '#2563eb'];
   const strengthLabels = ['Weak', 'Fair', 'Good', 'Strong'];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,7 +40,7 @@ export default function SignupPage() {
       if (!res.ok) throw new Error(data.message);
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('user', JSON.stringify(data.data.user));
-      toast('Account created! Let\'s get started. 🚀', 'success');
+      toast('Account created. Let\'s get started.', 'success');
       router.push('/creator/onboarding');
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Registration failed', 'error');
@@ -49,95 +49,85 @@ export default function SignupPage() {
     }
   };
 
-  const perks = ['Free forever plan', 'No credit card required', 'Setup in 5 minutes'];
-
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(139,92,246,0.12) 0%, transparent 70%)' }} />
-
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ width: '100%', maxWidth: 440, position: 'relative' }}>
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Zap size={20} color="white" fill="white" />
-            </div>
-            <span style={{ fontSize: 22, fontWeight: 800, fontFamily: 'Plus Jakarta Sans' }}>Dynamo<span className="gradient-text">DM</span></span>
-          </Link>
+    <div className="flex min-h-screen items-center justify-center px-4 py-12">
+      <div className="w-full max-w-[440px]">
+        <div className="mb-8 flex justify-center">
+          <Logo />
         </div>
-
-        <div className="glass-strong" style={{ padding: 36, borderRadius: 24 }}>
-          <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 6, textAlign: 'center' }}>Create your account</h1>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 28, flexWrap: 'wrap' }}>
-            {perks.map((p) => (
-              <span key={p} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--text-muted)' }}>
-                <Check size={12} color="#22c55e" /> {p}
+        <div className="rounded-[28px] border border-black/6 bg-white p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
+          <h1 className="text-center text-2xl font-semibold tracking-tight">Create your account</h1>
+          <div className="mt-3 mb-6 flex flex-wrap justify-center gap-3 text-xs text-zinc-500">
+            {['Free forever plan', 'No credit card', 'Setup in 5 minutes'].map((p) => (
+              <span key={p} className="inline-flex items-center gap-1">
+                <Check size={12} className="text-emerald-500" /> {p}
               </span>
             ))}
           </div>
 
-          <button type="button" onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`} className="btn-secondary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 20 }}>
-            <Globe size={18} /> Continue with Google
+          <button
+            type="button"
+            onClick={() => { window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`; }}
+            className="btn-secondary w-full"
+          >
+            Continue with Google
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-            <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
-            <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>or</span>
-            <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
+          <div className="my-5 flex items-center gap-3">
+            <div className="h-px flex-1 bg-black/8" />
+            <span className="text-xs text-zinc-400">or</span>
+            <div className="h-px flex-1 bg-black/8" />
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: 16 }}>
-              <label htmlFor="name" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Full Name</label>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-zinc-600">Full name</label>
               <input id="name" type="text" autoComplete="name" placeholder="Priya Sharma" value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })} className="input-field" required />
             </div>
-
-            <div style={{ marginBottom: 16 }}>
-              <label htmlFor="email" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Email</label>
+            <div>
+              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-zinc-600">Email</label>
               <input id="email" type="email" autoComplete="email" placeholder="you@example.com" value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })} className="input-field" required />
             </div>
-
-            <div style={{ marginBottom: 20 }}>
-              <label htmlFor="password" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Password</label>
-              <div style={{ position: 'relative' }}>
+            <div>
+              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-zinc-600">Password</label>
+              <div className="relative">
                 <input id="password" type={showPass ? 'text' : 'password'} autoComplete="new-password" placeholder="Min 8 characters" value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })} className="input-field" style={{ paddingRight: 44 }} required />
-                <button type="button" onClick={() => setShowPass(!showPass)}
-                  style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
+                  onChange={(e) => setForm({ ...form, password: e.target.value })} className="input-field pr-11" required />
+                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400" aria-label={showPass ? 'Hide password' : 'Show password'}>
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               {form.password && (
-                <div style={{ marginTop: 8 }}>
-                  <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                <div className="mt-2">
+                  <div className="mb-1 flex gap-1">
                     {[0, 1, 2, 3].map((i) => (
-                      <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i < strength ? strengthColors[strength - 1] : 'var(--border-subtle)', transition: 'background 0.3s' }} />
+                      <div key={i} className="h-1 flex-1 rounded-full" style={{ background: i < strength ? strengthColors[strength - 1] : 'rgba(11,18,32,0.08)' }} />
                     ))}
                   </div>
-                  <span style={{ fontSize: 11, color: strengthColors[strength - 1] }}>{strength > 0 ? strengthLabels[strength - 1] : ''}</span>
+                  <span className="text-[11px]" style={{ color: strengthColors[Math.max(strength - 1, 0)] }}>
+                    {strength > 0 ? strengthLabels[strength - 1] : ''}
+                  </span>
                 </div>
               )}
             </div>
-
-            <button type="submit" className="btn-primary" disabled={loading}
-              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-              {loading ? 'Creating account...' : <><span>Create Account</span><ArrowRight size={16} /></>}
+            <button type="submit" className="btn-primary w-full" disabled={loading}>
+              {loading ? 'Creating account...' : <>Create account <ArrowRight size={16} /></>}
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: 16, fontSize: 12, color: 'var(--text-muted)' }}>
+          <p className="mt-4 text-center text-xs text-zinc-400">
             By creating an account, you agree to our{' '}
-            <Link href="/terms" style={{ color: '#a78bfa', textDecoration: 'none' }}>Terms</Link> and{' '}
-            <Link href="/privacy" style={{ color: '#a78bfa', textDecoration: 'none' }}>Privacy Policy</Link>.
+            <Link href="/terms" className="text-[var(--brand-from)]">Terms</Link> and{' '}
+            <Link href="/privacy" className="text-[var(--brand-from)]">Privacy Policy</Link>.
           </p>
-
-          <p style={{ textAlign: 'center', marginTop: 12, fontSize: 14, color: 'var(--text-muted)' }}>
+          <p className="mt-3 text-center text-sm text-zinc-500">
             Already have an account?{' '}
-            <Link href="/login" style={{ color: '#a78bfa', textDecoration: 'none', fontWeight: 600 }}>Sign in</Link>
+            <Link href="/login" className="font-semibold text-[var(--brand-from)]">Sign in</Link>
           </p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

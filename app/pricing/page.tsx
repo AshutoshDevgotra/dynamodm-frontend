@@ -1,109 +1,88 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
+import { Check, Zap } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Check, Zap } from 'lucide-react';
-import Link from 'next/link';
+import PricingCard from '../components/home/PricingCard';
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description: 'DynamoDM pricing plans — Free, Pro and Premium. Start free, upgrade anytime.',
+  description: 'DynamoDM pricing — Free, Pro and Premium. Start free, upgrade anytime.',
 };
 
 const plans = [
   {
     name: 'Free', price: '₹0', period: '/month', description: 'Get started with automation',
-    features: ['1 Automation Rule', '100 Leads/month', '500 DMs/month', '7-day analytics', 'Basic support'],
-    cta: 'Start Free', href: '/signup', highlighted: false, color: '#64748b',
+    features: ['1 automation rule', '100 leads / month', '500 DMs / month', '7-day analytics', 'Basic support'],
+    cta: 'Start free', href: '/signup', highlighted: false,
   },
   {
     name: 'Pro', price: '₹999', period: '/month', description: 'For serious creators',
-    features: ['10 Automation Rules', '5,000 Leads/month', '10,000 DMs/month', '30-day analytics', 'PDF attachments', 'CSV export', 'Priority queue', 'Email support'],
-    cta: 'Start Pro Trial', href: '/signup?plan=pro', highlighted: true, badge: 'Most Popular', color: '#8b5cf6',
+    features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', '30-day analytics', 'PDF attachments', 'CSV export', 'Priority queue', 'Email support'],
+    cta: 'Start Pro trial', href: '/signup?plan=pro', highlighted: true, badge: 'Most popular',
   },
   {
     name: 'Premium', price: '₹2,499', period: '/month', description: 'For agencies & power users',
-    features: ['Unlimited Automations', 'Unlimited Leads', 'Unlimited DMs', '1-year analytics', 'Custom branding', 'Priority support', 'API access', 'Team members (5)'],
-    cta: 'Go Premium', href: '/signup?plan=premium', highlighted: false, color: '#ec4899',
+    features: ['Unlimited automations', 'Unlimited leads & DMs', '1-year analytics', 'Custom branding', 'Priority support', 'API access', '5 team members'],
+    cta: 'Go Premium', href: '/signup?plan=premium', highlighted: false,
   },
 ];
 
 const comparison = [
-  { feature: 'Automation Rules', free: '1', pro: '10', premium: 'Unlimited' },
-  { feature: 'Leads/Month', free: '100', pro: '5,000', premium: 'Unlimited' },
-  { feature: 'DMs/Month', free: '500', pro: '10,000', premium: 'Unlimited' },
-  { feature: 'Analytics Retention', free: '7 days', pro: '30 days', premium: '1 year' },
-  { feature: 'PDF Attachments', free: '✕', pro: '✓', premium: '✓' },
-  { feature: 'CSV Export', free: '✕', pro: '✓', premium: '✓' },
-  { feature: 'Custom Branding', free: '✕', pro: '✕', premium: '✓' },
-  { feature: 'API Access', free: '✕', pro: '✕', premium: '✓' },
-  { feature: 'Priority Support', free: '✕', pro: '✕', premium: '✓' },
+  { feature: 'Automation rules', free: '1', pro: '10', premium: 'Unlimited' },
+  { feature: 'Leads / month', free: '100', pro: '5,000', premium: 'Unlimited' },
+  { feature: 'DMs / month', free: '500', pro: '10,000', premium: 'Unlimited' },
+  { feature: 'Analytics retention', free: '7 days', pro: '30 days', premium: '1 year' },
+  { feature: 'PDF attachments', free: '—', pro: 'Yes', premium: 'Yes' },
+  { feature: 'CSV export', free: '—', pro: 'Yes', premium: 'Yes' },
+  { feature: 'Custom branding', free: '—', pro: '—', premium: 'Yes' },
+  { feature: 'API access', free: '—', pro: '—', premium: 'Yes' },
 ];
 
 export default function PricingPage() {
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: 100 }}>
-        <div className="container" style={{ textAlign: 'center', paddingBottom: 64 }}>
-          <span className="badge badge-brand" style={{ marginBottom: 20, display: 'inline-flex' }}>
-            <Zap size={13} /> Transparent Pricing
-          </span>
-          <h1 style={{ fontSize: 'clamp(36px, 6vw, 60px)', fontWeight: 900, marginBottom: 16 }}>
-            Simple, <span className="gradient-text">honest pricing</span>
-          </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 18, maxWidth: 500, margin: '0 auto 56px' }}>
-            Start free and upgrade when you need more. No hidden fees, cancel anytime.
-          </p>
+      <main className="pt-28 pb-16">
+        <div className="container">
+          <div className="mx-auto mb-12 max-w-xl text-center">
+            <span className="badge badge-brand mb-4">
+              <Zap size={13} /> Transparent pricing
+            </span>
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
+              Simple,
+              <span className="block font-serif italic font-normal">honest pricing</span>
+            </h1>
+            <p className="mt-4 text-lg text-[var(--text-secondary)]">
+              Start free and upgrade when you need more. No hidden fees.
+            </p>
+          </div>
 
-          {/* Plans */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, marginBottom: 80, alignItems: 'start', maxWidth: 1000, margin: '0 auto 80px' }}>
+          <div className="mb-16 grid items-start gap-5 md:grid-cols-3">
             {plans.map((plan) => (
-              <div key={plan.name} className={plan.highlighted ? 'gradient-border' : 'card'} style={{ padding: 32, position: 'relative', ...(plan.highlighted && { transform: 'scale(1.04)' }) }}>
-                {plan.badge && (
-                  <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: 'var(--gradient-brand)', color: 'white', fontSize: 10, fontWeight: 700, padding: '4px 16px', borderRadius: 999, whiteSpace: 'nowrap' }}>
-                    {plan.badge}
-                  </div>
-                )}
-                <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>{plan.name}</h2>
-                <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 16 }}>{plan.description}</p>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 24 }}>
-                  <span style={{ fontSize: 44, fontWeight: 900 }}>{plan.price}</span>
-                  <span style={{ color: 'var(--text-muted)', fontSize: 14 }}>{plan.period}</span>
-                </div>
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28, textAlign: 'left' }}>
-                  {plan.features.map((f) => (
-                    <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--text-secondary)' }}>
-                      <Check size={14} color={plan.color} /> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link href={plan.href}>
-                  <button className={plan.highlighted ? 'btn-primary' : 'btn-secondary'} style={{ width: '100%' }}>{plan.cta}</button>
-                </Link>
-              </div>
+              <PricingCard key={plan.name} {...plan} />
             ))}
           </div>
 
-          {/* Comparison Table */}
-          <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'left' }}>
-            <h2 style={{ fontSize: 28, fontWeight: 800, textAlign: 'center', marginBottom: 32 }}>Full Comparison</h2>
-            <div className="card" style={{ overflow: 'hidden' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div className="overflow-hidden rounded-[28px] border border-black/6 bg-white">
+            <h2 className="border-b border-black/6 px-6 py-5 text-lg font-semibold">Full comparison</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[640px] border-collapse text-left">
                 <thead>
-                  <tr style={{ borderBottom: '1px solid var(--border-default)' }}>
-                    <th style={{ padding: '16px 20px', fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', textAlign: 'left' }}>Feature</th>
+                  <tr className="border-b border-black/6 text-xs uppercase tracking-wider text-zinc-400">
+                    <th className="px-6 py-4 font-medium">Feature</th>
                     {['Free', 'Pro', 'Premium'].map((p) => (
-                      <th key={p} style={{ padding: '16px 20px', fontSize: 13, fontWeight: 700, textAlign: 'center' }}>{p}</th>
+                      <th key={p} className="px-6 py-4 text-center font-semibold text-zinc-800">{p}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {comparison.map((row, i) => (
-                    <tr key={row.feature} style={{ borderBottom: '1px solid var(--border-subtle)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
-                      <td style={{ padding: '12px 20px', fontSize: 14, color: 'var(--text-secondary)' }}>{row.feature}</td>
+                  {comparison.map((row) => (
+                    <tr key={row.feature} className="border-b border-black/5 last:border-0">
+                      <td className="px-6 py-3.5 text-sm text-zinc-600">{row.feature}</td>
                       {[row.free, row.pro, row.premium].map((v, j) => (
-                        <td key={j} style={{ padding: '12px 20px', textAlign: 'center', fontSize: 13, fontWeight: 600, color: v === '✓' ? '#22c55e' : v === '✕' ? '#ef4444' : 'var(--text-primary)' }}>
-                          {v}
+                        <td key={`${row.feature}-${j}`} className="px-6 py-3.5 text-center text-sm font-medium">
+                          {v === 'Yes' ? <Check size={16} className="mx-auto text-emerald-500" /> : v}
                         </td>
                       ))}
                     </tr>
@@ -111,6 +90,10 @@ export default function PricingPage() {
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link href="/signup" className="btn-primary">Get started free</Link>
           </div>
         </div>
       </main>

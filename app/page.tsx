@@ -1,528 +1,160 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { ArrowRight, BarChart3, MessageCircle, Shield, Store, Target, Users } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import {
-  Zap, MessageCircle, Users, BarChart3, ArrowRight, Star, Check,
-  Camera, Bot, Target, TrendingUp, Shield, Sparkles, ChevronRight,
-  Play
-} from 'lucide-react';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const fadeUp: any = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const stagger: any = {
-  visible: { transition: { staggerChildren: 0.12 } },
-};
+import FeatureCard from './components/home/FeatureCard';
+import PricingCard from './components/home/PricingCard';
+import HeroMockup from './components/home/HeroMockup';
 
 const features = [
-  {
-    icon: MessageCircle,
-    title: 'Instant DM Automation',
-    description: 'When someone comments a keyword on your post, they instantly receive a personalized DM — even while you sleep.',
-    color: '#8b5cf6',
-  },
-  {
-    icon: Target,
-    title: 'Smart Keyword Matching',
-    description: 'Exact match, contains, starts with, or regex patterns. Handle multiple keywords per automation rule.',
-    color: '#ec4899',
-  },
-  {
-    icon: Users,
-    title: 'Lead Capture & CRM',
-    description: 'Every commenter becomes a lead. Track, tag, export and nurture your audience — all in one place.',
-    color: '#06b6d4',
-  },
-  {
-    icon: BarChart3,
-    title: 'Deep Analytics',
-    description: 'Track DMs sent, click rates, conversion metrics, and revenue — with beautiful time-series dashboards.',
-    color: '#10b981',
-  },
-  {
-    icon: Bot,
-    title: 'BullMQ-Powered Engine',
-    description: 'Enterprise-grade queue system with retries, rate limiting, and failure recovery baked in.',
-    color: '#f59e0b',
-  },
-  {
-    icon: Shield,
-    title: 'Meta-Compliant',
-    description: 'Built on the official Meta Graph API with proper permissions, HMAC verification, and cooldowns.',
-    color: '#ef4444',
-  },
+  { icon: MessageCircle, title: 'AutoDM', description: 'Comment a keyword, get a personal DM in seconds — even while you sleep.' },
+  { icon: Store, title: 'Link-in-bio store', description: 'One storefront for products, affiliate links, socials, and lead magnets.' },
+  { icon: Users, title: 'Lead capture', description: 'Every commenter becomes a lead you can tag, export, and follow up with.' },
+  { icon: BarChart3, title: 'Analytics', description: 'See DMs sent, click-through, and conversions without a spreadsheet.' },
+  { icon: Target, title: 'Smart keywords', description: 'Exact match, contains, starts with, or regex — one rule can cover a campaign.' },
+  { icon: Shield, title: 'Meta-compliant', description: 'Official Graph API, HMAC webhooks, rate limits, and cooldowns built in.' },
 ];
 
-const stats = [
-  { value: '2M+', label: 'DMs Sent' },
-  { value: '50K+', label: 'Creators' },
-  { value: '98%', label: 'Delivery Rate' },
-  { value: '12x', label: 'ROI Average' },
-];
-
-const testimonials = [
-  {
-    name: 'Priya Sharma',
-    handle: '@priyafit',
-    avatar: 'PS',
-    role: 'Fitness Coach',
-    text: '"I posted my reel and said \'comment GUIDE\' — within 2 hours I had 340 leads in my DMs automatically. DynamoDM is insane."',
-    rating: 5,
-    color: '#8b5cf6',
-  },
-  {
-    name: 'Rohan Mehta',
-    handle: '@rohan.biz',
-    avatar: 'RM',
-    role: 'Business Coach',
-    text: '"Went from manually replying to 200 DMs a day to zero. The automation just works. My engagement doubled in a week."',
-    rating: 5,
-    color: '#ec4899',
-  },
-  {
-    name: 'Ananya Iyer',
-    handle: '@ananya.creates',
-    avatar: 'AI',
-    role: 'Digital Creator',
-    text: '"The analytics dashboard alone is worth it. I can see exactly which posts drive the most leads and revenue."',
-    rating: 5,
-    color: '#06b6d4',
-  },
+const steps = [
+  { n: '01', title: 'Connect Instagram', body: 'Link a Business or Creator account with official Meta OAuth.' },
+  { n: '02', title: 'Set a keyword', body: 'Write the DM, attach a link or PDF, and choose when it fires.' },
+  { n: '03', title: 'Post and earn', body: 'Ask followers to comment. DynamoDM sends the DM and logs the lead.' },
 ];
 
 const plans = [
-  {
-    name: 'Free',
-    price: '₹0',
-    period: '/month',
-    description: 'Perfect to get started',
-    features: ['1 Automation Rule', '100 Leads/month', '500 DMs/month', '7-day analytics', 'Basic support'],
-    cta: 'Start Free',
-    highlighted: false,
-    href: '/signup',
-  },
-  {
-    name: 'Pro',
-    price: '₹999',
-    period: '/month',
-    description: 'For growing creators',
-    features: ['10 Automation Rules', '5,000 Leads/month', '10,000 DMs/month', '30-day analytics', 'PDF attachments', 'Priority queue', 'CSV export'],
-    cta: 'Start Pro',
-    highlighted: true,
-    badge: 'Most Popular',
-    href: '/signup?plan=pro',
-  },
-  {
-    name: 'Premium',
-    price: '₹2,499',
-    period: '/month',
-    description: 'For power users & agencies',
-    features: ['Unlimited Automations', 'Unlimited Leads', 'Unlimited DMs', '1-year analytics', 'Custom branding', 'Priority support', 'API access', 'Team members'],
-    cta: 'Go Premium',
-    highlighted: false,
-    href: '/signup?plan=premium',
-  },
+  { name: 'Free', price: '₹0', period: '/mo', description: 'Start automating today', features: ['1 automation rule', '100 leads / month', '500 DMs / month', '7-day analytics'], cta: 'Start free', highlighted: false, href: '/signup' },
+  { name: 'Pro', price: '₹999', period: '/mo', description: 'For growing creators', features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', '30-day analytics', 'PDF attachments'], cta: 'Start Pro', highlighted: true, badge: 'Most popular', href: '/signup?plan=pro' },
+  { name: 'Premium', price: '₹2,499', period: '/mo', description: 'For agencies & power users', features: ['Unlimited automations', 'Unlimited leads & DMs', '1-year analytics', 'Custom branding'], cta: 'Go Premium', highlighted: false, href: '/signup?plan=premium' },
 ];
 
-function HeroSection() {
-  return (
-    <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden', paddingTop: 72 }}>
-      {/* Background Effects */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 0,
-        background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,92,246,0.15) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 50%, rgba(236,72,153,0.08) 0%, transparent 60%)',
-      }} />
-      <div style={{
-        position: 'absolute', top: '20%', left: '10%', width: 400, height: 400,
-        borderRadius: '50%', background: 'rgba(139,92,246,0.04)',
-        filter: 'blur(60px)', zIndex: 0,
-      }} />
-
-      <div className="container" style={{ position: 'relative', zIndex: 1, paddingTop: 80, paddingBottom: 80 }}>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={stagger}
-          style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}
-        >
-          {/* Badge */}
-          <motion.div variants={fadeUp} style={{ marginBottom: 24 }}>
-            <span className="badge badge-brand" style={{ fontSize: 13 }}>
-              <Sparkles size={13} />
-              Instagram Automation · Powered by Meta API
-            </span>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1 variants={fadeUp} style={{ fontSize: 'clamp(40px, 7vw, 76px)', fontWeight: 900, marginBottom: 24, lineHeight: 1.05 }}>
-            Turn Every Comment
-            <br />
-            Into a{' '}
-            <span className="gradient-text">
-              Conversation
-            </span>
-          </motion.h1>
-
-          <motion.p variants={fadeUp} style={{ fontSize: 'clamp(16px, 2vw, 20px)', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: 580, margin: '0 auto 40px' }}>
-            DynamoDM automatically sends personalized Instagram DMs when followers comment keywords on your posts.
-            Capture leads, deliver content, and grow — on autopilot.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div variants={fadeUp} style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 56 }}>
-            <Link href="/signup">
-              <button className="btn-primary animate-pulse-glow" style={{ fontSize: 16, padding: '14px 32px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                Start Automating Free
-                <ArrowRight size={18} />
-              </button>
-            </Link>
-            <button className="btn-secondary" style={{ fontSize: 16, padding: '14px 28px', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Play size={16} />
-              Watch Demo
-            </button>
-          </motion.div>
-
-          {/* Example Flow */}
-          <motion.div variants={fadeUp}>
-            <div className="glass" style={{ display: 'inline-flex', alignItems: 'center', gap: 0, padding: 4, borderRadius: 16, overflow: 'hidden' }}>
-              {[
-                { icon: '📸', label: 'Post Reel', sub: '"Comment SIP"' },
-                { icon: '💬', label: 'Follower Comments', sub: 'SIP' },
-                { icon: '⚡', label: 'DynamoDM Triggers', sub: 'Instant' },
-                { icon: '📩', label: 'DM Sent Automatically', sub: '+ PDF link' },
-              ].map((step, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={{ padding: '10px 16px', textAlign: 'center' }}>
-                    <div style={{ fontSize: 20, marginBottom: 2 }}>{step.icon}</div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>{step.label}</div>
-                    <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>{step.sub}</div>
-                  </div>
-                  {i < 3 && <ChevronRight size={14} color="var(--text-muted)" />}
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, marginTop: 80, maxWidth: 700, margin: '80px auto 0' }}
-        >
-          {stats.map((stat) => (
-            <div key={stat.label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 900, background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                {stat.value}
-              </div>
-              <div style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>{stat.label}</div>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function FeaturesSection() {
-  return (
-    <section className="section">
-      <div className="container">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={stagger}
-          style={{ textAlign: 'center', marginBottom: 64 }}
-        >
-          <motion.span variants={fadeUp} className="badge badge-brand" style={{ marginBottom: 16, display: 'inline-flex' }}>
-            <Zap size={13} /> Everything You Need
-          </motion.span>
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(32px, 5vw, 52px)', marginBottom: 16 }}>
-            Built for creators who<br /><span className="gradient-text">mean business</span>
-          </motion.h2>
-          <motion.p variants={fadeUp} style={{ color: 'var(--text-secondary)', fontSize: 18, maxWidth: 560, margin: '0 auto' }}>
-            Everything you need to automate, capture, and convert your Instagram audience.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-          variants={stagger}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}
-        >
-          {features.map((feature) => (
-            <motion.div key={feature.title} variants={fadeUp}>
-              <div className="card" style={{ padding: 28, height: '100%' }}>
-                <div style={{
-                  width: 48, height: 48, borderRadius: 12,
-                  background: `${feature.color}18`, border: `1px solid ${feature.color}30`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20,
-                }}>
-                  <feature.icon size={22} color={feature.color} />
-                </div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{feature.title}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.7 }}>{feature.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-      <style>{`@media(max-width:768px){.features-grid{grid-template-columns:1fr!important}}`}</style>
-    </section>
-  );
-}
-
-function HowItWorksSection() {
-  const steps = [
-    { num: '01', title: 'Connect Instagram', desc: 'Link your Instagram Business or Creator account via official Meta OAuth — takes 30 seconds.', icon: Camera },
-    { num: '02', title: 'Create an Automation', desc: 'Set a trigger keyword (e.g. "SIP"), write your DM response, add a CTA link or PDF attachment.', icon: Zap },
-    { num: '03', title: 'Post & Promote', desc: 'Share your reel or post. Tell your audience to comment the keyword to receive the value.', icon: TrendingUp },
-    { num: '04', title: 'Watch Leads Roll In', desc: 'Every comment triggers an instant DM. Leads are automatically captured in your dashboard.', icon: Users },
-  ];
-
-  return (
-    <section className="section" style={{ background: 'var(--bg-secondary)' }}>
-      <div className="container">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={stagger}
-          style={{ textAlign: 'center', marginBottom: 64 }}
-        >
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(32px, 5vw, 52px)', marginBottom: 16 }}>
-            Up and running in <span className="gradient-text">5 minutes</span>
-          </motion.h2>
-          <motion.p variants={fadeUp} style={{ color: 'var(--text-secondary)', fontSize: 18 }}>
-            No technical knowledge required. If you can post a reel, you can use DynamoDM.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={stagger}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}
-        >
-          {steps.map((step) => (
-            <motion.div key={step.num} variants={fadeUp}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  width: 64, height: 64, borderRadius: 16, margin: '0 auto 20px',
-                  background: 'var(--gradient-brand-soft)', border: '1px solid var(--border-brand)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <step.icon size={26} color="#a78bfa" />
-                </div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#7c3aed', letterSpacing: '0.1em', marginBottom: 8 }}>STEP {step.num}</div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{step.title}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.7 }}>{step.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function TestimonialsSection() {
-  return (
-    <section className="section">
-      <div className="container">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={stagger}
-          style={{ textAlign: 'center', marginBottom: 64 }}
-        >
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(32px, 5vw, 52px)', marginBottom: 16 }}>
-            Loved by <span className="gradient-text">10,000+ creators</span>
-          </motion.h2>
-        </motion.div>
-
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={stagger}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}
-        >
-          {testimonials.map((t) => (
-            <motion.div key={t.name} variants={fadeUp}>
-              <div className="card" style={{ padding: 28 }}>
-                <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} size={14} color="#f59e0b" fill="#f59e0b" />
-                  ))}
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.8, marginBottom: 20 }}>{t.text}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{
-                    width: 40, height: 40, borderRadius: '50%',
-                    background: `linear-gradient(135deg, ${t.color}, #1a1a2e)`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 13, fontWeight: 700, color: 'white',
-                  }}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 14 }}>{t.name}</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: 12 }}>{t.handle} · {t.role}</div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function PricingSection() {
-  return (
-    <section className="section" style={{ background: 'var(--bg-secondary)' }}>
-      <div className="container">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={stagger}
-          style={{ textAlign: 'center', marginBottom: 64 }}
-        >
-          <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(32px, 5vw, 52px)', marginBottom: 16 }}>
-            Simple, transparent <span className="gradient-text">pricing</span>
-          </motion.h2>
-          <motion.p variants={fadeUp} style={{ color: 'var(--text-secondary)', fontSize: 18 }}>
-            Start free, upgrade when you&apos;re ready. No hidden fees.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={stagger}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, alignItems: 'start' }}
-        >
-          {plans.map((plan) => (
-            <motion.div key={plan.name} variants={fadeUp}>
-              <div
-                className={plan.highlighted ? 'gradient-border' : 'card'}
-                style={{ padding: 32, position: 'relative', ...(plan.highlighted && { transform: 'scale(1.03)' }) }}
-              >
-                {plan.badge && (
-                  <div style={{
-                    position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
-                    background: 'var(--gradient-brand)', color: 'white', fontSize: 11, fontWeight: 700,
-                    padding: '4px 16px', borderRadius: 999, whiteSpace: 'nowrap',
-                  }}>
-                    {plan.badge}
-                  </div>
-                )}
-                <div style={{ marginBottom: 24 }}>
-                  <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{plan.name}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 16 }}>{plan.description}</p>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                    <span style={{ fontSize: 40, fontWeight: 900 }}>{plan.price}</span>
-                    <span style={{ color: 'var(--text-muted)', fontSize: 14 }}>{plan.period}</span>
-                  </div>
-                </div>
-
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
-                  {plan.features.map((f) => (
-                    <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: 'var(--text-secondary)' }}>
-                      <Check size={15} color={plan.highlighted ? '#a78bfa' : '#22c55e'} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                <Link href={plan.href}>
-                  <button
-                    className={plan.highlighted ? 'btn-primary' : 'btn-secondary'}
-                    style={{ width: '100%', justifyContent: 'center' }}
-                  >
-                    {plan.cta}
-                  </button>
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function CTASection() {
-  return (
-    <section className="section">
-      <div className="container">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={stagger}
-          style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto' }}
-        >
-          <div className="glass" style={{ padding: '64px 48px', borderRadius: 24, position: 'relative', overflow: 'hidden' }}>
-            <div style={{
-              position: 'absolute', inset: 0, zIndex: 0,
-              background: 'radial-gradient(ellipse at center, rgba(139,92,246,0.12) 0%, transparent 70%)',
-            }} />
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              <motion.h2 variants={fadeUp} style={{ fontSize: 'clamp(28px, 5vw, 48px)', marginBottom: 16 }}>
-                Ready to automate<br />your <span className="gradient-text">Instagram growth?</span>
-              </motion.h2>
-              <motion.p variants={fadeUp} style={{ color: 'var(--text-secondary)', fontSize: 17, marginBottom: 32 }}>
-                Join 50,000+ creators who save hours every day with DynamoDM. Start free — no credit card required.
-              </motion.p>
-              <motion.div variants={fadeUp} style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link href="/signup">
-                  <button className="btn-primary" style={{ fontSize: 16, padding: '14px 32px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                    Start Automating Free <ArrowRight size={18} />
-                  </button>
-                </Link>
-              </motion.div>
-              <motion.p variants={fadeUp} style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 16 }}>
-                Free forever plan · No credit card required · Setup in 5 minutes
-              </motion.p>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
+const faqs = [
+  { q: 'What is DynamoDM?', a: 'DynamoDM is a creator toolkit for Instagram DM automation, lead capture, and a simple storefront — so you can reply, sell, and grow without living in your inbox.' },
+  { q: 'Is it free to start?', a: 'Yes. The Free plan includes one automation, 500 DMs a month, and a public profile. Upgrade when you need more volume.' },
+  { q: 'Does this work with personal Instagram accounts?', a: 'You need an Instagram Business or Creator account connected to a Facebook Page. Setup takes a few minutes via official Meta login.' },
+  { q: 'Is this allowed by Meta?', a: 'Yes. We use the official Meta Graph API with the right permissions, HMAC verification, cooldowns, and rate limiting.' },
+];
 
 export default function HomePage() {
   return (
-    <>
+    <div className="min-h-screen bg-[var(--bg-base)]">
       <Navbar />
-      <main>
-        <HeroSection />
-        <FeaturesSection />
-        <HowItWorksSection />
-        <TestimonialsSection />
-        <PricingSection />
-        <CTASection />
-      </main>
+
+      <section className="px-4 pt-24 pb-8 sm:px-6">
+        <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#2563eb_0%,#60a5fa_46%,#dbeafe_78%,#f4f6fb_100%)] px-6 pb-10 pt-16 text-center sm:px-12 sm:pt-20">
+          <p className="mb-5 text-sm font-medium text-white/80">The complete creator toolkit</p>
+          <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
+            Grow and monetize
+            <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">every comment.</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-base text-white/85 sm:text-lg">
+            Auto-DM followers, capture leads, and share a storefront — so you can focus on the work your audience actually wants.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <Link href="/signup" className="inline-flex items-center gap-3 rounded-full bg-white py-2 pr-5 pl-2 text-sm font-semibold text-zinc-900 shadow-lg">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--brand-from)] text-white">
+                <ArrowRight size={16} />
+              </span>
+              Get Started
+            </Link>
+          </div>
+          <HeroMockup />
+        </div>
+      </section>
+
+      <section className="container py-10">
+        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 rounded-2xl border border-black/6 bg-white px-6 py-5 text-sm text-zinc-500">
+          <span className="font-semibold text-zinc-800">Meta Tech Provider</span>
+          <span>Official Graph API</span>
+          <span>Razorpay payouts</span>
+          <span>Made for Indian creators</span>
+        </div>
+      </section>
+
+      <section className="container py-16 sm:py-24">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+            Reach more people
+            <span className="mt-2 block font-serif text-4xl italic font-normal sm:text-5xl">with tools built for growth</span>
+          </h2>
+          <p className="mt-4 text-[var(--text-secondary)]">
+            Everything you need to turn Instagram comments into conversations, customers, and a storefront.
+          </p>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {features.map((feature) => (
+            <FeatureCard key={feature.title} {...feature} />
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-white py-16 sm:py-24">
+        <div className="container">
+          <div className="mx-auto mb-14 max-w-2xl text-center">
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+              Live in
+              <span className="font-serif italic font-normal"> 5 minutes</span>
+            </h2>
+            <p className="mt-4 text-[var(--text-secondary)]">No flow builders. If you can post a reel, you can run DynamoDM.</p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {steps.map((step) => (
+              <div key={step.n} className="rounded-[28px] border border-black/6 bg-[var(--bg-base)] p-8">
+                <div className="text-xs font-semibold tracking-[0.16em] text-[var(--brand-from)]">STEP {step.n}</div>
+                <h3 className="mt-4 text-xl font-semibold">{step.title}</h3>
+                <p className="mt-3 text-[var(--text-secondary)]">{step.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="container py-16 sm:py-24">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+            Simple,
+            <span className="font-serif italic font-normal"> honest pricing</span>
+          </h2>
+          <p className="mt-4 text-[var(--text-secondary)]">Start free. Upgrade when you are ready. Cancel anytime.</p>
+        </div>
+        <div className="grid items-start gap-5 md:grid-cols-3">
+          {plans.map((plan) => (
+            <PricingCard key={plan.name} {...plan} />
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-white py-16 sm:py-24">
+        <div className="container max-w-3xl">
+          <h2 className="mb-8 text-center text-3xl font-semibold tracking-tight sm:text-4xl">
+            Questions? <span className="font-serif italic font-normal">Answers.</span>
+          </h2>
+          <div className="divide-y divide-black/8 border-y border-black/8">
+            {faqs.map((item) => (
+              <details key={item.q} className="group py-5">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 text-left text-base font-semibold">
+                  {item.q}
+                  <span className="text-xl font-normal text-zinc-400 transition group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--text-secondary)]">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-16 sm:px-6">
+        <div className="mx-auto max-w-[1160px] rounded-[32px] bg-[#0b1220] px-8 py-16 text-center text-white">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+            Try DynamoDM today
+            <span className="mt-2 block font-serif text-4xl italic font-normal sm:text-5xl">Free to start. No commitments.</span>
+          </h2>
+          <Link href="/signup" className="btn-primary mt-8 !bg-white !text-zinc-900 hover:!bg-zinc-100">
+            Start for Free <ArrowRight size={16} />
+          </Link>
+        </div>
+      </section>
+
       <Footer />
-    </>
+    </div>
   );
 }

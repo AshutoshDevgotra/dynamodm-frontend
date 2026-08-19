@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Eye, EyeOff, Zap, ArrowRight, Globe } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { toast } from '../components/ui/Toaster';
+import Logo from '../components/Logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function LoginPage() {
       if (!res.ok) throw new Error(data.message);
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('user', JSON.stringify(data.data.user));
-      toast('Welcome back! 🎉', 'success');
+      toast('Welcome back!', 'success');
       router.push(data.data.user.role === 'admin' ? '/admin' : '/creator');
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Login failed', 'error');
@@ -36,47 +36,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative', overflow: 'hidden' }}>
-      {/* Background */}
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(139,92,246,0.12) 0%, transparent 70%)' }} />
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        style={{ width: '100%', maxWidth: 420, position: 'relative' }}
-      >
-        {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Zap size={20} color="white" fill="white" />
-            </div>
-            <span style={{ fontSize: 22, fontWeight: 800, fontFamily: 'Plus Jakarta Sans' }}>
-              Dynamo<span className="gradient-text">DM</span>
-            </span>
-          </Link>
+    <div className="flex min-h-screen items-center justify-center px-4 py-12">
+      <div className="w-full max-w-[420px]">
+        <div className="mb-8 flex justify-center">
+          <Logo />
         </div>
+        <div className="rounded-[28px] border border-black/6 bg-white p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
+          <h1 className="text-center text-2xl font-semibold tracking-tight">Welcome back</h1>
+          <p className="mt-1 mb-6 text-center text-sm text-[var(--text-secondary)]">Sign in to your DynamoDM account</p>
 
-        <div className="glass-strong" style={{ padding: 36, borderRadius: 24 }}>
-          <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 6, textAlign: 'center' }}>Welcome back</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: 14, textAlign: 'center', marginBottom: 28 }}>Sign in to your DynamoDM account</p>
-
-          {/* Google OAuth */}
-          <button type="button" onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`} className="btn-secondary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 20 }}>
-            <Globe size={18} />
+          <button
+            type="button"
+            onClick={() => { window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`; }}
+            className="btn-secondary w-full"
+          >
             Continue with Google
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-            <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
-            <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>or</span>
-            <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
+          <div className="my-5 flex items-center gap-3">
+            <div className="h-px flex-1 bg-black/8" />
+            <span className="text-xs text-zinc-400">or</span>
+            <div className="h-px flex-1 bg-black/8" />
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: 16 }}>
-              <label htmlFor="email" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Email</label>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-zinc-600">Email</label>
               <input
                 id="email"
                 type="email"
@@ -88,10 +73,9 @@ export default function LoginPage() {
                 required
               />
             </div>
-
-            <div style={{ marginBottom: 8 }}>
-              <label htmlFor="password" style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Password</label>
-              <div style={{ position: 'relative' }}>
+            <div>
+              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-zinc-600">Password</label>
+              <div className="relative">
                 <input
                   id="password"
                   type={showPass ? 'text' : 'password'}
@@ -99,33 +83,33 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  className="input-field"
-                  style={{ paddingRight: 44 }}
+                  className="input-field pr-11"
                   required
                 />
-                <button type="button" onClick={() => setShowPass(!showPass)}
-                  style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowPass(!showPass)}
+                  className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400"
+                  aria-label={showPass ? 'Hide password' : 'Show password'}
+                >
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
-
-            <div style={{ textAlign: 'right', marginBottom: 24 }}>
-              <Link href="/forgot-password" style={{ fontSize: 13, color: '#a78bfa', textDecoration: 'none' }}>Forgot password?</Link>
+            <div className="text-right">
+              <Link href="/forgot-password" className="text-sm font-medium text-[var(--brand-from)]">Forgot password?</Link>
             </div>
-
-            <button type="submit" className="btn-primary" disabled={loading}
-              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-              {loading ? 'Signing in...' : <><span>Sign in</span><ArrowRight size={16} /></>}
+            <button type="submit" className="btn-primary w-full" disabled={loading}>
+              {loading ? 'Signing in...' : <>Sign in <ArrowRight size={16} /></>}
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: 20, fontSize: 14, color: 'var(--text-muted)' }}>
+          <p className="mt-5 text-center text-sm text-zinc-500">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" style={{ color: '#a78bfa', textDecoration: 'none', fontWeight: 600 }}>Sign up free</Link>
+            <Link href="/signup" className="font-semibold text-[var(--brand-from)]">Sign up free</Link>
           </p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

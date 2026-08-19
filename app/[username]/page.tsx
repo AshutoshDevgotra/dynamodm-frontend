@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import { Camera, Link2, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import { Camera, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Creator Profile | DynamoDM',
@@ -13,14 +14,13 @@ interface CreatorProfile {
   links: Array<{ url: string; label: string; cta?: boolean }>;
 }
 
-// In production, this fetches from the API
 async function getCreatorProfile(username: string): Promise<CreatorProfile | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/creators/${username}`, { next: { revalidate: 60 } });
     const data = await res.json();
     if (!res.ok) return null;
     return data.data.profile as CreatorProfile;
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -31,84 +31,63 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
 
   if (!profile) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-        <h2>Creator profile not found</h2>
+      <div className="flex min-h-screen items-center justify-center px-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold">Profile not found</h1>
+          <p className="mt-2 text-sm text-[var(--text-secondary)]">This creator page is not live yet.</p>
+          <Link href="/" className="btn-primary mt-6">Go home</Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      {/* Background */}
-      <div style={{ position: 'fixed', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,92,246,0.1) 0%, transparent 60%)' }} />
-
-      <div style={{ width: '100%', maxWidth: 460, position: 'relative' }}>
-        {/* Card */}
-        <div className="glass-strong" style={{ borderRadius: 28, overflow: 'hidden' }}>
-          {/* Header Banner */}
-          <div style={{ height: 100, background: 'var(--gradient-brand)', position: 'relative' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.1)' }} />
-          </div>
-
-          <div style={{ padding: '0 28px 28px' }}>
-            {/* Avatar */}
-            <div style={{ marginTop: -40, marginBottom: 16 }}>
-              <div style={{
-                width: 80, height: 80, borderRadius: '50%',
-                background: 'var(--gradient-brand)',
-                border: '3px solid var(--bg-secondary)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 28, fontWeight: 800, color: 'white',
-              }}>
-                {profile.name?.[0]?.toUpperCase() || '?'}
-              </div>
+    <div className="min-h-screen bg-[linear-gradient(180deg,#dbeafe_0%,#f4f6fb_28%,#f4f6fb_100%)] px-4 py-10">
+      <div className="mx-auto w-full max-w-[420px]">
+        <div className="overflow-hidden rounded-[32px] border border-black/6 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
+          <div className="h-28 bg-[linear-gradient(135deg,#2563eb,#60a5fa)]" />
+          <div className="px-6 pb-8">
+            <div className="-mt-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-[var(--brand-from)] text-2xl font-bold text-white">
+              {profile.name?.[0]?.toUpperCase() || '?'}
             </div>
-
-            {/* Name + Bio */}
-            <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>{profile.name}</h1>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
-              <Camera size={14} color="#ec4899" />
-              <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>@{profile.instagramUsername}</span>
-              <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>·</span>
-              <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{profile.followersCount?.toLocaleString()} followers</span>
+            <h1 className="text-2xl font-semibold tracking-tight">{profile.name}</h1>
+            <div className="mt-1 flex items-center gap-1.5 text-sm text-zinc-500">
+              <Camera size={14} />
+              @{profile.instagramUsername}
+              {profile.followersCount != null && (
+                <>
+                  <span>·</span>
+                  <span>{profile.followersCount.toLocaleString()} followers</span>
+                </>
+              )}
             </div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.7, marginBottom: 24 }}>
-              {profile.bio}
-            </p>
+            {profile.bio && (
+              <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">{profile.bio}</p>
+            )}
 
-            {/* Links */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {profile.links.map((link, i) => (
-                <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                  <div style={{
-                    padding: '14px 18px', borderRadius: 14,
-                    background: link.cta ? 'var(--gradient-brand)' : 'var(--bg-card)',
-                    border: link.cta ? 'none' : '1px solid var(--border-default)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    cursor: 'pointer', transition: 'all 0.2s',
-                    ...(link.cta && { boxShadow: '0 4px 20px rgba(139,92,246,0.3)' }),
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
-                  >
-                    <span style={{ fontSize: 14, fontWeight: link.cta ? 700 : 600, color: link.cta ? 'white' : 'var(--text-primary)' }}>
-                      {link.label}
-                    </span>
-                    <ExternalLink size={14} color={link.cta ? 'rgba(255,255,255,0.7)' : 'var(--text-muted)'} />
-                  </div>
+            <div className="mt-6 flex flex-col gap-2.5">
+              {profile.links.map((link) => (
+                <a
+                  key={link.url + link.label}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center justify-between rounded-2xl px-4 py-3.5 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
+                    link.cta
+                      ? 'bg-[var(--brand-from)] text-white shadow-[0_10px_24px_rgba(37,99,235,0.28)]'
+                      : 'bg-[var(--bg-base)] text-zinc-800 ring-1 ring-black/6'
+                  }`}
+                >
+                  {link.label}
+                  <ExternalLink size={14} className={link.cta ? 'text-white/80' : 'text-zinc-400'} />
                 </a>
               ))}
             </div>
-
-            {/* Footer */}
-            <div style={{ marginTop: 28, textAlign: 'center' }}>
-              <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-muted)', textDecoration: 'none' }}>
-                <Link2 size={12} />
-                Powered by DynamoDM
-              </a>
-            </div>
           </div>
         </div>
+        <p className="mt-6 text-center text-xs text-zinc-400">
+          <Link href="/" className="hover:text-zinc-600">Powered by DynamoDM</Link>
+        </p>
       </div>
     </div>
   );

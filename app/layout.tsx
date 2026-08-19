@@ -1,14 +1,23 @@
 import type { Metadata } from 'next';
+import { Inter, Instrument_Serif } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const instrument = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
+});
+
 export const metadata: Metadata = {
   title: {
-    default: 'DynamoDM — Instagram Automation for Creators',
+    default: 'DynamoDM — Instagram automation for creators',
     template: '%s | DynamoDM',
   },
   description:
-    'Automate Instagram DMs, capture leads, and grow your business. DynamoDM turns every comment into a conversation — automatically.',
+    'Automate Instagram DMs, capture leads, and sell from your storefront. DynamoDM turns every comment into a conversation.',
   keywords: ['instagram automation', 'instagram dm', 'creator tools', 'lead capture', 'instagram marketing'],
   authors: [{ name: 'DynamoDM' }],
   openGraph: {
@@ -16,22 +25,17 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://dynamodm.io',
     siteName: 'DynamoDM',
-    title: 'DynamoDM — Instagram Automation for Creators',
+    title: 'DynamoDM — Instagram automation for creators',
     description: 'Automate Instagram DMs, capture leads, and grow your business.',
   },
-  twitter: { card: 'summary_large_image', title: 'DynamoDM', description: 'Instagram Automation for Creators' },
+  twitter: { card: 'summary_large_image', title: 'DynamoDM', description: 'Instagram automation for creators' },
   robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
-      <body suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${instrument.variable}`}>
+      <body suppressHydrationWarning className="font-sans antialiased bg-[var(--bg-base)] text-[var(--text-primary)]">
         <Providers>{children}</Providers>
       </body>
     </html>

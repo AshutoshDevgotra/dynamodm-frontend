@@ -4,49 +4,49 @@ import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: 'Contact DynamoDM support team.',
+  description: 'Contact the DynamoDM team.',
 };
 
 export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: 100 }}>
-        <div className="container-sm" style={{ paddingTop: 48, paddingBottom: 80 }}>
-          <h1 style={{ fontSize: 48, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}>
-            Get in <span className="gradient-text">Touch</span>
-          </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 17, textAlign: 'center', marginBottom: 48 }}>
-            Have a question? We&apos;d love to hear from you. Send us a message and we&apos;ll respond within 24 hours.
-          </p>
-
-          <div className="glass-strong" style={{ padding: 40, borderRadius: 24, maxWidth: 560, margin: '0 auto' }}>
-            <form>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-                <div>
-                  <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>First Name</label>
-                  <input className="input-field" placeholder="Priya" />
-                </div>
-                <div>
-                  <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Last Name</label>
-                  <input className="input-field" placeholder="Sharma" />
-                </div>
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Email</label>
-                <input className="input-field" type="email" placeholder="you@example.com" />
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Subject</label>
-                <input className="input-field" placeholder="How can we help?" />
-              </div>
-              <div style={{ marginBottom: 24 }}>
-                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Message</label>
-                <textarea className="input-field" rows={5} placeholder="Describe your issue or question in detail..." style={{ resize: 'vertical' }} />
-              </div>
-              <button type="submit" className="btn-primary" style={{ width: '100%' }}>Send Message</button>
-            </form>
+      <main className="pt-28 pb-16">
+        <div className="container-sm">
+          <div className="mb-10 text-center">
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+              Get in <span className="font-serif italic font-normal">touch</span>
+            </h1>
+            <p className="mt-3 text-[var(--text-secondary)]">
+              Send a note and we will reply within one business day.
+            </p>
           </div>
+
+          <form className="rounded-[28px] border border-black/6 bg-white p-8 shadow-[0_12px_40px_rgba(15,23,42,0.05)]">
+            <div className="mb-4 grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-zinc-600">First name</label>
+                <input className="input-field" placeholder="Priya" />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-zinc-600">Last name</label>
+                <input className="input-field" placeholder="Sharma" />
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="mb-1.5 block text-sm font-medium text-zinc-600">Email</label>
+              <input className="input-field" type="email" placeholder="you@example.com" />
+            </div>
+            <div className="mb-4">
+              <label className="mb-1.5 block text-sm font-medium text-zinc-600">Subject</label>
+              <input className="input-field" placeholder="How can we help?" />
+            </div>
+            <div className="mb-6">
+              <label className="mb-1.5 block text-sm font-medium text-zinc-600">Message</label>
+              <textarea className="input-field min-h-[140px]" rows={5} placeholder="Tell us a bit more..." />
+            </div>
+            <button type="submit" className="btn-primary w-full">Send message</button>
+          </form>
         </div>
       </main>
       <Footer />

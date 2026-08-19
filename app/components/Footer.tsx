@@ -1,72 +1,44 @@
-'use client';
-
 import Link from 'next/link';
-import { Zap, Globe, Share2, GitBranch, Mail } from 'lucide-react';
+import { Globe, Mail, Share2 } from 'lucide-react';
+import Logo from './Logo';
+
+const columns = {
+  Product: [
+    { label: 'AutoDM', href: '/features' },
+    { label: 'Pricing', href: '/pricing' },
+    { label: 'For Brands', href: '/for-brands' },
+    { label: 'Storefront', href: '/creator/storefront' },
+  ],
+  Company: [
+    { label: 'Contact', href: '/contact' },
+    { label: 'Privacy', href: '/privacy' },
+    { label: 'Terms', href: '/terms' },
+  ],
+};
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
-  const links = {
-    Product: [
-      { label: 'Features', href: '/features' },
-      { label: 'Pricing', href: '/pricing' },
-      { label: 'Changelog', href: '#' },
-      { label: 'Roadmap', href: '#' },
-    ],
-    Company: [
-      { label: 'About', href: '#' },
-      { label: 'Blog', href: '#' },
-      { label: 'Careers', href: '#' },
-      { label: 'Contact', href: '/contact' },
-    ],
-    Legal: [
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms of Service', href: '/terms' },
-      { label: 'Cookie Policy', href: '#' },
-      { label: 'GDPR', href: '#' },
-    ],
-  };
-
-  const socials = [
-    { icon: Share2, href: '#', label: 'Social' },
-    { icon: Globe, href: '#', label: 'Instagram' },
-    { icon: Mail, href: 'mailto:hello@dynamodm.io', label: 'Email' },
-    { icon: GitBranch, href: '#', label: 'GitHub' },
-  ];
-
   return (
-    <footer style={{
-      borderTop: '1px solid var(--border-subtle)',
-      background: 'var(--bg-secondary)',
-      padding: '64px 0 32px',
-    }}>
-      <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 48 }}>
-          {/* Brand */}
-          <div>
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', marginBottom: 16 }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: 8, background: 'var(--gradient-brand)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <Zap size={16} color="white" fill="white" />
-              </div>
-              <span style={{ fontSize: 18, fontWeight: 800, fontFamily: 'Plus Jakarta Sans' }}>
-                Dynamo<span className="gradient-text">DM</span>
-              </span>
-            </Link>
-            <p style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7, maxWidth: 280, marginBottom: 24 }}>
-              The smartest Instagram automation platform for creators, coaches, and businesses.
+    <footer className="border-t border-black/6 bg-white">
+      <div className="container py-14">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+          <div className="md:col-span-2">
+            <Logo />
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--text-secondary)]">
+              The creator toolkit to automate Instagram DMs, capture leads, and sell from one storefront.
             </p>
-            <div style={{ display: 'flex', gap: 12 }}>
-              {socials.map(({ icon: Icon, href, label }) => (
-                <a key={label} href={href} aria-label={label} style={{
-                  width: 36, height: 36, borderRadius: 8, border: '1px solid var(--border-default)',
-                  background: 'var(--bg-card)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--text-muted)', textDecoration: 'none', transition: 'all 0.2s',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#a78bfa'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border-default)'; }}
+            <div className="mt-5 flex gap-2">
+              {[
+                { icon: Share2, href: '#', label: 'Social' },
+                { icon: Globe, href: '#', label: 'Website' },
+                { icon: Mail, href: 'mailto:hello@dynamodm.io', label: 'Email' },
+              ].map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-black/8 text-zinc-500 hover:border-black/15 hover:text-zinc-900"
                 >
                   <Icon size={15} />
                 </a>
@@ -74,22 +46,13 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
-          {Object.entries(links).map(([title, items]) => (
+          {Object.entries(columns).map(([title, items]) => (
             <div key={title}>
-              <h4 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 16 }}>
-                {title}
-              </h4>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">{title}</h4>
+              <ul className="flex list-none flex-col gap-2.5">
                 {items.map((item) => (
                   <li key={item.label}>
-                    <Link href={item.href} style={{
-                      color: 'var(--text-muted)', textDecoration: 'none', fontSize: 14,
-                      transition: 'color 0.2s',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-                    >
+                    <Link href={item.href} className="text-sm text-zinc-600 hover:text-zinc-900">
                       {item.label}
                     </Link>
                   </li>
@@ -99,29 +62,11 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom */}
-        <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>
-            © {year} DynamoDM. All rights reserved.
-          </p>
-          <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>
-            Made with ❤️ in India
-          </p>
+        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-black/6 pt-6 text-[13px] text-zinc-400 sm:flex-row sm:items-center">
+          <p>© {year} DynamoDM. All rights reserved.</p>
+          <p>Made in India</p>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          footer > .container > div:first-child {
-            grid-template-columns: 1fr 1fr !important;
-          }
-        }
-        @media (max-width: 480px) {
-          footer > .container > div:first-child {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </footer>
   );
 }

@@ -30,7 +30,7 @@ export function Toaster() {
     return () => { toastFn = null; };
   }, []);
 
-  const colors = { success: '#22c55e', error: '#ef4444', info: '#8b5cf6' };
+  const colors = { success: '#10b981', error: '#ef4444', info: '#2563eb' };
 
   if (!mounted) return null;
 
@@ -40,17 +40,16 @@ export function Toaster() {
         <div
           key={t.id}
           style={{
-            background: 'rgba(13,13,20,0.95)',
-            backdropFilter: 'blur(20px)',
-            border: `1px solid ${colors[t.type]}40`,
+            background: '#fff',
+            border: '1px solid rgba(11,18,32,0.08)',
             borderLeft: `3px solid ${colors[t.type]}`,
             borderRadius: 12,
             padding: '12px 18px',
-            color: '#fff',
+            color: '#0b1220',
             fontSize: 14,
             fontWeight: 500,
             maxWidth: 360,
-            boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 20px ${colors[t.type]}20`,
+            boxShadow: '0 12px 40px rgba(15,23,42,0.12)',
             animation: 'slideIn 0.3s ease',
           }}
         >
