@@ -54,8 +54,9 @@ export default function PricingCard({
       <Link
         href={href}
         className={`flex w-full items-center justify-center rounded-full py-3 text-sm font-semibold transition-colors ${
-          highlighted ? 'bg-white text-zinc-900 hover:bg-zinc-100' : 'btn-primary !rounded-full'
+          highlighted ? 'bg-white hover:bg-zinc-100' : 'btn-primary !rounded-full'
         }`}
+        style={highlighted ? { color: '#18181b' } : undefined}
       >
         {cta}
       </Link>
