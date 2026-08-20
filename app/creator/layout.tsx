@@ -5,14 +5,13 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BarChart3, Bell, BookOpen, Camera, ChevronLeft, ChevronRight, CreditCard, HelpCircle,
+  BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, HelpCircle,
   LayoutDashboard, LogOut, Megaphone, Settings, Store, User, Users, Zap,
 } from 'lucide-react';
 
 const navItems = [
   { href: '/creator', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/creator/instagram', label: 'Instagram', icon: Camera },
-  { href: '/creator/facebook', label: 'Facebook Pages', icon: BookOpen },
   { href: '/creator/automations', label: 'Automations', icon: Zap },
   { href: '/creator/storefront', label: 'Storefront', icon: Store },
   { href: '/creator/campaigns', label: 'Campaigns', icon: Megaphone },
@@ -31,6 +30,8 @@ interface AuthUser {
   role: string;
 }
 
+const normalizeRole = (role?: string) => String(role ?? '').trim().toUpperCase();
+
 export default function CreatorLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -47,16 +48,22 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
     const userData = localStorage.getItem('user');
     if (userData && !urlToken) {
       const parsed = JSON.parse(userData) as AuthUser;
-      if (parsed.role !== 'CREATOR' && parsed.role !== 'ADMIN') { router.push('/login'); return; }
-      setUser(parsed);
+      const normalizedRole = normalizeRole(parsed.role);
+      if (normalizedRole !== 'CREATOR' && normalizedRole !== 'ADMIN') { router.push('/login'); return; }
+      setUser({ ...parsed, role: normalizedRole });
       return;
     }
 
-    fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
+    fetch(`${(process.env.NEXT_PUBLIC_API_URL || '').replace(/\/+$/, '') || '/api'}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then(async (response) => {
         if (!response.ok) throw new Error('Unable to load account.');
         const data = await response.json();
-        const authenticatedUser = data.data.user as AuthUser;
+        const authenticatedUser = {
+          ...(data.data.user as AuthUser),
+          role: normalizeRole((data.data.user as AuthUser).role),
+        };
         if (authenticatedUser.role !== 'CREATOR' && authenticatedUser.role !== 'ADMIN') throw new Error('Invalid account role.');
         localStorage.setItem('user', JSON.stringify(authenticatedUser));
         setUser(authenticatedUser);
