@@ -1,5 +1,23 @@
 import type { NextConfig } from 'next';
 
+const resolveApiBaseUrl = () => {
+  const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL?.trim().replace(/\/+$/, '');
+
+  if (!configuredApiUrl) {
+    return process.env.NODE_ENV === 'production'
+      ? 'https://dynamodm-backend.onrender.com/api'
+      : 'http://localhost:5000/api';
+  }
+
+  const isFrontendOrigin = /^(https?:\/\/)?(localhost|127\.0\.0\.1|0\.0\.0\.0)(?::3000)?(?:\/|$)/i.test(configuredApiUrl);
+
+  return isFrontendOrigin
+    ? (process.env.NODE_ENV === 'production'
+      ? 'https://dynamodm-backend.onrender.com/api'
+      : 'http://localhost:5000/api')
+    : configuredApiUrl;
+};
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -11,10 +29,12 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
+    const apiBaseUrl = resolveApiBaseUrl();
+
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:5000/api/:path*',
+        destination: `${apiBaseUrl}/:path*`,
       },
     ];
   },
