@@ -68,7 +68,15 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         if (authenticatedUser.role !== 'CREATOR' && authenticatedUser.role !== 'ADMIN') throw new Error('Invalid account role.');
         localStorage.setItem('user', JSON.stringify(authenticatedUser));
         setUser(authenticatedUser);
-        if (urlToken) router.replace('/creator');
+        if (urlToken) {
+          // If ?plan= came through OAuth, redirect to subscriptions checkout
+          const planParam = params.get('plan');
+          if (planParam) {
+            router.replace(`/creator/payments/subscriptions?plan=${planParam}`);
+          } else {
+            router.replace('/creator');
+          }
+        }
       })
       .catch(() => router.push('/login'));
   }, [router]);
