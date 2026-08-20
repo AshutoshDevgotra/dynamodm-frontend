@@ -5,13 +5,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, HelpCircle,
+  BarChart3, Bell, BookOpen, Camera, ChevronLeft, ChevronRight, CreditCard, HelpCircle,
   LayoutDashboard, LogOut, Megaphone, Settings, Store, User, Users, Zap,
 } from 'lucide-react';
 
 const navItems = [
   { href: '/creator', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/creator/instagram', label: 'Instagram', icon: Camera },
+  { href: '/creator/facebook', label: 'Facebook Pages', icon: BookOpen },
   { href: '/creator/automations', label: 'Automations', icon: Zap },
   { href: '/creator/storefront', label: 'Storefront', icon: Store },
   { href: '/creator/campaigns', label: 'Campaigns', icon: Megaphone },
