@@ -2,20 +2,23 @@ import type { NextConfig } from 'next';
 
 const resolveApiBaseUrl = () => {
   const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL?.trim().replace(/\/+$/, '');
+  const productionApiUrl = 'https://dynamodm-backend.onrender.com/api';
+  const localApiUrl = 'http://localhost:5000/api';
+  const withApiPath = (url: string) => url.endsWith('/api') ? url : `${url}/api`;
 
   if (!configuredApiUrl) {
     return process.env.NODE_ENV === 'production'
-      ? 'https://dynamodm-backend.onrender.com/api'
-      : 'http://localhost:5000/api';
+      ? productionApiUrl
+      : localApiUrl;
   }
 
   const isFrontendOrigin = /^(https?:\/\/)?(localhost|127\.0\.0\.1|0\.0\.0\.0)(?::3000)?(?:\/|$)/i.test(configuredApiUrl);
 
   return isFrontendOrigin
     ? (process.env.NODE_ENV === 'production'
-      ? 'https://dynamodm-backend.onrender.com/api'
-      : 'http://localhost:5000/api')
-    : configuredApiUrl;
+      ? productionApiUrl
+      : localApiUrl)
+    : withApiPath(configuredApiUrl);
 };
 
 const nextConfig: NextConfig = {

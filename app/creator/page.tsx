@@ -52,10 +52,10 @@ export default function CreatorDashboard() {
 
     Promise.all([
       fetch('/api/analytics/summary?days=30', { headers }).then((r) => r.json()),
-      fetch('/api/meta/status', { headers }).then((r) => r.json()),
-    ]).then(([analyticsRes, metaRes]) => {
+      fetch('/api/instagram/status', { headers }).then((r) => r.json()),
+    ]).then(([analyticsRes, igRes]) => {
       if (analyticsRes.success) setStats(analyticsRes.data);
-      if (metaRes.success) setIgConnected(metaRes.data.account?.isConnected || false);
+      if (igRes.success) setIgConnected(Boolean(igRes.data?.isConnected || igRes.data?.account?.isConnected));
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
