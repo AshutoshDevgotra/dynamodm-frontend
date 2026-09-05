@@ -27,17 +27,17 @@ export function InstagramPostSelector({ selectedPostIds, onChange }: Props) {
     const fetchPosts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meta/posts`, {
+        const res = await fetch('/api/instagram/posts', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        if (data.success) {
+        if (data.success && Array.isArray(data.data?.posts)) {
           setPosts(data.data.posts);
         } else {
-          setError(data.message);
+          setPosts([]);
         }
       } catch (err) {
-        setError('Failed to load Instagram posts. Please check your connection.');
+        setPosts([]);
       } finally {
         setLoading(false);
       }
