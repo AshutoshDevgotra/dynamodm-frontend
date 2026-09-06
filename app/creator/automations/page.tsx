@@ -28,7 +28,7 @@ export default function AutomationsPage() {
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
   const fetchAutomations = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/automations`, { headers });
+    const res = await fetch('/api/automations', { headers });
     const data = await res.json();
     if (data.success) setAutomations(data.data.automations);
     setLoading(false);
@@ -38,14 +38,14 @@ export default function AutomationsPage() {
   []);
 
   const handleToggle = async (id: string) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/automations/${id}/toggle`, { method: 'PATCH', headers });
+    await fetch(`/api/automations/${id}/toggle`, { method: 'PATCH', headers });
     setAutomations((prev) => prev.map((a) => a._id === id ? { ...a, isActive: !a.isActive } : a));
     toast('Automation updated', 'success');
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this automation? This cannot be undone.')) return;
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/automations/${id}`, { method: 'DELETE', headers });
+    await fetch(`/api/automations/${id}`, { method: 'DELETE', headers });
     setAutomations((prev) => prev.filter((a) => a._id !== id));
     toast('Automation deleted', 'success');
   };
@@ -109,11 +109,6 @@ export default function AutomationsPage() {
                           <Link2 size={12} /> Specific Post
                         </span>
                       )}
-                      {auto.delaySeconds !== undefined && (
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--text-muted)' }}>
-                          <Clock size={12} /> {auto.delaySeconds === 0 ? 'Instant' : auto.delaySeconds >= 60 ? `${auto.delaySeconds / 60}m delay` : `${auto.delaySeconds}s delay`}
-                        </span>
-                      )}
                       <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--text-muted)' }}>
                         <Clock size={12} /> {new Date(auto.createdAt).toLocaleDateString()}
                       </span>
@@ -126,7 +121,11 @@ export default function AutomationsPage() {
 
                   {/* Stats */}
                   <div className="creator-list__stats">
-                    {[{ label: 'Triggered', value: auto.stats.triggered }, { label: 'DMs Sent', value: auto.stats.dmsSent }, { label: 'Failed', value: auto.stats.failed }].map((s) => (
+                    {[
+                      { label: 'Triggered', value: auto.stats?.triggered ?? 0 },
+                      { label: 'DMs Sent', value: auto.stats?.dmsSent ?? 0 },
+                      { label: 'Failed', value: auto.stats?.failed ?? 0 }
+                    ].map((s) => (
                       <div key={s.label} style={{ textAlign: 'center' }}>
                         <div style={{ fontSize: 20, fontWeight: 800 }}>{s.value}</div>
                         <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{s.label}</div>

@@ -25,7 +25,6 @@ export default function NewAutomationPage() {
     targetPosts: string[];
     matchType: string;
     responseMessage: string;
-    delaySeconds: number;
     ctaLink: string;
     cooldownMinutes: number;
     sendPublicReply: boolean;
@@ -37,7 +36,6 @@ export default function NewAutomationPage() {
     targetPosts: [],
     matchType: 'contains',
     responseMessage: '',
-    delaySeconds: 0,
     ctaLink: '',
     cooldownMinutes: 60,
     sendPublicReply: false,
@@ -57,7 +55,7 @@ export default function NewAutomationPage() {
     }
     setSaving(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/automations`, {
+      const res = await fetch('/api/automations', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -216,19 +214,6 @@ export default function NewAutomationPage() {
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Advanced Settings</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Optional — configure delays, cooldowns, and public replies.</p>
 
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Delay Before Sending DM</label>
-              <select className="input-field" value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: parseInt(e.target.value) })}>
-                <option value={0}>Immediately</option>
-                <option value={5}>5 seconds</option>
-                <option value={15}>15 seconds</option>
-                <option value={60}>1 minute</option>
-                <option value={300}>5 minutes</option>
-                <option value={900}>15 minutes</option>
-              </select>
-              <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>Add a realistic delay so your DMs feel more human.</p>
-            </div>
-
             <div style={{ marginBottom: 20 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Cooldown Period (minutes)</label>
               <input className="input-field" type="number" min={0} max={10080} value={form.cooldownMinutes}
@@ -259,7 +244,6 @@ export default function NewAutomationPage() {
                 { label: 'Trigger', value: form.triggerType === 'comment' ? 'Post Comment' : 'Direct Message' },
                 { label: 'Target', value: form.targetPosts.length > 0 ? `${form.targetPosts.length} Specific Posts` : 'All Posts' },
                 { label: 'Match', value: matchTypes.find(m => m.value === form.matchType)?.label },
-                { label: 'Delay', value: form.delaySeconds === 0 ? 'Instant' : form.delaySeconds >= 60 ? `${form.delaySeconds / 60}m` : `${form.delaySeconds}s` },
                 { label: 'Cooldown', value: `${form.cooldownMinutes} minutes` },
               ].map((item) => (
                 <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, padding: '4px 0', borderBottom: '1px solid var(--border-subtle)' }}>

@@ -26,7 +26,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     targetPosts: string[];
     matchType: string;
     responseMessage: string;
-    delaySeconds: number;
     ctaLink: string;
     cooldownMinutes: number;
     sendPublicReply: boolean;
@@ -38,7 +37,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     targetPosts: [],
     matchType: 'contains',
     responseMessage: '',
-    delaySeconds: 0,
     ctaLink: '',
     cooldownMinutes: 60,
     sendPublicReply: false,
@@ -50,20 +48,29 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
       try {
         const { id } = await params;
         const token = localStorage.getItem('token');
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/automations/${id}`, {
+        const res = await fetch(`/api/automations/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
         if (data.success) {
           const rule = data.data.automation;
+          const keywords = Array.isArray(rule.keywords)
+            ? rule.keywords.join(', ')
+            : Array.isArray(rule.trigger?.keywords)
+            ? rule.trigger.keywords.join(', ')
+            : rule.keyword || '';
+          const triggerType = (rule.triggerType || rule.trigger?.type || 'comment').toLowerCase();
+          const targetPosts = rule.targetPosts || (rule.trigger?.postId ? [rule.trigger.postId] : []);
+          const sendDmStep = rule.flow?.find((s: any) => s.type === 'SEND_DM');
+          const responseMessage = rule.responseMessage || sendDmStep?.content || '';
+
           setForm({
-            name: rule.name,
-            keyword: rule.keywords.join(', '),
-            triggerType: rule.triggerType,
-            targetPosts: rule.targetPosts || [],
-            matchType: rule.matchType,
-            responseMessage: rule.responseMessage,
-            delaySeconds: rule.delaySeconds || 0,
+            name: rule.name || '',
+            keyword: keywords,
+            triggerType,
+            targetPosts,
+            matchType: rule.matchType || 'contains',
+            responseMessage,
             ctaLink: rule.ctaLink || '',
             cooldownMinutes: rule.cooldownMinutes || 60,
             sendPublicReply: rule.sendPublicReply || false,
@@ -95,7 +102,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     setSaving(true);
     try {
       const { id } = await params;
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/automations/${id}`, {
+      const res = await fetch(`/api/automations/${id}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -258,19 +265,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Advanced Settings</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Optional — configure delays, cooldowns, and public replies.</p>
 
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Delay Before Sending DM</label>
-              <select className="input-field" value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: parseInt(e.target.value) })}>
-                <option value={0}>Immediately</option>
-                <option value={5}>5 seconds</option>
-                <option value={15}>15 seconds</option>
-                <option value={60}>1 minute</option>
-                <option value={300}>5 minutes</option>
-                <option value={900}>15 minutes</option>
-              </select>
-              <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>Add a realistic delay so your DMs feel more human.</p>
-            </div>
-
             <div style={{ marginBottom: 20 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Cooldown Period (minutes)</label>
               <input className="input-field" type="number" min={0} max={10080} value={form.cooldownMinutes}
@@ -301,7 +295,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
                 { label: 'Trigger', value: form.triggerType === 'comment' ? 'Post Comment' : 'Direct Message' },
                 { label: 'Target', value: form.targetPosts.length > 0 ? `${form.targetPosts.length} Specific Posts` : 'All Posts' },
                 { label: 'Match', value: matchTypes.find(m => m.value === form.matchType)?.label },
-                { label: 'Delay', value: form.delaySeconds === 0 ? 'Instant' : form.delaySeconds >= 60 ? `${form.delaySeconds / 60}m` : `${form.delaySeconds}s` },
                 { label: 'Cooldown', value: `${form.cooldownMinutes} minutes` },
               ].map((item) => (
                 <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, padding: '4px 0', borderBottom: '1px solid var(--border-subtle)' }}>
