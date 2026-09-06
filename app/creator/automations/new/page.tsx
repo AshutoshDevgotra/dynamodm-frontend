@@ -220,7 +220,8 @@ export default function NewAutomationPage() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                 <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Public comment reply (optional)</label>
                 <button onClick={() => setForm({ ...form, sendPublicReply: !form.sendPublicReply })}
-                  style={{ background: form.sendPublicReply ? '#8b5cf6' : 'var(--bg-card)', border: `1px solid ${form.sendPublicReply ? '#8b5cf6' : 'var(--border-default)'}`, borderRadius: 20, width: 44, height: 24, cursor: 'pointer', position: 'relative', transition: 'all 0.3s' }}>
+                  aria-label={form.sendPublicReply ? 'Disable public comment reply' : 'Enable public comment reply'}
+                  style={{ background: form.sendPublicReply ? 'var(--brand-from)' : 'var(--bg-subtle)', border: `1px solid ${form.sendPublicReply ? 'var(--brand-from)' : 'var(--border-strong)'}`, borderRadius: 20, width: 44, height: 24, cursor: 'pointer', position: 'relative', transition: 'all 0.3s' }}>
                   <div style={{ width: 18, height: 18, borderRadius: '50%', background: 'white', position: 'absolute', top: 2, left: form.sendPublicReply ? 22 : 2, transition: 'left 0.3s' }} />
                 </button>
               </div>
