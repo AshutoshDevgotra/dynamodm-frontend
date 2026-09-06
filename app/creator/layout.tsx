@@ -29,6 +29,13 @@ interface AuthUser {
   role: string;
 }
 
+interface ConnectedInstagram {
+  igUsername?: string;
+  name?: string;
+  profilePic?: string;
+  isConnected?: boolean;
+}
+
 const normalizeRole = (role?: string) => String(role ?? '').trim().toUpperCase();
 
 export default function CreatorLayout({ children }: { children: React.ReactNode }) {
@@ -36,6 +43,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [instagram, setInstagram] = useState<ConnectedInstagram | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -44,12 +52,22 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
     if (urlToken) localStorage.setItem('token', urlToken);
     if (!token) { router.push('/login'); return; }
 
+    const loadInstagram = () => {
+      fetch('/api/instagram/status', { headers: { Authorization: `Bearer ${token}` } })
+        .then((instagramResponse) => instagramResponse.json())
+        .then((instagramData) => {
+          if (instagramData.success) setInstagram(instagramData.data?.account || null);
+        })
+        .catch(() => setInstagram(null));
+    };
+
     const userData = localStorage.getItem('user');
     if (userData && !urlToken) {
       const parsed = JSON.parse(userData) as AuthUser;
       const normalizedRole = normalizeRole(parsed.role);
       if (normalizedRole !== 'CREATOR' && normalizedRole !== 'ADMIN') { router.push('/login'); return; }
       setUser({ ...parsed, role: normalizedRole });
+      loadInstagram();
       return;
     }
 
@@ -66,6 +84,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         if (authenticatedUser.role !== 'CREATOR' && authenticatedUser.role !== 'ADMIN') throw new Error('Invalid account role.');
         localStorage.setItem('user', JSON.stringify(authenticatedUser));
         setUser(authenticatedUser);
+        loadInstagram();
         if (urlToken) {
           // If ?plan= came through OAuth, redirect to subscriptions checkout
           const planParam = params.get('plan');
@@ -136,13 +155,18 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
 
         <div className="creator-sidebar__footer">
           <div className="creator-user-summary">
-            <div className="creator-user-avatar">
-              {user.name?.[0]?.toUpperCase()}
-            </div>
+              {instagram?.isConnected && instagram.profilePic ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="creator-user-avatar creator-user-avatar--image" src={instagram.profilePic} alt={instagram.igUsername || 'Instagram'} />
+              ) : (
+                <div className="creator-user-avatar">
+                  {(instagram?.igUsername || user.name)?.[0]?.toUpperCase()}
+                </div>
+              )}
             {!collapsed && (
               <div className="min-w-0">
-                <div className="truncate text-[13px] font-semibold">{user.name}</div>
-                <div className="truncate text-[11px] text-[var(--text-muted)]">{user.email}</div>
+                  <div className="truncate text-[13px] font-semibold">{instagram?.isConnected ? `@${instagram.igUsername}` : user.name}</div>
+                  <div className="truncate text-[11px] text-[var(--text-muted)]">{instagram?.isConnected ? 'Connected Instagram' : user.email}</div>
               </div>
             )}
           </div>

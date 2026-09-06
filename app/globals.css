@@ -414,6 +414,10 @@ a { color: inherit; }
   font-weight: 700;
 }
 
+.creator-user-avatar--image {
+  object-fit: cover;
+}
+
 .creator-logout-link {
   margin-top: 4px;
 }
