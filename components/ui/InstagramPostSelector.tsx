@@ -83,22 +83,24 @@ export function InstagramPostSelector({ selectedPostIds, onChange }: Props) {
 
   return (
     <div style={{ marginTop: 10 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, maxHeight: 300, overflowY: 'auto', paddingRight: 4 }}>
+      <div className="instagram-post-grid" style={{ maxHeight: 300, overflowY: 'auto', paddingRight: 4 }}>
         {posts.map((post) => {
           const isSelected = selectedPostIds.includes(post.id);
           const bgImage = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
 
           return (
-            <div
+            <button
               key={post.id}
+              type="button"
               onClick={() => togglePost(post.id)}
+              aria-pressed={isSelected}
+              className={`instagram-post-tile ${isSelected ? 'instagram-post-tile--selected' : ''}`}
               style={{
                 aspectRatio: '1',
                 borderRadius: 12,
                 cursor: 'pointer',
                 position: 'relative',
                 overflow: 'hidden',
-                border: isSelected ? '2px solid #8b5cf6' : '1px solid var(--border-default)',
                 backgroundImage: `url(${bgImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -116,7 +118,8 @@ export function InstagramPostSelector({ selectedPostIds, onChange }: Props) {
                   </div>
                 </div>
               )}
-            </div>
+              <span className="instagram-post-tile__type">{post.media_type === 'VIDEO' ? 'Video' : 'Post'}</span>
+            </button>
           );
         })}
       </div>

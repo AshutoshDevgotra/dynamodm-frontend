@@ -80,7 +80,7 @@ export default function NewAutomationPage() {
   ];
 
   return (
-    <div style={{ maxWidth: 680 }}>
+    <div className="automation-builder" style={{ maxWidth: 760 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
         <button onClick={() => router.back()} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex' }}>
@@ -112,7 +112,7 @@ export default function NewAutomationPage() {
         ))}
       </div>
 
-      <div className="glass" style={{ padding: 32, borderRadius: 20 }}>
+      <div className="glass automation-builder__card" style={{ padding: 32, borderRadius: 20 }}>
         {/* Step 1 — Trigger */}
         {step === 1 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>

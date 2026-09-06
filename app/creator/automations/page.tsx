@@ -53,7 +53,7 @@ export default function AutomationsPage() {
   const matchTypeLabels: Record<string, string> = { exact: 'Exact', contains: 'Contains', starts_with: 'Starts With', regex: 'Regex' };
 
   return (
-    <div>
+    <div className="automation-index">
       <div className="creator-page-header--actions">
         <div>
           <h1 className="creator-page-title">Automations</h1>
@@ -83,7 +83,7 @@ export default function AutomationsPage() {
         <div className="creator-list">
           {automations.map((auto, i) => (
             <motion.div key={auto._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-              <div className="creator-card creator-card--padded">
+              <div className="creator-card creator-card--padded automation-card">
                 <div className="creator-list__row">
                   <div style={{ width: 40, height: 40, borderRadius: 10, background: auto.isActive ? 'var(--brand-subtle)' : 'var(--bg-card)', border: `1px solid ${auto.isActive ? 'var(--brand-border)' : 'var(--border-subtle)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Zap size={18} color={auto.isActive ? 'var(--brand-from)' : 'var(--text-muted)'} />

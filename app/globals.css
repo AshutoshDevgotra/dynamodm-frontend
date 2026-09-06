@@ -607,6 +607,82 @@ a { color: inherit; }
   box-shadow: var(--shadow-card);
 }
 
+.automation-index .creator-page-header--actions {
+  margin-bottom: 24px;
+}
+
+.automation-card {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.automation-card:hover {
+  border-color: var(--brand-border);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.automation-builder {
+  width: 100%;
+}
+
+.automation-builder__card {
+  box-shadow: var(--shadow-md);
+}
+
+.automation-builder .input-field {
+  background: var(--bg-elevated);
+  border-color: var(--border-default);
+}
+
+.automation-builder .input-field:focus {
+  border-color: var(--brand-from);
+  box-shadow: 0 0 0 3px var(--brand-subtle);
+}
+
+.instagram-post-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.instagram-post-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: white;
+  background-color: var(--bg-subtle);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.instagram-post-tile:hover {
+  border-color: var(--brand-border);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.instagram-post-tile--selected {
+  border: 2px solid var(--brand-from);
+  box-shadow: 0 0 0 3px var(--brand-subtle);
+}
+
+.instagram-post-tile__type {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 3px 7px;
+  color: white;
+  background: rgba(11, 18, 32, 0.7);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 700;
+}
+
 .creator-card--padded { padding: 24px; }
 
 .creator-stat-card { padding: 20px; }
@@ -690,6 +766,7 @@ a { color: inherit; }
 @media (max-width: 640px) {
   .creator-dashboard-columns { grid-template-columns: 1fr; }
   .creator-stat-grid { gap: 12px; }
+  .instagram-post-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 }
 
 @media (max-width: 768px) {
