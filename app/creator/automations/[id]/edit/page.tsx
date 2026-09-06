@@ -27,7 +27,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     matchType: string;
     responseMessage: string;
     ctaLink: string;
-    cooldownMinutes: number;
     sendPublicReply: boolean;
     publicReplyMessage: string;
   }>({
@@ -38,7 +37,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     matchType: 'contains',
     responseMessage: '',
     ctaLink: '',
-    cooldownMinutes: 60,
     sendPublicReply: false,
     publicReplyMessage: '',
   });
@@ -72,7 +70,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             matchType: rule.matchType || 'contains',
             responseMessage,
             ctaLink: rule.ctaLink || '',
-            cooldownMinutes: rule.cooldownMinutes || 60,
             sendPublicReply: rule.sendPublicReply || false,
             publicReplyMessage: rule.publicReplyMessage || '',
           });
@@ -89,7 +86,11 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     fetchAutomation();
   }, [params, router]);
 
-  const handleSave = async () => {
+    const handleSave = async () => {
+      if (form.sendPublicReply && !form.publicReplyMessage.trim()) {
+        toast('Add a public reply message or turn off the optional public reply', 'error');
+        return;
+      }
     if (!form.name || !form.keyword || !form.responseMessage) {
       toast('Please fill all required fields', 'error');
       return;
@@ -262,19 +263,12 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
         {/* Step 3 — Settings */}
         {step === 3 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Advanced Settings</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Optional — configure delays, cooldowns, and public replies.</p>
-
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Cooldown Period (minutes)</label>
-              <input className="input-field" type="number" min={0} max={10080} value={form.cooldownMinutes}
-                onChange={(e) => setForm({ ...form, cooldownMinutes: parseInt(e.target.value) || 60 })} />
-              <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>Prevent the same user from receiving duplicate DMs within this time window. Default: 60 minutes.</p>
-            </div>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Optional Public Reply</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>The private DM is always sent. Add a public comment reply only if you want one.</p>
 
             <div style={{ marginBottom: 24 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Send Public Reply</label>
+                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Public comment reply (optional)</label>
                 <button onClick={() => setForm({ ...form, sendPublicReply: !form.sendPublicReply })}
                   style={{ background: form.sendPublicReply ? '#8b5cf6' : 'var(--bg-card)', border: `1px solid ${form.sendPublicReply ? '#8b5cf6' : 'var(--border-default)'}`, borderRadius: 20, width: 44, height: 24, cursor: 'pointer', position: 'relative', transition: 'all 0.3s' }}>
                   <div style={{ width: 18, height: 18, borderRadius: '50%', background: 'white', position: 'absolute', top: 2, left: form.sendPublicReply ? 22 : 2, transition: 'left 0.3s' }} />
@@ -295,7 +289,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
                 { label: 'Trigger', value: form.triggerType === 'comment' ? 'Post Comment' : 'Direct Message' },
                 { label: 'Target', value: form.targetPosts.length > 0 ? `${form.targetPosts.length} Specific Posts` : 'All Posts' },
                 { label: 'Match', value: matchTypes.find(m => m.value === form.matchType)?.label },
-                { label: 'Cooldown', value: `${form.cooldownMinutes} minutes` },
               ].map((item) => (
                 <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, padding: '4px 0', borderBottom: '1px solid var(--border-subtle)' }}>
                   <span style={{ color: 'var(--text-muted)' }}>{item.label}</span>
