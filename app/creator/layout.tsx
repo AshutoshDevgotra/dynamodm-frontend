@@ -5,16 +5,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BarChart3, Bell, BookOpen, Camera, ChevronLeft, ChevronRight, CreditCard, HelpCircle,
-  LayoutDashboard, LogOut, Megaphone, Settings, Store, User, Users, Zap,
+  BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, HelpCircle,
+  LayoutDashboard, LogOut, Megaphone, Settings, User, Users, Zap,
 } from 'lucide-react';
 
 const navItems = [
   { href: '/creator', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/creator/instagram', label: 'Instagram', icon: Camera },
-  { href: '/creator/facebook', label: 'Facebook Pages', icon: BookOpen },
   { href: '/creator/automations', label: 'Automations', icon: Zap },
-  { href: '/creator/storefront', label: 'Storefront', icon: Store },
   { href: '/creator/campaigns', label: 'Campaigns', icon: Megaphone },
   { href: '/creator/leads', label: 'Leads', icon: Users },
   { href: '/creator/analytics', label: 'Analytics', icon: BarChart3 },
@@ -55,7 +53,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
       return;
     }
 
-    fetch(`${(process.env.NEXT_PUBLIC_API_URL || '').replace(/\/+$/, '') || '/api'}/auth/me`, {
+    fetch('/api/auth/me', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (response) => {

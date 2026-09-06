@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Zap, Users, MessageSquare, TrendingUp, ArrowRight, AlertCircle, Activity, Target, CheckCircle } from 'lucide-react';
+import { Zap, Users, MessageSquare, TrendingUp, ArrowRight, AlertCircle, Activity, CheckCircle, Plus } from 'lucide-react';
 
 interface Stats {
   dmsSent: number;
@@ -63,7 +63,6 @@ export default function CreatorDashboard() {
     { label: 'New Automation', href: '/creator/automations/new', icon: Zap, color: 'var(--brand-from)' },
     { label: 'View Leads', href: '/creator/leads', icon: Users, color: 'var(--brand-mid)' },
     { label: 'Analytics', href: '/creator/analytics', icon: TrendingUp, color: 'var(--success)' },
-    { label: 'Upgrade Plan', href: '/creator/payments/subscriptions', icon: Target, color: 'var(--brand-to)' },
   ];
 
   if (loading) return (
@@ -72,11 +71,19 @@ export default function CreatorDashboard() {
 
   return (
     <div className="creator-dashboard">
-      <motion.div className="creator-page-header" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="creator-page-title">
-          Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'} 👋
-        </h1>
-        <p className="creator-page-description">Here&apos;s what&apos;s happening with your automations in the last 30 days.</p>
+      <motion.div className="creator-page-header creator-page-header--actions" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+        <div>
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--brand-from)]">
+            <span className="h-2 w-2 rounded-full bg-[var(--success)]" /> Creator workspace
+          </div>
+          <h1 className="creator-page-title">
+            Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}
+          </h1>
+          <p className="creator-page-description">A clear view of your Instagram automations and audience activity.</p>
+        </div>
+        <Link href="/creator/automations/new" className="btn-primary" style={{ textDecoration: 'none' }}>
+          <Plus size={16} /> New Automation
+        </Link>
       </motion.div>
 
       {/* Instagram Alert */}
@@ -92,6 +99,16 @@ export default function CreatorDashboard() {
               <button className="btn-primary creator-alert__action">Connect Now</button>
             </Link>
           </div>
+        </motion.div>
+      )}
+
+      {igConnected && (
+        <motion.div className="creator-connection-strip" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <div>
+            <div className="creator-connection-strip__title">Instagram is connected</div>
+            <div className="creator-connection-strip__text">Your automations are ready to watch comments and send replies.</div>
+          </div>
+          <Link href="/creator/instagram" className="creator-connection-strip__link">Manage connection <ArrowRight size={14} /></Link>
         </motion.div>
       )}
 
