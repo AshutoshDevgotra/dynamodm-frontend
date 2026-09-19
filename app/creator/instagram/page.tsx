@@ -62,7 +62,7 @@ export default function InstagramPage() {
     const popup = window.open(
       'about:blank',
       'InstagramOAuth2025',
-      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,status=yes`
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,status=yes,resizable=yes`
     );
 
     if (!popup) {
@@ -78,7 +78,10 @@ export default function InstagramPage() {
         throw new Error(data.message || 'Unable to start Instagram connection');
       }
 
-      popup.location.href = data.data.authUrl;
+      // The popup is created synchronously from the click, so browsers allow
+      // it. Navigation happens only after the authenticated backend returns
+      // Instagram's permission URL.
+      popup.location.replace(data.data.authUrl);
 
       const timer = setInterval(() => {
         if (popup.closed) {
