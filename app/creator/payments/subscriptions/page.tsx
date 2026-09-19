@@ -55,7 +55,7 @@ export default function SubscriptionsPage() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
+    fetch('/api/auth/me', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())
@@ -84,7 +84,7 @@ export default function SubscriptionsPage() {
     setLoading(planId);
     try {
       // Create Razorpay order
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/create-order`, {
+      const res = await fetch('/api/payments/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ plan: planId }),
@@ -112,7 +112,7 @@ export default function SubscriptionsPage() {
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
           // Verify payment on backend
           try {
-            const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/verify`, {
+            const verifyRes = await fetch('/api/payments/verify', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
               body: JSON.stringify(response),

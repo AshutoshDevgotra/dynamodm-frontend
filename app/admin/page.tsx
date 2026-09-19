@@ -27,9 +27,9 @@ export default function AdminPage() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}') as { role?: string };
-    if (!token || user.role !== 'admin') { router.push('/login'); return; }
+    if (!token || user.role?.toUpperCase() !== 'ADMIN') { router.push('/login'); return; }
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/metrics`, { headers: { Authorization: `Bearer ${token}` } })
+    fetch('/api/admin/metrics', { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json()).then(d => { if (d.success) setMetrics(d.data); }).finally(() => setLoading(false));
   }, [router]);
 

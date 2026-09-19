@@ -15,7 +15,7 @@ export default function ProfilePage() {
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, { headers })
+    fetch('/api/auth/me', { headers })
       .then(r => r.json())
       .then(d => {
         if (d.success) {
@@ -30,7 +30,7 @@ export default function ProfilePage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
+      const res = await fetch('/api/auth/me', {
         method: 'PUT', headers,
         body: JSON.stringify(form),
       });

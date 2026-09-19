@@ -20,7 +20,7 @@ export default function InvoicesPage() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/invoices`, {
+    fetch('/api/payments/invoices', {
       headers: { Authorization: `Bearer ${token}` },
     }).then(r => r.json()).then(d => { if (d.success) setPayments(d.data.payments); }).finally(() => setLoading(false));
   }, []);

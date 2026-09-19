@@ -29,7 +29,7 @@ export default function LeadsPage() {
   const fetchLeads = async (page = 1) => {
     setLoading(true);
     const params = new URLSearchParams({ page: page.toString(), limit: '20', ...(search && { search }) });
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/leads?${params}`, { headers });
+    const res = await fetch(`/api/leads?${params}`, { headers });
     const data = await res.json();
     if (data.success) { setLeads(data.data.leads); setPagination(data.data.pagination); }
     setLoading(false);
@@ -39,7 +39,7 @@ export default function LeadsPage() {
   [search]);
 
   const handleExport = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/leads/export`, { headers });
+    const res = await fetch('/api/leads/export', { headers });
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

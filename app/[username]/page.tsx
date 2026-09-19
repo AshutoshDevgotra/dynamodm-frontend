@@ -16,7 +16,8 @@ interface CreatorProfile {
 
 async function getCreatorProfile(username: string): Promise<CreatorProfile | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/creators/${username}`, { next: { revalidate: 60 } });
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://dynamodm-backend.onrender.com';
+    const res = await fetch(`${baseUrl}/api/creators/${username}`, { next: { revalidate: 60 } });
     const data = await res.json();
     if (!res.ok) return null;
     return data.data.profile as CreatorProfile;

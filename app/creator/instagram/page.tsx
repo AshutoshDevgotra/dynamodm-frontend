@@ -55,6 +55,22 @@ export default function InstagramPage() {
 
   const handleConnect = async () => {
     setConnecting(true);
+    const width = 600;
+    const height = 700;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+    const popup = window.open(
+      'about:blank',
+      'InstagramOAuth2025',
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,status=yes`
+    );
+
+    if (!popup) {
+      setConnecting(false);
+      toast('Please allow popups to connect Instagram', 'error');
+      return;
+    }
+
     try {
       const response = await fetch('/api/instagram/login', { headers });
       const data = await response.json();
@@ -62,17 +78,7 @@ export default function InstagramPage() {
         throw new Error(data.message || 'Unable to start Instagram connection');
       }
 
-      const width = 600;
-      const height = 700;
-      const left = window.screen.width / 2 - width / 2;
-      const top = window.screen.height / 2 - height / 2;
-      const popup = window.open(
-        data.data.authUrl,
-        'InstagramOAuth2025',
-        `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,status=yes`
-      );
-
-      if (!popup) throw new Error('Please allow popups to connect Instagram');
+      popup.location.href = data.data.authUrl;
 
       const timer = setInterval(() => {
         if (popup.closed) {
@@ -82,6 +88,7 @@ export default function InstagramPage() {
         }
       }, 1000);
     } catch (error) {
+      popup.close();
       setConnecting(false);
       toast(error instanceof Error ? error.message : 'Unable to start Instagram connection', 'error');
     }

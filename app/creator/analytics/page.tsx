@@ -25,8 +25,8 @@ export default function AnalyticsPage() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/analytics/summary?days=${days}`, { headers }).then(r => r.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/analytics/timeseries?days=${days}`, { headers }).then(r => r.json()),
+      fetch(`/api/analytics/summary?days=${days}`, { headers }).then(r => r.json()),
+      fetch(`/api/analytics/timeseries?days=${days}`, { headers }).then(r => r.json()),
     ]).then(([s, ts]) => {
       if (s.success) setSummary(s.data);
       if (ts.success) setSeries(ts.data.series);

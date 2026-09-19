@@ -43,9 +43,9 @@ export default function DiscoveryPage() {
       const token = localStorage.getItem('token');
       
       if (searchMode === 'ai' && aiQuery) {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/discovery/ai-match`, {
+        const res = await fetch('/api/discovery/ai-match', {
           method: 'POST',
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
@@ -64,7 +64,7 @@ export default function DiscoveryPage() {
         if (targetAge) { params.append('targetAge', targetAge); params.append('minAgePercentage', '30'); }
         if (targetGender) params.append('targetGender', targetGender);
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/discovery/creators?${params.toString()}`, {
+        const res = await fetch(`/api/discovery/creators?${params.toString()}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();

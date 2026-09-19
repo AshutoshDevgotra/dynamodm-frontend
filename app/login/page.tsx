@@ -29,7 +29,7 @@ export default function LoginPage() {
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('user', JSON.stringify(data.data.user));
       toast('Welcome back!', 'success');
-      router.push(data.data.user.role === 'admin' ? '/admin' : '/creator');
+      router.push(data.data.user?.role?.toUpperCase() === 'ADMIN' ? '/admin' : '/creator');
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Login failed', 'error');
     } finally {
