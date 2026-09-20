@@ -216,9 +216,13 @@ export default function InstagramPage() {
 
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 28 }}>
               {requiredPermissions.map((p) => (
-                <span key={p.scope} className="badge badge-brand">{p.label}</span>
+                <span key={p.scope} className="badge badge-brand" title={p.desc}>{p.label}: {p.desc}</span>
               ))}
             </div>
+
+            <p style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.6, maxWidth: 520, margin: '-12px auto 24px' }}>
+              Instagram will show these permissions on its authorization screen before you approve the connection.
+            </p>
 
             <button onClick={handleConnect} disabled={connecting} className="btn-primary" style={{ fontSize: 15, padding: '12px 28px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
               <Camera size={18} />
