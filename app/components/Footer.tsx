@@ -13,6 +13,7 @@ const columns = {
     { label: 'Contact', href: '/contact' },
     { label: 'Privacy', href: '/privacy' },
     { label: 'Terms', href: '/terms' },
+    { label: 'Refund Policy', href: '/refund-policy' },
   ],
 };
 
