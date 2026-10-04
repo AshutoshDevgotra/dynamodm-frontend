@@ -12,7 +12,7 @@ export default function PrivacyPage() {
     { title: '4. Data Security', content: 'We implement industry-standard security measures including AES-256-GCM encryption for stored access tokens, HMAC signature verification for webhooks, JWT-based authentication, HTTPS enforcement, and rate limiting. However, no method of transmission over the Internet is 100% secure.' },
     { title: '5. Data Retention', content: 'We retain your account data for as long as your account is active. Analytics events are retained for up to 1 year. DM logs are retained for 90 days. You may request deletion of your data at any time by contacting us.' },
     { title: '6. Your Rights', content: 'You have the right to access, update, or delete your personal information; export your data (leads, DM logs); disconnect your Instagram account at any time; close your account; and opt out of marketing communications.' },
-    { title: '7. Contact Us', content: 'If you have questions about this Privacy Policy, please contact us at privacy@dynamodm.io.' },
+    { title: '7. Contact Us', content: 'If you have questions about this Privacy Policy, please contact us at admin@houseoforange.in' },
   ];
 
   return (
