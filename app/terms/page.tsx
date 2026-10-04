@@ -13,7 +13,7 @@ export default function TermsPage() {
     { title: '5. Subscriptions & Payments', content: 'Subscription fees are billed monthly via Razorpay. By subscribing, you authorize recurring charges. You may cancel your subscription at any time; cancellation takes effect at the end of the current billing period. No refunds are provided for partial periods.' },
     { title: '6. Limitation of Liability', content: 'DynamoDM shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or business opportunities, arising from your use of the service or Meta API restrictions on your account.' },
     { title: '7. Termination', content: 'We may terminate or suspend your account for violation of these terms, Meta\'s policies, or any other conduct we deem harmful to our platform or other users.' },
-    { title: '8. Contact', content: 'For questions about these Terms, contact us at legal@dynamodm.io.' },
+    { title: '8. Contact', content: 'For questions about these Terms, contact us at admin@houseoforange.in.' },
   ];
 
   return (
