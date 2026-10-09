@@ -29,7 +29,9 @@ export default function LoginPage() {
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('user', JSON.stringify(data.data.user));
       toast('Welcome back!', 'success');
-      router.push(data.data.user?.role?.toUpperCase() === 'ADMIN' ? '/admin' : '/creator');
+      const requestedRedirect = new URLSearchParams(window.location.search).get('redirect');
+      const redirect = requestedRedirect?.startsWith('/') && !requestedRedirect.startsWith('//') ? requestedRedirect : null;
+      router.push(redirect || (data.data.user?.role?.toUpperCase() === 'ADMIN' ? '/admin' : '/creator'));
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Login failed', 'error');
     } finally {

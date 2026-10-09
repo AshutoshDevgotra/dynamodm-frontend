@@ -43,7 +43,8 @@ export default function SignupPage() {
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('user', JSON.stringify(data.data.user));
       toast('Account created. Let\'s get started.', 'success');
-      router.push('/creator/onboarding');
+      const plan = new URLSearchParams(window.location.search).get('plan');
+      router.push(plan ? `/creator/payments/subscriptions?plan=${encodeURIComponent(plan)}` : '/creator/payments/subscriptions');
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Registration failed', 'error');
     } finally {
@@ -60,7 +61,7 @@ export default function SignupPage() {
         <div className="rounded-[28px] border border-black/6 bg-white p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
           <h1 className="text-center text-2xl font-semibold tracking-tight">Create your account</h1>
           <div className="mt-3 mb-6 flex flex-wrap justify-center gap-3 text-xs text-zinc-500">
-            {['Free forever plan', 'No credit card', 'Setup in 5 minutes'].map((p) => (
+            {['Secure checkout', 'Paid access', 'Setup in 5 minutes'].map((p) => (
               <span key={p} className="inline-flex items-center gap-1">
                 <Check size={12} className="text-emerald-500" /> {p}
               </span>

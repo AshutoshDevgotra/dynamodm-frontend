@@ -23,13 +23,13 @@ const steps = [
 
 const plans = [
   { name: 'Free', price: '₹0', period: '/mo', description: 'Start automating today', features: ['1 automation rule', '100 leads / month', '500 DMs / month', '7-day analytics'], cta: 'Start free', highlighted: false, href: '/signup' },
-  { name: 'Pro', price: '₹999', period: '/mo', description: 'For growing creators', features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', '30-day analytics', 'PDF attachments'], cta: 'Start Pro', highlighted: true, badge: 'Most popular', href: '/signup?plan=pro' },
-  { name: 'Premium', price: '₹2,499', period: '/mo', description: 'For agencies & power users', features: ['Unlimited automations', 'Unlimited leads & DMs', '1-year analytics', 'Custom branding'], cta: 'Go Premium', highlighted: false, href: '/signup?plan=premium' },
+  { name: 'Pro', price: '₹999', period: '/mo', description: 'For growing creators', features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', 'Policy-aware send pacing', 'PDF attachments'], cta: 'Choose Pro', highlighted: true, badge: 'Most popular', href: '/signup?plan=pro' },
+  { name: 'Premium', price: '₹2,499', period: '/mo', description: 'For agencies & power users', features: ['Unlimited automations', 'Unlimited leads & DMs', 'AI-assisted message review', 'Consent and opt-out safeguards', 'Custom branding'], cta: 'Choose Premium', highlighted: false, href: '/signup?plan=premium' },
 ];
 
 const faqs = [
   { q: 'What is DynamoDM?', a: 'DynamoDM is a creator toolkit for Instagram DM automation, lead capture, and a simple storefront — so you can reply, sell, and grow without living in your inbox.' },
-  { q: 'Is it free to start?', a: 'Yes. The Free plan includes one automation, 500 DMs a month, and a public profile. Upgrade when you need more volume.' },
+  { q: 'How does access work?', a: 'Create an account, choose a paid plan, and complete secure checkout. The creator workspace unlocks after payment is verified.' },
   { q: 'Does this work with personal Instagram accounts?', a: 'You need an Instagram Business or Creator account connected to a Facebook Page. Setup takes a few minutes via official Meta login.' },
   { q: 'Is this allowed by Meta?', a: 'Yes. We use the official Meta Graph API with the right permissions, HMAC verification, cooldowns, and rate limiting.' },
 ];

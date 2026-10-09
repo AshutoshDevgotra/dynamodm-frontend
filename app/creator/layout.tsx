@@ -27,6 +27,7 @@ interface AuthUser {
   email: string;
   avatar?: string;
   role: string;
+  subscription?: { plan?: string; status?: string };
 }
 
 interface ConnectedInstagram {
@@ -61,16 +62,6 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         .catch(() => setInstagram(null));
     };
 
-    const userData = localStorage.getItem('user');
-    if (userData && !urlToken) {
-      const parsed = JSON.parse(userData) as AuthUser;
-      const normalizedRole = normalizeRole(parsed.role);
-      if (normalizedRole !== 'CREATOR' && normalizedRole !== 'ADMIN') { router.push('/login'); return; }
-      setUser({ ...parsed, role: normalizedRole });
-      loadInstagram();
-      return;
-    }
-
     fetch('/api/auth/me', {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -79,24 +70,35 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         const data = await response.json();
         const authenticatedUser = {
           ...(data.data.user as AuthUser),
+          subscription: data.data.subscription || (data.data.user as AuthUser).subscription,
           role: normalizeRole((data.data.user as AuthUser).role),
         };
         if (authenticatedUser.role !== 'CREATOR' && authenticatedUser.role !== 'ADMIN') throw new Error('Invalid account role.');
         localStorage.setItem('user', JSON.stringify(authenticatedUser));
+
+        const plan = String(authenticatedUser.subscription?.plan || '').toLowerCase();
+        const status = String(authenticatedUser.subscription?.status || '').toLowerCase();
+        const hasPaidAccess = ['pro', 'premium', 'enterprise'].includes(plan) && !['cancelled', 'expired', 'past_due'].includes(status);
+        const isBillingPage = pathname?.startsWith('/creator/payments/subscriptions');
+        if (authenticatedUser.role !== 'ADMIN' && !hasPaidAccess && !isBillingPage) {
+          router.replace('/creator/payments/subscriptions');
+          return;
+        }
+
         setUser(authenticatedUser);
-        loadInstagram();
+        if (hasPaidAccess || authenticatedUser.role === 'ADMIN') loadInstagram();
         if (urlToken) {
           // If ?plan= came through OAuth, redirect to subscriptions checkout
           const planParam = params.get('plan');
           if (planParam) {
             router.replace(`/creator/payments/subscriptions?plan=${planParam}`);
           } else {
-            router.replace('/creator');
+            router.replace(hasPaidAccess || authenticatedUser.role === 'ADMIN' ? '/creator' : '/creator/payments/subscriptions');
           }
         }
       })
       .catch(() => router.push('/login'));
-  }, [router]);
+  }, [pathname, router]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
