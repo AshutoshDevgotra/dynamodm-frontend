@@ -14,9 +14,20 @@ declare global {
 
 const PLANS = [
   {
+    id: 'starter',
+    name: 'Starter',
+    price: '₹99',
+    period: '/month',
+    description: 'For creators getting started',
+    features: ['3 Automations', '500 Leads', '1,000 DMs/month', '7-day analytics'],
+    icon: Zap,
+    color: '#2563eb',
+    badge: 'Best value',
+  },
+  {
     id: 'pro',
     name: 'Pro',
-    price: '₹999',
+    price: '₹499',
     period: '/month',
     description: 'For creators scaling their DM automations',
     features: ['10 Automations', '5,000 Leads', '10,000 DMs/month', '30-day analytics'],
@@ -26,7 +37,7 @@ const PLANS = [
   {
     id: 'premium',
     name: 'Premium',
-    price: '₹2,499',
+    price: '₹999',
     period: '/month',
     description: 'For power creators who want everything',
     features: ['Unlimited Automations', 'Unlimited Leads', 'Unlimited DMs', '1-year analytics', 'Priority Support', 'Custom Branding'],
@@ -68,7 +79,7 @@ export default function SubscriptionsPage() {
   // Auto-open checkout if ?plan= is in URL (coming from pricing page after login)
   useEffect(() => {
     const planParam = searchParams.get('plan');
-    if (planParam && razorpayReady && (planParam === 'pro' || planParam === 'premium')) {
+    if (planParam && razorpayReady && ['starter', 'pro', 'premium'].includes(planParam)) {
       handleCheckout(planParam);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -22,14 +22,15 @@ const steps = [
 ];
 
 const plans = [
-  { name: 'Free', price: '₹0', period: '/mo', description: 'Start automating today', features: ['1 automation rule', '100 leads / month', '500 DMs / month', '7-day analytics'], cta: 'Start free', highlighted: false, href: '/signup' },
-  { name: 'Pro', price: '₹999', period: '/mo', description: 'For growing creators', features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', 'Policy-aware send pacing', 'PDF attachments'], cta: 'Choose Pro', highlighted: true, badge: 'Most popular', href: '/signup?plan=pro' },
-  { name: 'Premium', price: '₹2,499', period: '/mo', description: 'For agencies & power users', features: ['Unlimited automations', 'Unlimited leads & DMs', 'AI-assisted message review', 'Consent and opt-out safeguards', 'Custom branding'], cta: 'Choose Premium', highlighted: false, href: '/signup?plan=premium' },
+  { name: 'Free', price: '₹0', period: '/mo', description: 'Try it with 10 DMs', features: ['1 automation rule', '10 DMs / month', 'Basic analytics', 'Policy-aware send pacing'], cta: 'Start free', highlighted: false, href: '/signup' },
+  { name: 'Starter', price: '₹99', period: '/mo', description: 'For creators getting started', features: ['3 automation rules', '500 leads / month', '1,000 DMs / month', '7-day analytics', 'Email support'], cta: 'Choose Starter', highlighted: true, badge: 'Best value', href: '/signup?plan=starter' },
+  { name: 'Pro', price: '₹499', period: '/mo', description: 'For growing creators', features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', 'Policy-aware send pacing', 'PDF attachments'], cta: 'Choose Pro', highlighted: false, href: '/signup?plan=pro' },
+  { name: 'Premium', price: '₹999', period: '/mo', description: 'For agencies & power users', features: ['Unlimited automations', 'Unlimited leads & DMs', 'AI-assisted message review', 'Consent and opt-out safeguards', 'Custom branding'], cta: 'Choose Premium', highlighted: false, href: '/signup?plan=premium' },
 ];
 
 const faqs = [
   { q: 'What is DynamoDM?', a: 'DynamoDM is a creator toolkit for Instagram DM automation, lead capture, and a simple storefront — so you can reply, sell, and grow without living in your inbox.' },
-  { q: 'How does access work?', a: 'Create an account, choose a paid plan, and complete secure checkout. The creator workspace unlocks after payment is verified.' },
+  { q: 'Is there a free plan?', a: 'Yes. You can try the workflow with 10 DMs per month. Upgrade from ₹99 when you need more volume.' },
   { q: 'Does this work with personal Instagram accounts?', a: 'You need an Instagram Business or Creator account connected to a Facebook Page. Setup takes a few minutes via official Meta login.' },
   { q: 'Is this allowed by Meta?', a: 'Yes. We use the official Meta Graph API with the right permissions, HMAC verification, cooldowns, and rate limiting.' },
 ];

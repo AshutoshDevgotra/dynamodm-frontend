@@ -78,22 +78,24 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
 
         const plan = String(authenticatedUser.subscription?.plan || '').toLowerCase();
         const status = String(authenticatedUser.subscription?.status || '').toLowerCase();
-        const hasPaidAccess = ['pro', 'premium', 'enterprise'].includes(plan) && !['cancelled', 'expired', 'past_due'].includes(status);
+        const hasPaidAccess = ['starter', 'pro', 'premium', 'enterprise'].includes(plan) && !['cancelled', 'expired', 'past_due'].includes(status);
+        const hasFreeAccess = plan === '' || plan === 'free';
+        const hasWorkspaceAccess = hasFreeAccess || hasPaidAccess;
         const isBillingPage = pathname?.startsWith('/creator/payments/subscriptions');
-        if (authenticatedUser.role !== 'ADMIN' && !hasPaidAccess && !isBillingPage) {
+        if (authenticatedUser.role !== 'ADMIN' && !hasWorkspaceAccess && !isBillingPage) {
           router.replace('/creator/payments/subscriptions');
           return;
         }
 
         setUser(authenticatedUser);
-        if (hasPaidAccess || authenticatedUser.role === 'ADMIN') loadInstagram();
+        if (hasWorkspaceAccess || authenticatedUser.role === 'ADMIN') loadInstagram();
         if (urlToken) {
           // If ?plan= came through OAuth, redirect to subscriptions checkout
           const planParam = params.get('plan');
           if (planParam) {
             router.replace(`/creator/payments/subscriptions?plan=${planParam}`);
           } else {
-            router.replace(hasPaidAccess || authenticatedUser.role === 'ADMIN' ? '/creator' : '/creator/payments/subscriptions');
+            router.replace(hasWorkspaceAccess || authenticatedUser.role === 'ADMIN' ? '/creator' : '/creator/payments/subscriptions');
           }
         }
       })
