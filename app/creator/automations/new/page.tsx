@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
+import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Camera } from 'lucide-react';
 import { toast } from '../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../components/ui/InstagramPostSelector';
 
@@ -18,6 +18,8 @@ export default function NewAutomationPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
+  const [checkingInstagram, setCheckingInstagram] = useState(true);
+  const [instagramConnected, setInstagramConnected] = useState(false);
   const [form, setForm] = useState<{
     name: string;
     keyword: string;
@@ -41,6 +43,14 @@ export default function NewAutomationPage() {
   });
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+
+  useEffect(() => {
+    fetch('/api/instagram/status', { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => res.json())
+      .then((data) => setInstagramConnected(Boolean(data.success && data.data?.isConnected)))
+      .catch(() => setInstagramConnected(false))
+      .finally(() => setCheckingInstagram(false));
+  }, [token]);
 
   const handleSave = async () => {
     if (!form.name || !form.keyword || !form.responseMessage) {
@@ -78,6 +88,14 @@ export default function NewAutomationPage() {
     { num: 2, label: 'Response', icon: Zap },
     { num: 3, label: 'Settings', icon: Link2 },
   ];
+
+  if (checkingInstagram) {
+    return <div className="flex min-h-[360px] items-center justify-center"><div className="h-9 w-9 animate-spin rounded-full border-[3px] border-[var(--brand-border)] border-t-[var(--brand-from)]" /></div>;
+  }
+
+  if (!instagramConnected) {
+    return <div className="mx-auto max-w-xl py-12"><div className="creator-card creator-empty-state"><div className="creator-icon-tile mx-auto mb-5 h-16 w-16 rounded-[var(--radius-lg)]"><Camera size={28} /></div><h1 className="text-2xl font-semibold">Connect Instagram first</h1><p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[var(--text-secondary)]">Automations need a connected Instagram account so OrangeFlow can listen for comments and send approved replies.</p><div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row"><button type="button" onClick={() => router.push('/creator/instagram')} className="btn-primary"><Camera size={16} /> Connect Instagram</button><button type="button" onClick={() => router.push('/creator/automations')} className="btn-secondary">Back to automations</button></div></div></div>;
+  }
 
   return (
     <div className="automation-builder" style={{ maxWidth: 760 }}>
