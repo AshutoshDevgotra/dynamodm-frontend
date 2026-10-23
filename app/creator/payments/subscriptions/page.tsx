@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Check, Zap, Crown, ShieldCheck, ArrowRight } from 'lucide-react';
 import { toast } from '../../../components/ui/Toaster';
@@ -49,6 +50,7 @@ const PLANS = [
 
 export default function SubscriptionsPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
   const [currentPlan, setCurrentPlan] = useState<string>('free');
   const [razorpayReady, setRazorpayReady] = useState(false);
@@ -134,6 +136,7 @@ export default function SubscriptionsPage() {
               setCurrentPlan(planId);
               // Clean URL
               window.history.replaceState({}, '', '/creator/payments/subscriptions');
+              router.push('/creator');
             } else {
               toast(verifyData.message || 'Payment verification failed. Contact support.', 'error');
             }

@@ -52,7 +52,11 @@ export default function LoginPage() {
 
           <button
             type="button"
-            onClick={() => { window.location.href = '/api/auth/google'; }}
+            onClick={() => {
+              const requestedRedirect = new URLSearchParams(window.location.search).get('redirect');
+              const query = requestedRedirect ? `?redirect=${encodeURIComponent(requestedRedirect)}` : '';
+              window.location.href = `/api/auth/google${query}`;
+            }}
             className="btn-secondary w-full"
           >
             Continue with Google

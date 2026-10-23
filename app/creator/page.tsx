@@ -3,7 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Zap, Users, MessageSquare, TrendingUp, ArrowRight, AlertCircle, Activity, CheckCircle, Plus } from 'lucide-react';
+import { Zap, Users, MessageSquare, TrendingUp, ArrowRight, AlertCircle, Activity, CheckCircle, Plus, Crown, ShieldCheck } from 'lucide-react';
+import { toast } from '../components/ui/Toaster';
+
+declare global {
+  interface Window { Razorpay: any; }
+}
 
 interface Stats {
   dmsSent: number;
@@ -40,6 +45,9 @@ export default function CreatorDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [igConnected, setIgConnected] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [currentPlan, setCurrentPlan] = useState('free');
+  const [razorpayReady, setRazorpayReady] = useState(false);
+  const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
 
   useEffect(() => {
     const oauthToken = new URLSearchParams(window.location.search).get('token');
@@ -50,14 +58,70 @@ export default function CreatorDashboard() {
     const token = oauthToken || localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
 
+    if (window.Razorpay) setRazorpayReady(true);
+    else {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => setRazorpayReady(true);
+      document.body.appendChild(script);
+    }
+
     Promise.all([
       fetch('/api/analytics/summary?days=30', { headers }).then((r) => r.json()),
       fetch('/api/instagram/status', { headers }).then((r) => r.json()),
-    ]).then(([analyticsRes, igRes]) => {
+      fetch('/api/auth/me', { headers }).then((r) => r.json()),
+    ]).then(([analyticsRes, igRes, authRes]) => {
       if (analyticsRes.success) setStats(analyticsRes.data);
       if (igRes.success) setIgConnected(Boolean(igRes.data?.isConnected || igRes.data?.account?.isConnected));
+      if (authRes.success) setCurrentPlan(String(authRes.data?.subscription?.plan || 'free').toLowerCase());
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
+
+  const handleUpgrade = async (planId: 'starter' | 'pro' | 'premium') => {
+    const token = localStorage.getItem('token');
+    if (!token || !razorpayReady) return;
+    setCheckoutPlan(planId);
+    try {
+      const orderRes = await fetch('/api/payments/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ plan: planId }),
+      });
+      const orderData = await orderRes.json();
+      if (!orderRes.ok || !orderData.success) throw new Error(orderData.message || 'Unable to create payment order');
+      const { orderId, amount, currency, keyId, planName } = orderData.data;
+      const userRaw = localStorage.getItem('user');
+      const user = userRaw ? JSON.parse(userRaw) : {};
+      const razorpay = new window.Razorpay({
+        key: keyId,
+        amount,
+        currency,
+        order_id: orderId,
+        name: 'OrangeFlow.in',
+        description: `${planName} — Monthly Subscription`,
+        image: 'https://orangeflow.in/favicon.ico',
+        prefill: { name: user.name || '', email: user.email || '' },
+        theme: { color: '#2563eb' },
+        handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
+          const verifyRes = await fetch('/api/payments/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify(response),
+          });
+          const verifyData = await verifyRes.json();
+          if (!verifyRes.ok || !verifyData.success) throw new Error(verifyData.message || 'Payment verification failed');
+          setCurrentPlan(planId);
+          toast(`${planName} activated. Your dashboard limits are updated.`, 'success');
+        },
+        modal: { ondismiss: () => setCheckoutPlan(null) },
+      });
+      razorpay.open();
+    } catch (error) {
+      toast(error instanceof Error ? error.message : 'Payment could not be started', 'error');
+    } finally {
+      setCheckoutPlan(null);
+    }
+  };
 
   const quickActions = [
     { label: 'New Automation', href: '/creator/automations/new', icon: Zap, color: 'var(--brand-from)' },
@@ -119,6 +183,14 @@ export default function CreatorDashboard() {
         <StatCard title="Comments" value={stats?.commentsReceived?.toLocaleString() || '0'} sub="Received & processed" icon={Activity} color="#10b981" delay={0.2} />
         <StatCard title="Success Rate" value={`${stats?.successRate || 0}%`} sub={`${stats?.automationsActive || 0} active rules`} icon={CheckCircle} color="#f59e0b" delay={0.3} />
       </div>
+
+      <motion.div className="mt-6 rounded-[var(--radius-xl)] bg-[#0b1220] p-6 text-white shadow-[var(--shadow-lg)] sm:p-8" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+          <div><div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-blue-300"><Crown size={14} /> Subscription</div><h2 className="text-2xl font-semibold">{currentPlan === 'free' ? 'Unlock more growth' : `You are on the ${currentPlan} plan`}</h2><p className="mt-2 max-w-xl text-sm leading-6 text-zinc-400">Upgrade directly from your dashboard to unlock more automations, leads, DMs, and analytics. Payment is verified and saved to your account before access changes.</p></div>
+          <div className="flex shrink-0 items-center gap-2 text-xs text-zinc-400"><ShieldCheck size={16} className="text-emerald-400" /> Secure Razorpay checkout</div>
+        </div>
+        <div className="mt-6 grid gap-3 md:grid-cols-3">{([{ id: 'starter', name: 'Starter', price: '₹99/mo', detail: '3 automations · 1,000 DMs' }, { id: 'pro', name: 'Pro', price: '₹499/mo', detail: '10 automations · 10,000 DMs' }, { id: 'premium', name: 'Premium', price: '₹999/mo', detail: 'Unlimited automations & DMs' }] as const).map((plan) => { const active = currentPlan === plan.id; return <button key={plan.id} type="button" disabled={active || Boolean(checkoutPlan) || !razorpayReady} onClick={() => handleUpgrade(plan.id)} className="rounded-2xl border border-white/10 bg-white/8 p-4 text-left transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-60"><div className="flex items-center justify-between"><span className="font-semibold">{plan.name}</span><span className="text-sm text-blue-200">{active ? 'Active' : checkoutPlan === plan.id ? 'Opening…' : plan.price}</span></div><p className="mt-2 text-xs text-zinc-400">{active ? 'Your current subscription' : plan.detail}</p></button>; })}</div>
+      </motion.div>
 
       {/* Quick Actions + Recent Activity */}
       <div className="creator-dashboard-columns">

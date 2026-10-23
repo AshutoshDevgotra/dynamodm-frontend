@@ -51,7 +51,11 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
     const urlToken = params.get('token');
     const token = urlToken || localStorage.getItem('token');
     if (urlToken) localStorage.setItem('token', urlToken);
-    if (!token) { router.push('/login'); return; }
+    if (!token) {
+      const returnTo = `${pathname || '/creator'}${window.location.search}`;
+      router.replace(`/login?redirect=${encodeURIComponent(returnTo)}`);
+      return;
+    }
 
     const loadInstagram = () => {
       fetch('/api/instagram/status', { headers: { Authorization: `Bearer ${token}` } })

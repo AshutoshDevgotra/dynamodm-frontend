@@ -72,7 +72,11 @@ export default function SignupPage() {
 
           <button
             type="button"
-            onClick={() => { window.location.href = '/api/auth/google'; }}
+            onClick={() => {
+              const plan = new URLSearchParams(window.location.search).get('plan');
+              const query = plan ? `?plan=${encodeURIComponent(plan)}` : '';
+              window.location.href = `/api/auth/google${query}`;
+            }}
             className="btn-secondary w-full"
           >
             Continue with Google
