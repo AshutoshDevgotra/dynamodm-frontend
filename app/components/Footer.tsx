@@ -24,12 +24,12 @@ export default function Footer() {
     <footer className="border-t border-white/10 bg-[#0b1220] text-white">
       <div className="container py-14 sm:py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.8fr_1fr_1fr] md:gap-16">
-          <div className="max-w-md">
+          <div className="max-w-md mt-3">
             <Logo light />
-            <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
+            <p className="mt-4 max-w-sm text-sm leading-7 text-slate-300">
               Orange Flow helps creators monetize attention and helps businesses turn customer conversations into qualified leads with AI.
             </p>
-            <div className="mt-6 flex gap-2.5">
+            <div className="mt-4 flex gap-2.5">
               {[
                 { icon: Share2, href: '#', label: 'Social' },
                 { icon: Globe, href: '#', label: 'Website' },
