@@ -37,18 +37,18 @@ const features = [
   },
   {
     icon: Bot, title: 'Reliable delivery',
-    desc: 'A queue with retries and Meta rate limits so DMs actually go out.',
+    desc: 'Reliable delivery with smart pacing so helpful DMs actually reach people.',
     points: ['Automatic retries', 'Hourly caps', 'Failure logs'],
   },
   {
-    icon: Shield, title: 'Meta-compliant',
-    desc: 'Official Graph API, HMAC webhooks, encrypted tokens.',
-    points: ['OAuth login', 'Webhook verification', 'Least-privilege scopes'],
+    icon: Shield, title: 'Built for trust',
+    desc: 'Clear opt-outs, thoughtful pacing, and a safe experience for your audience.',
+    points: ['Helpful replies', 'Clear controls', 'Safe delivery'],
   },
   {
     icon: Camera, title: 'Business accounts',
-    desc: 'Works with Instagram Business and Creator accounts on a Facebook Page.',
-    points: ['Business & Creator', 'Page connection', 'Multi-account on Premium'],
+    desc: 'Works with Instagram Business and Creator accounts, so your audience can reach you where they already are.',
+    points: ['Business & Creator', 'Easy connection', 'Multi-account on Premium'],
   },
   {
     icon: TrendingUp, title: 'Campaigns',

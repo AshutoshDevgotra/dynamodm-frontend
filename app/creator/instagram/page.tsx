@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Camera, CheckCircle, AlertCircle, ExternalLink, RefreshCw, Unlink, Sparkles } from 'lucide-react';
+import { Camera, CheckCircle, ExternalLink, RefreshCw, Unlink, Sparkles } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
 
 interface IGAccount {
@@ -113,12 +113,6 @@ export default function InstagramPage() {
     }
   };
 
-  const requiredPermissions = [
-    { scope: 'instagram_business_basic', label: 'Instagram Basic', desc: 'Read profile information and media' },
-    { scope: 'instagram_business_manage_messages', label: 'Manage Messages', desc: 'Send and receive automated DMs' },
-    { scope: 'instagram_business_manage_comments', label: 'Manage Comments', desc: 'Listen to comments and reply automatically' },
-  ];
-
   const username = account?.username || account?.igUsername;
   const isConnected = Boolean(account?.isConnected);
 
@@ -135,13 +129,13 @@ export default function InstagramPage() {
     <div style={{ maxWidth: 720 }}>
       <div style={{ marginBottom: 32 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <h1 style={{ fontSize: 28, fontWeight: 800 }}>Instagram Connection</h1>
+          <h1 style={{ fontSize: 28, fontWeight: 800 }}>Your Instagram profile</h1>
           <span className="badge badge-brand" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-            <Sparkles size={12} /> 2025 Direct API
+            <Sparkles size={12} /> Ready to grow
           </span>
         </div>
         <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
-          Connect your Instagram Creator or Business account directly without requiring Facebook Page linking.
+          Bring your Instagram account into your workspace and turn audience attention into growth.
         </p>
       </div>
 
@@ -151,7 +145,7 @@ export default function InstagramPage() {
           <div className="card" style={{ padding: 28, marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20, color: '#22c55e' }}>
               <CheckCircle size={16} />
-              <span style={{ fontSize: 13, fontWeight: 600 }}>Connected via Instagram Graph API v23.0</span>
+              <span style={{ fontSize: 13, fontWeight: 600 }}>Your Instagram account is ready</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
               {account?.profilePic ? (
@@ -184,23 +178,9 @@ export default function InstagramPage() {
             </div>
           </div>
 
-          {/* Permissions */}
           <div className="card" style={{ padding: 28 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Active Permissions (v23.0)</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {requiredPermissions.map((p) => {
-                const granted = !account?.scopes?.length || account?.scopes?.includes(p.scope);
-                return (
-                  <div key={p.scope} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', borderRadius: 10, background: granted ? 'rgba(34,197,94,0.06)' : 'rgba(239,68,68,0.06)', border: `1px solid ${granted ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}` }}>
-                    {granted ? <CheckCircle size={16} color="#22c55e" /> : <AlertCircle size={16} color="#ef4444" />}
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 600 }}>{p.label}</div>
-                      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{p.desc}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+          <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Your creator profile is ready</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7 }}>Use your profile insights to discover better-fit brand opportunities, build trust with brands, and activate automations when you are ready.</p>
           </div>
         </motion.div>
       ) : (
@@ -211,17 +191,7 @@ export default function InstagramPage() {
             </div>
             <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 10 }}>Connect Instagram Account</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7, maxWidth: 460, margin: '0 auto 28px' }}>
-              Link your Instagram Professional (Creator or Business) account via Instagram OAuth 2025. Connects directly without requiring a Facebook Page.
-            </p>
-
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 28 }}>
-              {requiredPermissions.map((p) => (
-                <span key={p.scope} className="badge badge-brand" title={p.desc}>{p.label}: {p.desc}</span>
-              ))}
-            </div>
-
-            <p style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.6, maxWidth: 520, margin: '-12px auto 24px' }}>
-              Instagram will show these permissions on its authorization screen before you approve the connection.
+              Connect your Instagram Creator or Business account to build your creator profile, discover brand opportunities, and power helpful automations.
             </p>
 
             <button onClick={handleConnect} disabled={connecting} className="btn-primary" style={{ fontSize: 15, padding: '12px 28px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>

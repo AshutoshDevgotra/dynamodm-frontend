@@ -124,9 +124,10 @@ export default function CreatorDashboard() {
   };
 
   const quickActions = [
-    { label: 'New Automation', href: '/creator/automations/new', icon: Zap, color: 'var(--brand-from)' },
-    { label: 'View Leads', href: '/creator/leads', icon: Users, color: 'var(--brand-mid)' },
-    { label: 'Analytics', href: '/creator/analytics', icon: TrendingUp, color: 'var(--success)' },
+    { label: 'Create an AutoDM', href: '/creator/automations/new', icon: Zap, color: 'var(--brand-from)' },
+    { label: 'Find brand collabs', href: '/creator/collabs', icon: Users, color: '#db2777' },
+    { label: 'Add to creator shop', href: '/creator/storefront', icon: Plus, color: 'var(--brand-mid)' },
+    { label: 'See audience insights', href: '/creator/analytics', icon: TrendingUp, color: 'var(--success)' },
   ];
 
   if (loading) return (
@@ -143,7 +144,7 @@ export default function CreatorDashboard() {
           <h1 className="creator-page-title">
             Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}
           </h1>
-          <p className="creator-page-description">A clear view of your Instagram automations and audience activity.</p>
+          <p className="creator-page-description">Grow your audience, earn from recommendations, and get discovered by the right brands.</p>
         </div>
         <Link href="/creator/automations/new" className="btn-primary" style={{ textDecoration: 'none' }}>
           <Plus size={16} /> New Automation
@@ -186,8 +187,8 @@ export default function CreatorDashboard() {
 
       <motion.div className="mt-6 rounded-[var(--radius-xl)] bg-[#0b1220] p-6 text-white shadow-[var(--shadow-lg)] sm:p-8" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
-          <div><div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-orange-300"><Crown size={14} /> Subscription</div><h2 className="text-2xl font-semibold">{currentPlan === 'free' ? 'Unlock more growth' : `You are on the ${currentPlan} plan`}</h2><p className="mt-2 max-w-xl text-sm leading-6 text-zinc-400">Upgrade directly from your dashboard to unlock more automations, leads, DMs, and analytics. Payment is verified and saved to your account before access changes.</p></div>
-          <div className="flex shrink-0 items-center gap-2 text-xs text-zinc-400"><ShieldCheck size={16} className="text-emerald-400" /> Secure Razorpay checkout</div>
+          <div><div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-orange-300"><Crown size={14} /> Grow with Orange Flow</div><h2 className="text-2xl font-semibold">{currentPlan === 'free' ? 'Unlock more growth' : `You are on the ${currentPlan} plan`}</h2><p className="mt-2 max-w-xl text-sm leading-6 text-zinc-400">Unlock more automations, leads, DMs, and analytics as your audience grows. Upgrade whenever you are ready.</p></div>
+          <div className="flex shrink-0 items-center gap-2 text-xs text-zinc-400"><ShieldCheck size={16} className="text-emerald-400" /> Upgrade in a few clicks</div>
         </div>
         <div className="mt-6 grid gap-3 md:grid-cols-3">{([{ id: 'starter', name: 'Starter', price: '₹99/mo', detail: '3 automations · 1,000 DMs' }, { id: 'pro', name: 'Pro', price: '₹499/mo', detail: '10 automations · 10,000 DMs' }, { id: 'premium', name: 'Premium', price: '₹999/mo', detail: 'Unlimited automations & DMs' }] as const).map((plan) => { const active = currentPlan === plan.id; return <button key={plan.id} type="button" disabled={active || Boolean(checkoutPlan) || !razorpayReady} onClick={() => handleUpgrade(plan.id)} className="group rounded-2xl border border-white/10 bg-white/8 p-4 text-left transition hover:border-orange-300 hover:bg-orange-200 hover:text-orange-950 disabled:cursor-not-allowed disabled:opacity-60"><div className="flex items-center justify-between"><span className="font-semibold">{plan.name}</span><span className="text-sm text-orange-200 group-hover:text-orange-800">{active ? 'Active' : checkoutPlan === plan.id ? 'Opening…' : plan.price}</span></div><p className="mt-2 text-xs text-zinc-400 group-hover:text-orange-800">{active ? 'Your current subscription' : plan.detail}</p></button>; })}</div>
       </motion.div>

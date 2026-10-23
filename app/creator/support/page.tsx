@@ -7,11 +7,11 @@ import { HelpCircle, MessageCircle, Book, Mail, ChevronDown } from 'lucide-react
 const faqs = [
   {
     q: 'How do I connect my Instagram account?',
-    a: 'Go to Instagram → Connect Account. You\'ll be redirected to Meta\'s OAuth flow. You need an Instagram Business or Creator account connected to a Facebook Page.',
+    a: 'Go to Instagram → Connect Account and follow the simple steps. You can connect an Instagram Creator or Business account.',
   },
   {
     q: 'Does this violate Instagram\'s terms?',
-    a: 'No. OrangeFlow.in uses the official Meta Graph API with proper permissions. All automations comply with Meta\'s policies. We use the instagram_manage_messages permission which is designed exactly for this use case.',
+    a: 'Orange Flow is designed for helpful conversations, sensible pacing, clear opt-outs, and keeping you in control of what gets sent.',
   },
   {
     q: 'How fast are DMs sent after a comment?',
@@ -35,7 +35,7 @@ export default function SupportPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const links = [
-    { icon: Book, label: 'Documentation', desc: 'Setup guides and API docs', href: '#', color: 'var(--brand-from)' },
+    { icon: Book, label: 'Getting started', desc: 'Simple setup guides', href: '#', color: 'var(--brand-from)' },
     { icon: MessageCircle, label: 'Live Chat', desc: 'Chat with our team (Pro+)', href: '#', color: '#06b6d4' },
     { icon: Mail, label: 'Email Support', desc: 'support@orangeflow.in', href: 'mailto:support@orangeflow.in', color: '#10b981' },
   ];

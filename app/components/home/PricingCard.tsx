@@ -28,7 +28,7 @@ export default function PricingCard({
     <div
       className={`relative rounded-[28px] p-8 ${
         highlighted
-          ? 'bg-[#0b1220] text-white shadow-[0_24px_60px_rgba(15,23,42,0.18)]'
+          ? 'gradient-creator text-white shadow-[0_24px_60px_rgba(168,85,247,0.2)]'
           : 'border border-black/6 bg-white text-[var(--text-primary)] shadow-[0_12px_40px_rgba(15,23,42,0.05)]'
       }`}
     >

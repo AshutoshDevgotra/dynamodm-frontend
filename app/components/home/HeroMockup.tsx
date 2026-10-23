@@ -17,7 +17,7 @@ export default function HeroMockup() {
             <div className="mt-3 text-[11px] font-medium uppercase tracking-wider text-zinc-400">Trigger matched</div>
           </div>
 
-          <div className="rounded-2xl bg-[#0b1220] p-4 text-white">
+          <div className="gradient-creator rounded-2xl p-4 text-white">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-wider text-zinc-400">Auto DM sent</div>
             <div className="rounded-2xl rounded-tr-sm bg-[var(--brand-from)] px-3 py-2.5 text-sm leading-relaxed">
               Hey! Here is the sip recipe + the shoppable kit 💛

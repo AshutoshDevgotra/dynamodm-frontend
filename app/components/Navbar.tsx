@@ -40,7 +40,7 @@ export default function Navbar() {
         <div className="container flex h-[72px] items-center justify-between gap-4">
           <Logo />
 
-          <nav className="hidden items-center rounded-full bg-white/80 p-1 shadow-sm ring-1 ring-black/5 md:flex">
+            <nav className="hidden items-center rounded-full bg-white/90 p-1 shadow-[0_8px_30px_rgba(17,24,39,0.08)] ring-1 ring-black/5 md:flex">
             {navLinks.map((link) => {
               const active = pathname === link.href;
               return (
@@ -49,8 +49,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
                     active
-                      ? 'bg-orange-100 text-orange-900'
-                      : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+                      ? 'bg-violet-100 text-violet-900'
+                      : 'text-zinc-600'
                   }`}
                 >
                   {link.label}
@@ -95,7 +95,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-xl px-3 py-3 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                  className="rounded-xl px-3 py-3 text-sm font-medium text-zinc-700"
                 >
                   {link.label}
                 </Link>

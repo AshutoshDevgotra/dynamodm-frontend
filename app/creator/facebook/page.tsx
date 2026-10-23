@@ -8,9 +8,9 @@ export default function FacebookPagesDashboard() {
   return (
     <div style={{ maxWidth: 760 }}>
       <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Facebook Pages</h1>
+        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Your Instagram connection</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
-          Information regarding Meta and Facebook Page connectivity.
+          Keep your account connected so your growth tools can keep working for you.
         </p>
       </div>
 
@@ -22,11 +22,11 @@ export default function FacebookPagesDashboard() {
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                <h2 style={{ fontSize: 20, fontWeight: 700 }}>Migrated to Direct Instagram OAuth 2025</h2>
+                <h2 style={{ fontSize: 20, fontWeight: 700 }}>Everything is ready for your audience</h2>
                 <span className="badge badge-brand">New</span>
               </div>
               <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.6 }}>
-                OrangeFlow.in uses the official Instagram Graph API v23.0. You no longer need to link Facebook Pages or manage complex Facebook business asset permissions.
+                Connect once, then focus on creating content, growing your audience, and starting more useful conversations.
               </p>
             </div>
           </div>
@@ -34,12 +34,12 @@ export default function FacebookPagesDashboard() {
           <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)', borderRadius: 12, padding: 20, marginBottom: 28 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, fontWeight: 600, fontSize: 14 }}>
               <ShieldCheck size={18} color="#22c55e" />
-              What changed?
+              What you can do now
             </div>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13, color: 'var(--text-muted)', margin: 0, paddingLeft: 20 }}>
-              <li>Direct Instagram login without requiring a linked Facebook Page.</li>
-              <li>Encrypted AES-256-GCM token storage for high security.</li>
-              <li>Faster, real-time webhook processing for post comments and DMs.</li>
+              <li>Send helpful replies when people comment or ask for a link.</li>
+              <li>Grow followers with a simple follow-first journey.</li>
+              <li>Share products, affiliate links, and offers at the right moment.</li>
             </ul>
           </div>
 

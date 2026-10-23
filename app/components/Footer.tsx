@@ -31,7 +31,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 bg-[#0b1220] text-white">
+    <footer className="gradient-creator border-t border-white/10 text-white">
       <div className="container py-14 sm:py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.8fr_1fr_1fr] md:gap-16">
           <div className="max-w-md mt-3">

@@ -5,19 +5,20 @@ import Footer from './components/Footer';
 import FeatureCard from './components/home/FeatureCard';
 import PricingCard from './components/home/PricingCard';
 import HeroMockup from './components/home/HeroMockup';
+import GrowthLoop from './components/home/GrowthLoop';
 
 const features = [
-  { icon: MessageCircle, title: 'Comment-to-DM automations', description: 'Turn trigger words on reels and posts into instant, useful replies with the right link.' },
+  { icon: MessageCircle, title: 'Follow-to-DM growth', description: 'Ask for a follow before delivering the promised guide, offer, or link—then keep the conversation moving.' },
   { icon: Bot, title: 'AI brand conversations', description: 'Let AI understand customer intent and reply using your products, policies, offers, and brand context.' },
-  { icon: Store, title: 'Link-in-bio store', description: 'One storefront for products, affiliate links, socials, and lead magnets.' },
+  { icon: Store, title: 'Link-in-bio store', description: 'One storefront for digital products, affiliate links, socials, coaching, and lead magnets.' },
   { icon: Users, title: 'Lead capture', description: 'Every meaningful conversation becomes a lead you can tag, export, and follow up with.' },
-  { icon: BarChart3, title: 'Analytics', description: 'See DMs sent, click-through, and conversions without a spreadsheet.' },
+  { icon: BarChart3, title: 'Clicks & commissions', description: 'See DMs sent, link clicks, leads, and conversions without a spreadsheet.' },
   { icon: Target, title: 'Smart keywords', description: 'Exact match, contains, starts with, or regex — one rule can cover a campaign.' },
-  { icon: Shield, title: 'Meta-compliant', description: 'Official Graph API, HMAC webhooks, rate limits, and cooldowns built in.' },
+  { icon: Shield, title: 'Reliable by design', description: 'Thoughtful delivery, safe pacing, and opt-out safeguards keep every conversation helpful.' },
 ];
 
 const steps = [
-  { n: '01', title: 'Connect Instagram', body: 'Link a Business or Creator account with official Meta OAuth.' },
+  { n: '01', title: 'Connect Instagram', body: 'Bring your Creator or Business account into your workspace in a few clicks.' },
   { n: '02', title: 'Set a keyword', body: 'Write the DM, attach a link or PDF, and choose when it fires.' },
   { n: '03', title: 'Convert conversations', body: 'Orange Flow sends the link, answer, or next step and logs the lead for you.' },
 ];
@@ -32,8 +33,8 @@ const plans = [
 const faqs = [
   { q: 'What is OrangeFlow.in?', a: 'Orange Flow is a conversation engine for creators and businesses. Automate Instagram replies, give AI your brand context, capture leads, and share the right product or link.' },
   { q: 'Is there a free plan?', a: 'Yes. You can try the workflow with 10 DMs per month. Upgrade from ₹99 when you need more volume.' },
-  { q: 'Does this work with personal Instagram accounts?', a: 'You need an Instagram Business or Creator account connected to a Facebook Page. Setup takes a few minutes via official Meta login.' },
-  { q: 'Is this allowed by Meta?', a: 'Yes. We use the official Meta Graph API with the right permissions, HMAC verification, cooldowns, and rate limiting.' },
+  { q: 'Does this work with personal Instagram accounts?', a: 'You can connect an Instagram Business or Creator account and get started in a few minutes.' },
+  { q: 'Will this fit my Instagram workflow?', a: 'Yes. Orange Flow is designed for helpful conversations, sensible pacing, clear opt-outs, and tools that keep you in control.' },
 ];
 
 export default function HomePage() {
@@ -42,14 +43,14 @@ export default function HomePage() {
       <Navbar />
 
       <section className="landing-section px-4 pt-28 pb-12 sm:px-6">
-        <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#c2410c_0%,#f97316_46%,#fed7aa_78%,#fffaf5_100%)] px-6 pb-14 pt-20 text-center sm:px-12 sm:pt-24">
-          <p className="mb-5 text-sm font-medium text-white/80">AI-powered conversations for creators and businesses</p>
+        <div className="premium-hero mx-auto max-w-[1160px] overflow-hidden rounded-[36px] px-6 pb-14 pt-20 text-center sm:px-12 sm:pt-24">
+          <p className="hero-kicker mb-5 text-sm font-semibold tracking-[0.02em]">A playful growth engine for the creator economy</p>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-            Turn every comment or
-            <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">every lead into <strong className="font-bold not-italic">growth</strong></span>
+            <span className="hero-lead">Turn attention into</span>
+            <span className="hero-emphasis mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">your next <strong className="font-bold not-italic">win</strong></span>
           </h1>
           <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-white/85 sm:text-lg">
-            Auto-reply to comments, understand customer intent, and respond with the right product, link, or answer using your brand context.
+            Grow your audience, manage brand conversations, and make every recommendation shoppable—from one beautifully simple workspace.
           </p>
           <div className="mt-10 flex justify-center">
             <Link href="/signup" className="inline-flex items-center gap-3 rounded-full bg-white py-2 pr-5 pl-2 text-sm font-semibold text-zinc-900 shadow-lg">
@@ -65,10 +66,10 @@ export default function HomePage() {
 
       <section className="landing-section container py-10">
         <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-5 rounded-2xl border border-black/6 bg-white px-7 py-6 text-sm text-zinc-500">
-          <span className="font-semibold text-zinc-800">Meta Tech Provider</span>
-          <span>Official Graph API</span>
-          <span>Razorpay payouts</span>
-          <span>Built for creators &amp; businesses</span>
+          <span className="font-semibold text-zinc-800">Built for growth</span>
+          <span>Helpful conversations</span>
+          <span>Creator monetization</span>
+          <span>Made for teams</span>
         </div>
       </section>
 
@@ -82,11 +83,11 @@ export default function HomePage() {
           <p className="mt-4 text-[var(--text-secondary)]">Turn a comment into a useful reply, a product link, a qualified lead, or a sale—without losing the human context.</p>
         </div>
         <div className="grid gap-7 lg:grid-cols-2">
-          <div className="rounded-[28px] border border-orange-200 bg-orange-50 p-8">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white"><Store size={22} /></div>
+          <div className="rounded-[28px] border border-violet-200 bg-violet-50 p-8">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-600 text-white"><Store size={22} /></div>
             <h3 className="text-2xl font-semibold">For creators: make every comment shoppable</h3>
             <p className="mt-3 leading-7 text-zinc-600">Someone comments “LINK” or asks where to buy. Orange Flow sends the product, storefront, affiliate, Amazon, Flipkart, or Shopify link directly in the DM and captures the person as a lead.</p>
-            <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-orange-800"><span className="rounded-full bg-white px-3 py-1.5">Comment trigger</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Product link</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Lead captured</span></div>
+            <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-violet-800"><span className="rounded-full bg-white px-3 py-1.5">Comment trigger</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Product link</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Lead captured</span></div>
           </div>
           <div className="rounded-[28px] border border-stone-200 bg-stone-50 p-8">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1c1917] text-orange-300"><Bot size={22} /></div>
@@ -112,6 +113,11 @@ export default function HomePage() {
             <FeatureCard key={feature.title} {...feature} />
           ))}
         </div>
+      </section>
+
+      <section className="landing-section container py-8 sm:py-16">
+        <div className="mx-auto mb-10 max-w-2xl text-center"><span className="badge badge-brand mb-4"><Sparkles size={13} /> Grow first. Monetize naturally.</span><h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">Turn attention into an <span className="font-serif italic font-normal">income stream.</span></h2><p className="mt-4 text-[var(--text-secondary)]">Give people a reason to follow, deliver value in the DM, and make it easy to take the next step.</p></div>
+        <GrowthLoop />
       </section>
 
       <section className="landing-section bg-white py-16 sm:py-24">
@@ -170,7 +176,7 @@ export default function HomePage() {
       </section>
 
       <section className="landing-section px-4 pb-16 sm:px-6">
-        <div className="mx-auto max-w-[1160px] rounded-[32px] bg-[#0b1220] px-8 py-16 text-center text-white">
+        <div className="gradient-creator mx-auto max-w-[1160px] rounded-[32px] px-8 py-16 text-center text-white shadow-[0_24px_70px_rgba(168,85,247,0.2)]">
           <h2 style={{ color: '#ffffff' }} className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
             Make every conversation count
             <span style={{ color: 'rgba(255,255,255,0.72)' }} className="mt-2 block font-serif text-4xl italic font-normal text-white/70 sm:text-5xl">Free to start. No commitments.</span>

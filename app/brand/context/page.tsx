@@ -24,7 +24,7 @@ export default function BrandContextPage() {
       const res = await fetch('/api/brand/context', { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(form) });
       if (!res.ok) throw new Error('Unable to save');
       toast('AI context saved', 'success');
-    } catch { toast('Context saved locally for this session. Connect the business API to persist it.', 'info'); }
+    } catch { toast('Context saved locally for this session. Connect your business account to keep it available.', 'info'); }
     finally { setSaving(false); }
   };
 

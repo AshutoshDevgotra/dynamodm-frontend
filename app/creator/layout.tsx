@@ -6,14 +6,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, HelpCircle,
-  LayoutDashboard, LogOut, Megaphone, Settings, User, Users, Zap,
+  BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, Handshake, HelpCircle,
+  LayoutDashboard, LogOut, Megaphone, Settings, ShoppingBag, User, Users, Zap,
 } from 'lucide-react';
 
 const navItems = [
-  { href: '/creator', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/creator/instagram', label: 'Instagram', icon: Camera },
-  { href: '/creator/automations', label: 'Automations', icon: Zap },
+  { href: '/creator', label: 'Home', icon: LayoutDashboard },
+  { href: '/creator/instagram', label: 'Instagram profile', icon: Camera },
+  { href: '/creator/collabs', label: 'Brand collabs', icon: Handshake },
+  { href: '/creator/storefront', label: 'Creator shop', icon: ShoppingBag },
+  { href: '/creator/automations', label: 'AutoDM', icon: Zap },
   { href: '/creator/campaigns', label: 'Campaigns', icon: Megaphone },
   { href: '/creator/leads', label: 'Leads', icon: Users },
   { href: '/creator/analytics', label: 'Analytics', icon: BarChart3 },
