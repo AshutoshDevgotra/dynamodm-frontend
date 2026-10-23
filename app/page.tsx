@@ -72,7 +72,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="landing-section container py-16 sm:py-24">
+      <section className="landing-section container pt-24 pb-28 sm:pt-32 sm:pb-36">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <span className="badge badge-brand mb-4"><Sparkles size={13} /> One platform, two growth engines</span>
           <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">

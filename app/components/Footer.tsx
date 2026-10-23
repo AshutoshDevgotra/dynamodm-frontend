@@ -22,8 +22,8 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-black/6 bg-white">
-      <div className="container py-14">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+      <div className="container py-20 sm:py-24">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-4">
           <div className="md:col-span-2">
             <Logo />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--text-secondary)]">
@@ -63,7 +63,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-black/6 pt-6 text-[13px] text-zinc-400 sm:flex-row sm:items-center">
+        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-black/6 pt-8 text-[13px] text-zinc-400 sm:flex-row sm:items-center">
           <p>© {year} OrangeFlow.in. All rights reserved.</p>
           <p>Made in India</p>
         </div>
