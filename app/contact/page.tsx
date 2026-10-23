@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: 'Contact the DynamoDM team.',
+  description: 'Contact the OrangeFlow.in team.',
 };
 
 export default function ContactPage() {

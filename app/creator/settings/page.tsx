@@ -78,7 +78,7 @@ export default function SettingsPage() {
         <div className="creator-danger-zone">
           <h2 className="mb-2 text-[15px] font-bold text-[var(--danger)]">Danger Zone</h2>
           <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>Permanently delete your account and all associated data. This action cannot be undone.</p>
-          <button onClick={() => toast('Contact support@dynamodm.io to delete your account.', 'info')} className="rounded-[var(--radius-sm)] border border-[var(--danger-border)] bg-[var(--danger-subtle)] px-[18px] py-2 text-[13px] font-semibold text-[var(--danger)]">
+          <button onClick={() => toast('Contact support@orangeflow.in to delete your account.', 'info')} className="rounded-[var(--radius-sm)] border border-[var(--danger-border)] bg-[var(--danger-subtle)] px-[18px] py-2 text-[13px] font-semibold text-[var(--danger)]">
             Delete Account
           </button>
         </div>

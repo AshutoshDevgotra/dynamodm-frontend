@@ -27,13 +27,13 @@ export default function Footer() {
           <div className="md:col-span-2">
             <Logo />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--text-secondary)]">
-              The creator toolkit to automate Instagram DMs, capture leads, and sell from one storefront.
+              Orange Flow helps creators monetize attention and helps businesses turn customer conversations into qualified leads with AI.
             </p>
             <div className="mt-5 flex gap-2">
               {[
                 { icon: Share2, href: '#', label: 'Social' },
                 { icon: Globe, href: '#', label: 'Website' },
-                { icon: Mail, href: 'mailto:hello@dynamodm.io', label: 'Email' },
+                { icon: Mail, href: 'mailto:hello@orangeflow.in', label: 'Email' },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -64,7 +64,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-black/6 pt-6 text-[13px] text-zinc-400 sm:flex-row sm:items-center">
-          <p>© {year} DynamoDM. All rights reserved.</p>
+          <p>© {year} OrangeFlow.in. All rights reserved.</p>
           <p>Made in India</p>
         </div>
       </div>

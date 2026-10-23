@@ -31,7 +31,8 @@ export default function LoginPage() {
       toast('Welcome back!', 'success');
       const requestedRedirect = new URLSearchParams(window.location.search).get('redirect');
       const redirect = requestedRedirect?.startsWith('/') && !requestedRedirect.startsWith('//') ? requestedRedirect : null;
-      router.push(redirect || (data.data.user?.role?.toUpperCase() === 'ADMIN' ? '/admin' : '/creator'));
+      const role = data.data.user?.role?.toUpperCase();
+      router.push(redirect || (role === 'ADMIN' ? '/admin' : role === 'BRAND' || role === 'BUSINESS' ? '/brand/dashboard' : '/creator'));
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Login failed', 'error');
     } finally {
@@ -47,7 +48,7 @@ export default function LoginPage() {
         </div>
         <div className="rounded-[28px] border border-black/6 bg-white p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
           <h1 className="text-center text-2xl font-semibold tracking-tight">Welcome back</h1>
-          <p className="mt-1 mb-6 text-center text-sm text-[var(--text-secondary)]">Sign in to your DynamoDM account</p>
+          <p className="mt-1 mb-6 text-center text-sm text-[var(--text-secondary)]">Sign in to your OrangeFlow.in account</p>
 
           <button
             type="button"

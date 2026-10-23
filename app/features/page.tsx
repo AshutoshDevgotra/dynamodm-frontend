@@ -6,13 +6,13 @@ import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Features',
-  description: 'Explore DynamoDM features — Instagram automation, lead capture, analytics, and storefronts.',
+  description: 'Explore OrangeFlow.in features — AI conversations, Instagram automation, lead capture, analytics, and storefronts.',
 };
 
 const features = [
   {
     icon: MessageCircle, title: 'Instagram DM automation',
-    desc: 'Send a personal DM the moment someone comments a keyword — 24/7.',
+    desc: 'Send the right link or message the moment someone comments a trigger word — 24/7.',
     points: ['Response in seconds', 'Templates with links & PDFs', 'Cooldowns to prevent spam'],
   },
   {
@@ -24,6 +24,11 @@ const features = [
     icon: Users, title: 'Lead capture CRM',
     desc: 'Every interaction becomes a lead with username, tags, and history.',
     points: ['Auto-capture handles', 'Tag and segment', 'CSV export'],
+  },
+  {
+    icon: Bot, title: 'Context-aware AI replies',
+    desc: 'Give the AI your brand knowledge so it can understand intent and answer with confidence.',
+    points: ['Brand and product context', 'Intent-aware responses', 'Links, policies, and FAQs'],
   },
   {
     icon: BarChart3, title: 'Analytics',
@@ -67,7 +72,7 @@ export default function FeaturesPage() {
               <span className="block font-serif italic font-normal">automate and grow</span>
             </h1>
             <p className="mt-4 text-lg text-[var(--text-secondary)]">
-              A complete Instagram automation platform for creators who mean business.
+              One conversation engine for creators who want to grow and businesses that want to convert interest into action.
             </p>
           </div>
 

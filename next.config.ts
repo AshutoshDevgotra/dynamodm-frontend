@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const resolveApiBaseUrl = () => {
   const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL?.trim().replace(/\/+$/, '');
-  const productionApiUrl = 'https://dynamodm-backend.onrender.com/api';
+  const productionApiUrl = 'https://api.v1.orangeflow.in/api';
   const localApiUrl = 'http://localhost:5000/api';
   const withApiPath = (url: string) => url.endsWith('/api') ? url : `${url}/api`;
 

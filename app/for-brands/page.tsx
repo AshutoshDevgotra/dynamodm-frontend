@@ -20,18 +20,18 @@ export default function ForBrandsPage() {
       <section className="px-4 pt-24 pb-8 sm:px-6">
         <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[#0b1220] px-6 py-20 text-center text-white sm:px-12">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/8 px-4 py-1.5 text-sm text-zinc-300 ring-1 ring-white/10">
-            <Sparkles size={14} className="text-[#f5d90a]" /> Creator discovery for brands
+            <Sparkles size={14} className="text-[#f5d90a]" /> AI customer conversations for brands
           </div>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
-            Source creators
-            <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">beautifully.</span>
+            Turn comments into
+            <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">customers.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-base text-zinc-400 sm:text-lg">
-            Match influencers on audience, not vanity metrics. Run campaigns with escrow and reporting in one place.
+            Give every campaign a smart conversion layer. When someone comments a trigger word or messages your page, Orange Flow understands what they need and replies with the right product, link, or next step.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link href="/signup?role=brand" className="btn-primary">
-              Start sourcing free <ArrowRight size={16} />
+              Start building your flow <ArrowRight size={16} />
             </Link>
             <Link href="#features" className="btn-secondary !bg-transparent !text-white !border-white/15">
               See how it works
@@ -50,10 +50,10 @@ export default function ForBrandsPage() {
       </section>
 
       <section id="features" className="container grid gap-5 pb-20 md:grid-cols-3">
-        {[
-          { icon: Target, title: 'Deep demographics', body: 'Filter by audience age, gender, and city using live Meta insights — before you pay.' },
-          { icon: Sparkles, title: 'AI matchmaker', body: 'Describe the brief. We surface creators whose audience and niche actually fit.' },
-          { icon: Shield, title: 'Secure escrow', body: 'Funds stay held until delivery. Built on Razorpay routing your finance team already trusts.' },
+          {[
+          { icon: Target, title: 'Trigger-word campaigns', body: 'Set multiple keywords for a reel or product and automatically send a website, Amazon, Flipkart, or Shopify link.' },
+          { icon: Sparkles, title: 'Context-aware AI', body: 'Add your brand, catalog, offers, policies, and FAQs. AI uses that context to understand intent and give a useful answer.' },
+          { icon: Shield, title: 'Lead capture that works', body: 'Keep the conversation moving, collect high-intent leads, and give your sales team the context they need.' },
         ].map(({ icon: Icon, title, body }) => (
           <div key={title} className="rounded-[28px] border border-black/6 bg-white p-8">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-subtle)] text-[var(--brand-from)]">
@@ -69,10 +69,10 @@ export default function ForBrandsPage() {
         <div className="mx-auto max-w-[1160px] rounded-[32px] bg-white px-8 py-16 text-center ring-1 ring-black/6">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
             Ready to scale
-            <span className="font-serif italic font-normal"> influencer marketing?</span>
+            <span className="font-serif italic font-normal"> every conversation?</span>
           </h2>
           <Link href="/signup?role=brand" className="btn-primary mt-8">
-            Create brand account <ArrowRight size={16} />
+            Create business account <ArrowRight size={16} />
           </Link>
         </div>
       </section>

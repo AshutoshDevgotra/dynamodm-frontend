@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Camera, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Creator Profile | DynamoDM',
+  title: 'Creator Profile | OrangeFlow.in',
 };
 
 interface CreatorProfile {
@@ -16,7 +16,7 @@ interface CreatorProfile {
 
 async function getCreatorProfile(username: string): Promise<CreatorProfile | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://dynamodm-backend.onrender.com';
+    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'https://api.v1.orangeflow.in/api').replace(/\/api\/?$/, '');
     const res = await fetch(`${baseUrl}/api/creators/${username}`, { next: { revalidate: 60 } });
     const data = await res.json();
     if (!res.ok) return null;
@@ -87,7 +87,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           </div>
         </div>
         <p className="mt-6 text-center text-xs text-zinc-400">
-          <Link href="/" className="hover:text-zinc-600">Powered by DynamoDM</Link>
+          <Link href="/" className="hover:text-zinc-600">Powered by OrangeFlow.in</Link>
         </p>
       </div>
     </div>

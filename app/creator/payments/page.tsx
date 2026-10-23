@@ -137,7 +137,7 @@ export default function CreatorPaymentsPage() {
           <div className="rounded-[var(--radius-xl)] border border-[var(--brand-border)] bg-[var(--brand-subtle)] p-6">
             <h3 className="text-blue-400 font-semibold mb-2">Platform Fee Notice</h3>
             <p className="text-zinc-600 text-sm leading-relaxed">
-              DynamoDM charges a flat <strong>5% platform fee</strong> on all incoming brand sponsorships and affiliate commission payouts. This covers our AI operational costs and Razorpay processing fees. The fee is automatically deducted before transfer.
+              OrangeFlow.in charges a flat <strong>5% platform fee</strong> on all incoming brand sponsorships and affiliate commission payouts. This covers our AI operational costs and Razorpay processing fees. The fee is automatically deducted before transfer.
             </p>
           </div>
 

@@ -3,8 +3,8 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | DynamoDM',
-  description: 'DynamoDM Privacy Policy - Instagram automation by House of Orange',
+  title: 'Privacy Policy | OrangeFlow.in',
+  description: 'OrangeFlow.in Privacy Policy - AI conversation automation by House of Orange',
 };
 
 export default function PrivacyPage() {
@@ -12,27 +12,27 @@ export default function PrivacyPage() {
     {
       title: '1. Information We Collect',
       content:
-        'We collect information you provide directly when creating and using your DynamoDM account, including your name, email address, Instagram Business Account data (such as username, profile information, and follower count), automation rules and settings you create, and information necessary to manage your subscription. We also collect usage data such as DM logs, analytics events, and lead information generated through your automations.',
+        'We collect information you provide directly when creating and using your OrangeFlow.in account, including your name, email address, Instagram Business Account data (such as username, profile information, and follower count), automation rules and settings you create, and information necessary to manage your subscription. We also collect usage data such as DM logs, analytics events, and lead information generated through your automations.',
     },
     {
       title: '2. Account Login & Authentication',
       content:
-        'DynamoDM allows users to create and access their accounts using Google Sign-In or email-based authentication. When you use Google Sign-In, we may receive basic account information provided by Google, such as your name and email address, for the purpose of creating and managing your DynamoDM account. We do not provide Google with access to your DynamoDM account data beyond what is required for authentication.',
+        'OrangeFlow.in allows users to create and access their accounts using Google Sign-In or email-based authentication. When you use Google Sign-In, we may receive basic account information provided by Google, such as your name and email address, for the purpose of creating and managing your OrangeFlow.in account. We do not provide Google with access to your OrangeFlow.in account data beyond what is required for authentication.',
     },
     {
       title: '3. How We Use Your Information',
       content:
-        'We use your information to provide, maintain, and improve DynamoDM; manage your account; operate Instagram automation features; process subscriptions and payments; send transactional and service-related emails; provide customer support; monitor and analyze usage patterns; maintain platform security; and comply with applicable legal obligations. We do not sell your personal information to third parties.',
+        'We use your information to provide, maintain, and improve OrangeFlow.in; manage your account; operate Instagram automation features; process subscriptions and payments; send transactional and service-related emails; provide customer support; monitor and analyze usage patterns; maintain platform security; and comply with applicable legal obligations. We do not sell your personal information to third parties.',
     },
     {
       title: '4. Instagram & Meta Data',
       content:
-        'When you connect an eligible Instagram Business Account to DynamoDM, we may receive and store information made available through the Meta and Instagram APIs, including your Instagram Business Account ID, access token, username, profile information, and other information required to provide the automation features you authorize. Access tokens are encrypted at rest. We use Instagram and Meta data solely to provide the features and automations configured by you, including sending automated direct messages and processing relevant interactions. Our use of Meta and Instagram data is subject to applicable Meta Platform Terms and Instagram API policies.',
+        'When you connect an eligible Instagram Business Account to OrangeFlow.in, we may receive and store information made available through the Meta and Instagram APIs, including your Instagram Business Account ID, access token, username, profile information, and other information required to provide the automation features you authorize. Access tokens are encrypted at rest. We use Instagram and Meta data solely to provide the features and automations configured by you, including sending automated direct messages and processing relevant interactions. Our use of Meta and Instagram data is subject to applicable Meta Platform Terms and Instagram API policies.',
     },
     {
       title: '5. Payment Information',
       content:
-        'Payments and subscription transactions for DynamoDM are processed through Razorpay, our third-party payment service provider. We may receive information such as transaction status, payment reference or transaction ID, subscription information, and other limited payment-related information necessary to manage your account and subscription. We do not store complete credit or debit card details on our own servers when those details are processed by Razorpay.',
+        'Payments and subscription transactions for OrangeFlow.in are processed through Razorpay, our third-party payment service provider. We may receive information such as transaction status, payment reference or transaction ID, subscription information, and other limited payment-related information necessary to manage your account and subscription. We do not store complete credit or debit card details on our own servers when those details are processed by Razorpay.',
     },
     {
       title: '6. Data Security',
@@ -42,32 +42,32 @@ export default function PrivacyPage() {
     {
       title: '7. Data Retention',
       content:
-        'We retain your account information for as long as your DynamoDM account remains active or as necessary to provide our services. Analytics events are retained for up to 1 year. DM logs are retained for 90 days. Certain information may be retained for a longer period where required for legal, security, fraud-prevention, accounting, or dispute-resolution purposes. You may request deletion of your data by contacting us.',
+        'We retain your account information for as long as your OrangeFlow.in account remains active or as necessary to provide our services. Analytics events are retained for up to 1 year. DM logs are retained for 90 days. Certain information may be retained for a longer period where required for legal, security, fraud-prevention, accounting, or dispute-resolution purposes. You may request deletion of your data by contacting us.',
     },
     {
       title: '8. Your Rights',
       content:
-        'You may have the right to access, update, correct, or delete your personal information; request export of your data, including available leads and DM logs; disconnect your Instagram account from DynamoDM; close your DynamoDM account; and opt out of marketing communications. To exercise these rights, please contact us using the details provided below.',
+        'You may have the right to access, update, correct, or delete your personal information; request export of your data, including available leads and DM logs; disconnect your Instagram account from OrangeFlow.in; close your OrangeFlow.in account; and opt out of marketing communications. To exercise these rights, please contact us using the details provided below.',
     },
     {
       title: '9. Third-Party Services',
       content:
-        'DynamoDM relies on certain third-party services to provide its functionality. These may include Google for authentication, Meta and Instagram for Instagram integrations and APIs, and Razorpay for payment processing. Your use of these third-party services may also be subject to their respective terms and privacy policies.',
+        'OrangeFlow.in relies on certain third-party services to provide its functionality. These may include Google for authentication, Meta and Instagram for Instagram integrations and APIs, and Razorpay for payment processing. Your use of these third-party services may also be subject to their respective terms and privacy policies.',
     },
     {
       title: '10. Cookies & Usage Technologies',
       content:
-        'DynamoDM may use cookies and similar technologies that are necessary for authentication, maintaining user sessions, security, preferences, analytics, and improving the user experience. You may configure your browser to restrict cookies, although certain functionality of the Service may not work correctly if necessary cookies are disabled.',
+        'OrangeFlow.in may use cookies and similar technologies that are necessary for authentication, maintaining user sessions, security, preferences, analytics, and improving the user experience. You may configure your browser to restrict cookies, although certain functionality of the Service may not work correctly if necessary cookies are disabled.',
     },
     {
       title: '11. Data Deletion',
       content:
-        'You may request deletion of your DynamoDM account and associated personal information by contacting us. Where applicable, we will process deletion requests within a reasonable period. Some information may need to be retained where required by applicable law or where reasonably necessary for security, fraud prevention, accounting, dispute resolution, or enforcement of our agreements.',
+        'You may request deletion of your OrangeFlow.in account and associated personal information by contacting us. Where applicable, we will process deletion requests within a reasonable period. Some information may need to be retained where required by applicable law or where reasonably necessary for security, fraud prevention, accounting, dispute resolution, or enforcement of our agreements.',
     },
     {
       title: '12. Changes to This Privacy Policy',
       content:
-        'We may update this Privacy Policy from time to time to reflect changes to DynamoDM, our data practices, third-party integrations, or applicable legal requirements. Any updates will be published on this page and the "Last updated" date will be revised accordingly.',
+        'We may update this Privacy Policy from time to time to reflect changes to OrangeFlow.in, our data practices, third-party integrations, or applicable legal requirements. Any updates will be published on this page and the "Last updated" date will be revised accordingly.',
     },
     {
       title: '13. Contact Us',

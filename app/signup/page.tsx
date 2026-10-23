@@ -14,6 +14,7 @@ export default function SignupPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
+  const isBusiness = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '').get('role') === 'brand';
 
   const passwordStrength = (p: string) => {
     let score = 0;
@@ -36,7 +37,7 @@ export default function SignupPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, role: isBusiness ? 'BRAND' : 'CREATOR' }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -44,7 +45,7 @@ export default function SignupPage() {
       localStorage.setItem('user', JSON.stringify(data.data.user));
       toast('Account created. Let\'s get started.', 'success');
       const plan = new URLSearchParams(window.location.search).get('plan');
-      router.push(plan ? `/creator/payments/subscriptions?plan=${encodeURIComponent(plan)}` : '/creator/payments/subscriptions');
+      router.push(isBusiness ? '/brand/dashboard' : plan ? `/creator/payments/subscriptions?plan=${encodeURIComponent(plan)}` : '/creator/payments/subscriptions');
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Registration failed', 'error');
     } finally {
@@ -59,7 +60,8 @@ export default function SignupPage() {
           <Logo />
         </div>
         <div className="rounded-[28px] border border-black/6 bg-white p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
-          <h1 className="text-center text-2xl font-semibold tracking-tight">Create your account</h1>
+          <h1 className="text-center text-2xl font-semibold tracking-tight">{isBusiness ? 'Create your business workspace' : 'Create your account'}</h1>
+          <p className="mt-3 text-center text-sm font-semibold text-[var(--brand-from)]">Try OrangeFlow.in at ₹0 for 3 days — no card required.</p>
           <div className="mt-3 mb-6 flex flex-wrap justify-center gap-3 text-xs text-zinc-500">
             {['10 DMs free', 'Plans from ₹99', 'Setup in 5 minutes'].map((p) => (
               <span key={p} className="inline-flex items-center gap-1">

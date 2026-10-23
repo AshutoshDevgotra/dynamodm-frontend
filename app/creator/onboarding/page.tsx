@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const steps = [
   {
-    id: 1, title: 'Welcome to DynamoDM!', icon: Zap, color: '#2563eb',
+    id: 1, title: 'Welcome to OrangeFlow.in!', icon: Zap, color: '#2563eb',
     desc: 'You\'re about to set up the most powerful Instagram automation tool for creators.',
     action: null,
   },

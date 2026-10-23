@@ -4,22 +4,22 @@ import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: {
-    default: 'DynamoDM — Instagram automation for creators',
-    template: '%s | DynamoDM',
+    default: 'OrangeFlow.in — AI conversations for creators and businesses',
+    template: '%s | OrangeFlow.in',
   },
   description:
-    'Automate Instagram DMs, capture leads, and sell from your storefront. DynamoDM turns every comment into a conversation.',
+    'Orange Flow helps creators automate Instagram conversations and helps businesses turn comments and DMs into helpful, context-aware customer journeys.',
   keywords: ['instagram automation', 'instagram dm', 'creator tools', 'lead capture', 'instagram marketing'],
-  authors: [{ name: 'DynamoDM' }],
+  authors: [{ name: 'OrangeFlow.in' }],
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://dynamodm.io',
-    siteName: 'DynamoDM',
-    title: 'DynamoDM — Instagram automation for creators',
-    description: 'Automate Instagram DMs, capture leads, and grow your business.',
+    url: 'https://orangeflow.in',
+    siteName: 'OrangeFlow.in',
+    title: 'OrangeFlow.in — AI conversations for creators and businesses',
+    description: 'Automate Instagram conversations, answer customers with brand context, and capture more leads.',
   },
-  twitter: { card: 'summary_large_image', title: 'DynamoDM', description: 'Instagram automation for creators' },
+  twitter: { card: 'summary_large_image', title: 'OrangeFlow.in', description: 'AI-powered Instagram conversations for creators and businesses' },
   robots: { index: true, follow: true },
 };
 

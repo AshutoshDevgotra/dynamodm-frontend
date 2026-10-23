@@ -11,7 +11,7 @@ const faqs = [
   },
   {
     q: 'Does this violate Instagram\'s terms?',
-    a: 'No. DynamoDM uses the official Meta Graph API with proper permissions. All automations comply with Meta\'s policies. We use the instagram_manage_messages permission which is designed exactly for this use case.',
+    a: 'No. OrangeFlow.in uses the official Meta Graph API with proper permissions. All automations comply with Meta\'s policies. We use the instagram_manage_messages permission which is designed exactly for this use case.',
   },
   {
     q: 'How fast are DMs sent after a comment?',
@@ -37,7 +37,7 @@ export default function SupportPage() {
   const links = [
     { icon: Book, label: 'Documentation', desc: 'Setup guides and API docs', href: '#', color: 'var(--brand-from)' },
     { icon: MessageCircle, label: 'Live Chat', desc: 'Chat with our team (Pro+)', href: '#', color: '#06b6d4' },
-    { icon: Mail, label: 'Email Support', desc: 'support@dynamodm.io', href: 'mailto:support@dynamodm.io', color: '#10b981' },
+    { icon: Mail, label: 'Email Support', desc: 'support@orangeflow.in', href: 'mailto:support@orangeflow.in', color: '#10b981' },
   ];
 
   return (

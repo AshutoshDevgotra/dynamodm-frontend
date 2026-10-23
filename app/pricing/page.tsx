@@ -7,11 +7,11 @@ import PricingCard from '../components/home/PricingCard';
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description: 'DynamoDM pricing — 10 DMs free, with paid plans from ₹99 for more volume.',
+  description: 'OrangeFlow.in pricing — start free and scale your AI conversations and automations.',
 };
 
 const plans = [
-  { name: 'Free', price: '₹0', period: '/month', description: 'Try the workflow with a small limit', features: ['1 automation rule', '10 DMs / month', 'Basic analytics', 'Policy-aware send pacing'], cta: 'Start free', href: '/signup', highlighted: false },
+  { name: '3-day trial', price: '₹0', period: 'for 3 days', description: 'Try every core workflow with no payment today', features: ['AI business context', 'Instagram inbox and replies', 'Lead capture', 'Comment and DM automations', 'No card required'], cta: 'Start 3-day trial', href: '/signup', highlighted: true, badge: 'Try free' },
   { name: 'Starter', price: '₹99', period: '/month', description: 'For creators getting started', features: ['3 automation rules', '500 leads / month', '1,000 DMs / month', '7-day analytics', 'Policy-aware send pacing', 'Email support'], cta: 'Choose Starter', href: '/signup?plan=starter', highlighted: true, badge: 'Best value' },
   { name: 'Pro', price: '₹499', period: '/month', description: 'For creators turning conversations into growth', features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', '30-day analytics', 'Policy-aware send pacing', 'PDF attachments', 'CSV export', 'Priority queue', 'Email support'], cta: 'Choose Pro', href: '/signup?plan=pro', highlighted: false },
   { name: 'Premium', price: '₹999', period: '/month', description: 'For agencies and high-volume teams', features: ['Unlimited automations', 'Unlimited leads & DMs', '1-year analytics', 'AI-assisted message review', 'Consent and opt-out safeguards', 'Custom branding', 'Priority support', 'API access', '5 team members'], cta: 'Choose Premium', href: '/signup?plan=premium', highlighted: false },
@@ -34,11 +34,11 @@ export default function PricingPage() {
     <div className="mx-auto mb-12 max-w-2xl text-center">
       <span className="badge badge-brand mb-4"><Zap size={13} /> Simple paid plans</span>
       <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">Start small,<span className="block font-serif italic font-normal">scale when ready</span></h1>
-      <p className="mt-4 text-lg text-[var(--text-secondary)]">Try the workflow with 10 free DMs, then choose a paid plan from ₹99 when you need more volume. Every plan includes consent-aware controls and policy-aligned send pacing.</p>
+      <p className="mt-4 text-lg text-[var(--text-secondary)]">Try OrangeFlow.in at ₹0 for 3 days, then choose a paid plan from ₹99 when you need more volume. No card is required to start.</p>
     </div>
     <div className="mb-8 grid items-start gap-5 xl:grid-cols-4">{plans.map((plan) => <PricingCard key={plan.name} {...plan} />)}</div>
     <div className="mb-16 grid gap-4 md:grid-cols-3">{[
-      ['10 DMs free', 'Try the workflow without a card, then upgrade when you need more volume.'],
+      ['₹0 for 3 days', 'Try the complete workflow without a card, then upgrade when you are ready.'],
       ['Built for consent', 'Respect opt-outs, message windows, and platform rules by default.'],
       ['Human support', 'Get help with setup, limits, and account configuration when you need it.'],
     ].map(([title, copy]) => <div key={title} className="rounded-2xl border border-black/6 bg-white p-5"><ShieldCheck size={18} className="mb-3 text-[var(--brand-from)]" /><h3 className="text-sm font-semibold">{title}</h3><p className="mt-1 text-sm leading-6 text-zinc-500">{copy}</p></div>)}</div>

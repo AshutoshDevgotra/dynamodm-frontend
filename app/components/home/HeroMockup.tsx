@@ -24,7 +24,7 @@ export default function HeroMockup() {
             </div>
             <div className="mt-3 rounded-xl bg-white/8 p-3">
               <div className="text-xs font-semibold">Free recipe PDF</div>
-              <div className="mt-1 text-[11px] text-zinc-400">dynamodm.io/priya</div>
+              <div className="mt-1 text-[11px] text-zinc-400">orangeflow.in/priya</div>
             </div>
             <div className="mt-4 flex items-center justify-between text-[11px] text-zinc-400">
               <span>Delivered in 1.2s</span>

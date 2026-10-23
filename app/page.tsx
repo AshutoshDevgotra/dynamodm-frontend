@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BarChart3, MessageCircle, Shield, Store, Target, Users } from 'lucide-react';
+import { ArrowRight, BarChart3, Bot, MessageCircle, Shield, Store, Target, Users } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FeatureCard from './components/home/FeatureCard';
@@ -7,9 +7,10 @@ import PricingCard from './components/home/PricingCard';
 import HeroMockup from './components/home/HeroMockup';
 
 const features = [
-  { icon: MessageCircle, title: 'AutoDM', description: 'Comment a keyword, get a personal DM in seconds — even while you sleep.' },
+  { icon: MessageCircle, title: 'Comment-to-DM automations', description: 'Turn trigger words on reels and posts into instant, useful replies with the right link.' },
+  { icon: Bot, title: 'AI brand conversations', description: 'Let AI understand customer intent and reply using your products, policies, offers, and brand context.' },
   { icon: Store, title: 'Link-in-bio store', description: 'One storefront for products, affiliate links, socials, and lead magnets.' },
-  { icon: Users, title: 'Lead capture', description: 'Every commenter becomes a lead you can tag, export, and follow up with.' },
+  { icon: Users, title: 'Lead capture', description: 'Every meaningful conversation becomes a lead you can tag, export, and follow up with.' },
   { icon: BarChart3, title: 'Analytics', description: 'See DMs sent, click-through, and conversions without a spreadsheet.' },
   { icon: Target, title: 'Smart keywords', description: 'Exact match, contains, starts with, or regex — one rule can cover a campaign.' },
   { icon: Shield, title: 'Meta-compliant', description: 'Official Graph API, HMAC webhooks, rate limits, and cooldowns built in.' },
@@ -18,7 +19,7 @@ const features = [
 const steps = [
   { n: '01', title: 'Connect Instagram', body: 'Link a Business or Creator account with official Meta OAuth.' },
   { n: '02', title: 'Set a keyword', body: 'Write the DM, attach a link or PDF, and choose when it fires.' },
-  { n: '03', title: 'Post and earn', body: 'Ask followers to comment. DynamoDM sends the DM and logs the lead.' },
+  { n: '03', title: 'Convert conversations', body: 'Orange Flow sends the link, answer, or next step and logs the lead for you.' },
 ];
 
 const plans = [
@@ -29,7 +30,7 @@ const plans = [
 ];
 
 const faqs = [
-  { q: 'What is DynamoDM?', a: 'DynamoDM is a creator toolkit for Instagram DM automation, lead capture, and a simple storefront — so you can reply, sell, and grow without living in your inbox.' },
+  { q: 'What is OrangeFlow.in?', a: 'Orange Flow is a conversation engine for creators and businesses. Automate Instagram replies, give AI your brand context, capture leads, and share the right product or link.' },
   { q: 'Is there a free plan?', a: 'Yes. You can try the workflow with 10 DMs per month. Upgrade from ₹99 when you need more volume.' },
   { q: 'Does this work with personal Instagram accounts?', a: 'You need an Instagram Business or Creator account connected to a Facebook Page. Setup takes a few minutes via official Meta login.' },
   { q: 'Is this allowed by Meta?', a: 'Yes. We use the official Meta Graph API with the right permissions, HMAC verification, cooldowns, and rate limiting.' },
@@ -42,13 +43,13 @@ export default function HomePage() {
 
       <section className="px-4 pt-24 pb-8 sm:px-6">
         <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#2563eb_0%,#60a5fa_46%,#dbeafe_78%,#f4f6fb_100%)] px-6 pb-10 pt-16 text-center sm:px-12 sm:pt-20">
-          <p className="mb-5 text-sm font-medium text-white/80">The complete creator toolkit</p>
+          <p className="mb-5 text-sm font-medium text-white/80">AI-powered conversations for creators and businesses</p>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-            Grow and monetize
+            Turn attention into
             <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">every comment.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-base text-white/85 sm:text-lg">
-            Auto-DM followers, capture leads, and share a storefront — so you can focus on the work your audience actually wants.
+            Auto-reply to comments, understand customer intent, and respond with the right product, link, or answer using your brand context.
           </p>
           <div className="mt-8 flex justify-center">
             <Link href="/signup" className="inline-flex items-center gap-3 rounded-full bg-white py-2 pr-5 pl-2 text-sm font-semibold text-zinc-900 shadow-lg">
@@ -67,7 +68,7 @@ export default function HomePage() {
           <span className="font-semibold text-zinc-800">Meta Tech Provider</span>
           <span>Official Graph API</span>
           <span>Razorpay payouts</span>
-          <span>Made for Indian creators</span>
+          <span>Built for creators &amp; businesses</span>
         </div>
       </section>
 
@@ -78,7 +79,7 @@ export default function HomePage() {
             <span className="mt-2 block font-serif text-4xl italic font-normal sm:text-5xl">with tools built for growth</span>
           </h2>
           <p className="mt-4 text-[var(--text-secondary)]">
-            Everything you need to turn Instagram comments into conversations, customers, and a storefront.
+            Everything you need to turn Instagram comments and DMs into helpful conversations, qualified leads, and sales.
           </p>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
@@ -95,7 +96,7 @@ export default function HomePage() {
               Live in
               <span className="font-serif italic font-normal"> 5 minutes</span>
             </h2>
-            <p className="mt-4 text-[var(--text-secondary)]">No flow builders. If you can post a reel, you can run DynamoDM.</p>
+            <p className="mt-4 text-[var(--text-secondary)]">Set the trigger, add your context, and let Orange Flow handle the conversation.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {steps.map((step) => (
@@ -146,7 +147,7 @@ export default function HomePage() {
       <section className="px-4 pb-16 sm:px-6">
         <div className="mx-auto max-w-[1160px] rounded-[32px] bg-[#0b1220] px-8 py-16 text-center text-white">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
-            Try DynamoDM today
+            Make every conversation count
             <span className="mt-2 block font-serif text-4xl italic font-normal sm:text-5xl">Free to start. No commitments.</span>
           </h2>
           <Link href="/signup" className="btn-primary mt-8 !bg-white !text-zinc-900 hover:!bg-zinc-100">

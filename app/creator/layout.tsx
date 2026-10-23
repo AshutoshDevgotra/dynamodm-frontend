@@ -132,7 +132,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
           <AnimatePresence>
             {!collapsed && (
               <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-[15px] font-semibold tracking-tight">
-                DynamoDM
+                OrangeFlow<span className="text-[var(--brand-from)]">.in</span>
               </motion.span>
             )}
           </AnimatePresence>

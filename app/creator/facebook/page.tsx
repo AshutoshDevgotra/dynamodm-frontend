@@ -26,7 +26,7 @@ export default function FacebookPagesDashboard() {
                 <span className="badge badge-brand">New</span>
               </div>
               <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.6 }}>
-                DynamoDM has upgraded to the official Instagram Graph API v23.0. You no longer need to link Facebook Pages or manage complex Facebook business asset permissions.
+                OrangeFlow.in uses the official Instagram Graph API v23.0. You no longer need to link Facebook Pages or manage complex Facebook business asset permissions.
               </p>
             </div>
           </div>

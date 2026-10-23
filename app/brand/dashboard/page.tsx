@@ -1,19 +1,11 @@
+import Link from 'next/link';
+import { ArrowRight, Bot, Camera as Instagram, Inbox, Link2, Users } from 'lucide-react';
+
 export default function BrandDashboard() {
-  return (
-    <div className="mx-auto max-w-6xl">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">Brand dashboard</h1>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {[
-          { label: 'Active campaigns', value: '0' },
-          { label: 'Pending proposals', value: '0' },
-          { label: 'Total spend', value: '₹0' },
-        ].map((card) => (
-          <div key={card.label} className="rounded-2xl border border-black/6 bg-white p-6">
-            <h3 className="text-sm font-medium text-zinc-500">{card.label}</h3>
-            <p className="mt-2 text-3xl font-semibold">{card.value}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <div className="mx-auto max-w-7xl">
+    <div className="creator-page-header--actions"><div><div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--brand-from)]"><Instagram size={14} /> Business overview</div><h1 className="creator-page-title">Turn Instagram interest into action</h1><p className="creator-page-description">Manage AI replies, customer conversations, and high-intent leads from one workspace.</p></div><Link href="/brand/context" className="btn-primary"><Bot size={16} /> Add business context</Link></div>
+    <div className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-100 bg-amber-50 p-4 text-sm text-amber-900"><Bot size={18} className="mt-0.5 shrink-0" /><div><p className="font-semibold">Your AI assistant is ready to learn</p><p className="mt-1 text-amber-800">Add your catalog, policies, links, and tone so customer questions get useful, on-brand answers.</p></div><Link href="/brand/context" className="ml-auto shrink-0 text-sm font-semibold text-amber-900">Set up <ArrowRight size={14} className="inline" /></Link></div>
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[{ label: 'Open conversations', value: '3', icon: Inbox, color: 'var(--brand-from)' }, { label: 'New leads today', value: '12', icon: Users, color: '#06b6d4' }, { label: 'AI replies sent', value: '48', icon: Bot, color: '#8b5cf6' }, { label: 'Links shared', value: '29', icon: Link2, color: '#10b981' }].map(({ label, value, icon: Icon, color }) => <div key={label} className="creator-card creator-stat-card"><div className="creator-icon-tile mb-4" style={{ color, background: `${color}12`, borderColor: `${color}30` }}><Icon size={19} /></div><div className="text-2xl font-semibold">{value}</div><div className="mt-1 text-sm text-zinc-500">{label}</div></div>)}</div>
+    <div className="mt-6 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]"><div className="creator-card creator-card--padded"><div className="mb-5 flex items-center justify-between"><div><h2 className="creator-panel__title mb-1">Recent customer conversations</h2><p className="text-sm text-zinc-500">People who reached out to your Instagram page.</p></div><Link href="/brand/conversations" className="text-sm font-semibold text-[var(--brand-from)]">View inbox <ArrowRight size={14} className="inline" /></Link></div><div className="space-y-3">{[['@ananya.m', 'Do you ship to Bengaluru?', '2m'], ['@rahul.fit', 'Can you share the price?', '18m'], ['@the.style.edit', 'Thanks, got it!', '1h']].map(([handle, message, time]) => <Link href="/brand/conversations" key={handle} className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-zinc-50"><div className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-100 text-sm font-semibold text-orange-700">{handle[1].toUpperCase()}</div><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{handle}</p><p className="truncate text-xs text-zinc-500">{message}</p></div><span className="text-xs text-zinc-400">{time}</span></Link>)}</div></div><div className="creator-card creator-card--padded"><div className="mb-5 flex items-center gap-3"><div className="creator-icon-tile"><Bot size={19} /></div><div><h2 className="creator-panel__title mb-1">AI readiness</h2><p className="text-sm text-zinc-500">Help the assistant answer well.</p></div></div><div className="space-y-4">{[['Business details', true], ['Products and links', false], ['Policies and FAQs', false], ['Reply tone', false]].map(([label, done]) => <div key={String(label)} className="flex items-center gap-3 text-sm"><span className={`flex h-6 w-6 items-center justify-center rounded-full ${done ? 'bg-emerald-100 text-emerald-700' : 'bg-zinc-100 text-zinc-400'}`}>{done ? '✓' : '•'}</span><span className={done ? 'text-zinc-700' : 'text-zinc-500'}>{label}</span></div>)}</div><Link href="/brand/context" className="btn-secondary mt-6 w-full">Complete AI context <ArrowRight size={15} /></Link></div></div>
+  </div>;
 }

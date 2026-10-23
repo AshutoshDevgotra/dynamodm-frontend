@@ -115,9 +115,9 @@ export default function SubscriptionsPage() {
         amount,
         currency,
         order_id: orderId,
-        name: 'DynamoDM',
+        name: 'OrangeFlow.in',
         description: `${planName} — Monthly Subscription`,
-        image: 'https://dynamodm-frontend.vercel.app/favicon.ico',
+        image: 'https://orangeflow.in/favicon.ico',
         prefill: { name: user.name || '', email: user.email || '' },
         theme: { color: '#8b5cf6' },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
