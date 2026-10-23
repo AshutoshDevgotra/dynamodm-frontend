@@ -2,6 +2,16 @@ import Link from 'next/link';
 import { Globe, Mail, Share2 } from 'lucide-react';
 import Logo from './Logo';
 
+function InstagramIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 const columns = {
   Product: [
     { label: 'AutoDM', href: '/features' },
@@ -31,13 +41,15 @@ export default function Footer() {
             </p>
             <div className="mt-4 flex gap-2.5">
               {[
+                { icon: InstagramIcon, href: 'https://www.instagram.com/orangeflow.in/', label: 'Orange Flow on Instagram', external: true },
                 { icon: Share2, href: '#', label: 'Social' },
                 { icon: Globe, href: '#', label: 'Website' },
                 { icon: Mail, href: 'mailto:hello@orangeflow.in', label: 'Email' },
-              ].map(({ icon: Icon, href, label }) => (
+              ].map(({ icon: Icon, href, label, external }) => (
                 <a
                   key={label}
                   href={href}
+                  {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
                   aria-label={label}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-white/40 hover:bg-white/10 hover:text-white"
                 >
