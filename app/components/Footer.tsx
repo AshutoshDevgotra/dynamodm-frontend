@@ -22,7 +22,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-black/6 bg-white">
-      <div className="container py-20 sm:py-24">
+      <div className="container pt-32 pb-20 sm:pt-40 sm:pb-24">
         <div className="grid grid-cols-1 gap-14 md:grid-cols-4">
           <div className="md:col-span-2">
             <Logo />
