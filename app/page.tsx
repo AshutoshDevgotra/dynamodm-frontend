@@ -41,17 +41,17 @@ export default function HomePage() {
     <div className="min-h-screen bg-[var(--bg-base)]">
       <Navbar />
 
-      <section className="landing-section px-4 pt-24 pb-8 sm:px-6">
-        <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#2563eb_0%,#60a5fa_46%,#dbeafe_78%,#f4f6fb_100%)] px-6 pb-10 pt-16 text-center sm:px-12 sm:pt-20">
+      <section className="landing-section px-4 pt-28 pb-12 sm:px-6">
+        <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#2563eb_0%,#60a5fa_46%,#dbeafe_78%,#f4f6fb_100%)] px-6 pb-14 pt-20 text-center sm:px-12 sm:pt-24">
           <p className="mb-5 text-sm font-medium text-white/80">AI-powered conversations for creators and businesses</p>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
             Turn every comment or
             <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">every lead into <strong className="font-bold not-italic">growth</strong></span>
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-base text-white/85 sm:text-lg">
+          <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-white/85 sm:text-lg">
             Auto-reply to comments, understand customer intent, and respond with the right product, link, or answer using your brand context.
           </p>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-10 flex justify-center">
             <Link href="/signup" className="inline-flex items-center gap-3 rounded-full bg-white py-2 pr-5 pl-2 text-sm font-semibold text-zinc-900 shadow-lg">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--brand-from)] text-white">
                 <ArrowRight size={16} />
@@ -59,12 +59,12 @@ export default function HomePage() {
               Get Started
             </Link>
           </div>
-          <HeroMockup />
+          <div className="mt-16"><HeroMockup /></div>
         </div>
       </section>
 
       <section className="landing-section container py-10">
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 rounded-2xl border border-black/6 bg-white px-6 py-5 text-sm text-zinc-500">
+        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-5 rounded-2xl border border-black/6 bg-white px-7 py-6 text-sm text-zinc-500">
           <span className="font-semibold text-zinc-800">Meta Tech Provider</span>
           <span>Official Graph API</span>
           <span>Razorpay payouts</span>
@@ -81,7 +81,7 @@ export default function HomePage() {
           </h2>
           <p className="mt-4 text-[var(--text-secondary)]">Turn a comment into a useful reply, a product link, a qualified lead, or a sale—without losing the human context.</p>
         </div>
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="grid gap-7 lg:grid-cols-2">
           <div className="rounded-[28px] border border-orange-200 bg-orange-50 p-8">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white"><Store size={22} /></div>
             <h3 className="text-2xl font-semibold">For creators: make every comment shoppable</h3>
@@ -107,7 +107,7 @@ export default function HomePage() {
             Everything you need to turn Instagram comments and DMs into helpful conversations, qualified leads, and sales.
           </p>
         </div>
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-7 md:grid-cols-3">
           {features.map((feature) => (
             <FeatureCard key={feature.title} {...feature} />
           ))}
@@ -123,7 +123,7 @@ export default function HomePage() {
             </h2>
             <p className="mt-4 text-[var(--text-secondary)]">Set the trigger, add your context, and let Orange Flow handle the conversation.</p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             {steps.map((step) => (
               <div key={step.n} className="rounded-[28px] border border-black/6 bg-[var(--bg-base)] p-8">
                 <div className="text-xs font-semibold tracking-[0.16em] text-[var(--brand-from)]">STEP {step.n}</div>
@@ -143,7 +143,7 @@ export default function HomePage() {
           </h2>
           <p className="mt-4 text-[var(--text-secondary)]">Start free. Upgrade when you are ready. Cancel anytime.</p>
         </div>
-        <div className="grid items-start gap-5 md:grid-cols-3">
+        <div className="grid items-start gap-7 md:grid-cols-3">
           {plans.map((plan) => (
             <PricingCard key={plan.name} {...plan} />
           ))}

@@ -821,7 +821,7 @@ a { color: inherit; }
 .section-sm { padding: 56px 0; }
 
 .landing-section {
-  margin-block: 20px;
+  margin-block: 32px;
 }
 
 details summary::-webkit-details-marker { display: none; }
