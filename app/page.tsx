@@ -41,7 +41,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-[var(--bg-base)]">
       <Navbar />
 
-      <section className="px-4 pt-24 pb-8 sm:px-6">
+      <section className="landing-section px-4 pt-24 pb-8 sm:px-6">
         <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#2563eb_0%,#60a5fa_46%,#dbeafe_78%,#f4f6fb_100%)] px-6 pb-10 pt-16 text-center sm:px-12 sm:pt-20">
           <p className="mb-5 text-sm font-medium text-white/80">AI-powered conversations for creators and businesses</p>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
@@ -63,7 +63,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container py-10">
+      <section className="landing-section container py-10">
         <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 rounded-2xl border border-black/6 bg-white px-6 py-5 text-sm text-zinc-500">
           <span className="font-semibold text-zinc-800">Meta Tech Provider</span>
           <span>Official Graph API</span>
@@ -72,7 +72,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container py-16 sm:py-24">
+      <section className="landing-section container py-16 sm:py-24">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <span className="badge badge-brand mb-4"><Sparkles size={13} /> One platform, two growth engines</span>
           <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
@@ -97,7 +97,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container py-16 sm:py-24">
+      <section className="landing-section container py-16 sm:py-24">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
             Reach more people
@@ -114,7 +114,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-24">
+      <section className="landing-section bg-white py-16 sm:py-24">
         <div className="container">
           <div className="mx-auto mb-14 max-w-2xl text-center">
             <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
@@ -135,7 +135,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container py-16 sm:py-24">
+      <section className="landing-section container py-16 sm:py-24">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
             Simple,
@@ -150,7 +150,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-24">
+      <section className="landing-section bg-white py-16 sm:py-24">
         <div className="container max-w-3xl">
           <h2 className="mb-8 text-center text-3xl font-semibold tracking-tight sm:text-4xl">
             Questions? <span className="font-serif italic font-normal">Answers.</span>
@@ -169,7 +169,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="px-4 pb-16 sm:px-6">
+      <section className="landing-section px-4 pb-16 sm:px-6">
         <div className="mx-auto max-w-[1160px] rounded-[32px] bg-[#0b1220] px-8 py-16 text-center text-white">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
             Make every conversation count
