@@ -45,8 +45,8 @@ export default function HomePage() {
         <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#2563eb_0%,#60a5fa_46%,#dbeafe_78%,#f4f6fb_100%)] px-6 pb-10 pt-16 text-center sm:px-12 sm:pt-20">
           <p className="mb-5 text-sm font-medium text-white/80">AI-powered conversations for creators and businesses</p>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-            Turn every comment
-            <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">and/or every lead into growth.</span>
+            Turn every comment or
+            <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">every lead into <strong className="font-bold not-italic">growth</strong></span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-base text-white/85 sm:text-lg">
             Auto-reply to comments, understand customer intent, and respond with the right product, link, or answer using your brand context.
