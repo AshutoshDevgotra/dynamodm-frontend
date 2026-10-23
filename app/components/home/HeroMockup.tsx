@@ -19,7 +19,7 @@ export default function HeroMockup() {
 
           <div className="rounded-2xl bg-[#0b1220] p-4 text-white">
             <div className="mb-3 text-[11px] font-medium uppercase tracking-wider text-zinc-400">Auto DM sent</div>
-            <div className="rounded-2xl rounded-tr-sm bg-blue-500 px-3 py-2.5 text-sm leading-relaxed">
+            <div className="rounded-2xl rounded-tr-sm bg-[var(--brand-from)] px-3 py-2.5 text-sm leading-relaxed">
               Hey! Here is the sip recipe + the shoppable kit 💛
             </div>
             <div className="mt-3 rounded-xl bg-white/8 p-3">

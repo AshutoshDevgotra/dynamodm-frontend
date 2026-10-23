@@ -43,10 +43,10 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   }
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#dbeafe_0%,#f4f6fb_28%,#f4f6fb_100%)] px-4 py-10">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#ffedd5_0%,#fffaf5_28%,#fffaf5_100%)] px-4 py-10">
       <div className="mx-auto w-full max-w-[420px]">
         <div className="overflow-hidden rounded-[32px] border border-black/6 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-          <div className="h-28 bg-[linear-gradient(135deg,#2563eb,#60a5fa)]" />
+          <div className="h-28 bg-[linear-gradient(135deg,#c2410c,#fb923c)]" />
           <div className="px-6 pb-8">
             <div className="-mt-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-[var(--brand-from)] text-2xl font-bold text-white">
               {profile.name?.[0]?.toUpperCase() || '?'}

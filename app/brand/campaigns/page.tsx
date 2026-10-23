@@ -58,7 +58,7 @@ export default function BrandCampaignsPage() {
         </div>
         <div className="bg-white border border-black/6 rounded-2xl p-6">
           <div className="flex items-center gap-3 text-zinc-500 mb-2">
-            <DollarSign size={18} className="text-blue-400" />
+            <DollarSign size={18} className="text-[var(--brand-from)]" />
             <h3 className="font-medium">Total Spent</h3>
           </div>
           <p className="text-4xl font-semibold">$2,500</p>

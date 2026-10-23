@@ -93,7 +93,7 @@ export default function DiscoveryPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-3">
             Creator discovery
-            <span className="bg-blue-50 text-[var(--brand-from)] text-xs px-2 py-1 rounded-md border border-blue-100">Gemini powered</span>
+            <span className="bg-orange-50 text-[var(--brand-from)] text-xs px-2 py-1 rounded-md border border-orange-100">Gemini powered</span>
           </h1>
           <p className="text-zinc-500 mt-2">Find the perfect creators for your next campaign using AI or demographic filters.</p>
         </div>
@@ -117,9 +117,9 @@ export default function DiscoveryPage() {
 
       {searchMode === 'ai' ? (
         <div className="mb-8">
-          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-8 relative overflow-hidden">
+          <div className="bg-orange-50 border border-orange-100 rounded-2xl p-8 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-8 opacity-20">
-              <Star size={120} className="text-blue-200" />
+              <Star size={120} className="text-orange-200" />
             </div>
             <div className="relative z-10 max-w-3xl">
               <h2 className="text-2xl font-semibold mb-2 flex items-center gap-2">
@@ -155,7 +155,7 @@ export default function DiscoveryPage() {
                 className="mt-6 bg-white border border-black/6 rounded-2xl p-6"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-1">
+                  <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center shrink-0 mt-1">
                     <Star size={20} className="text-[var(--brand-from)]" />
                   </div>
                   <div>
@@ -287,7 +287,7 @@ export default function DiscoveryPage() {
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex gap-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-600 to-sky-400 p-1">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-orange-600 to-amber-300 p-1">
                       <div className="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-xl overflow-hidden">
                         {creator.profile?.avatar ? (
                           <img src={creator.profile.avatar} alt={creator.name} className="w-full h-full object-cover" />

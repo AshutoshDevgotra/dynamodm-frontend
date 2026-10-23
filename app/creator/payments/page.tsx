@@ -56,7 +56,7 @@ export default function CreatorPaymentsPage() {
         {/* Onboarding Form */}
         <div className="creator-card creator-card--padded">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+            <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-600">
               <Landmark size={20} />
             </div>
             <h2 className="text-xl font-semibold">Bank payouts setup</h2>
@@ -135,7 +135,7 @@ export default function CreatorPaymentsPage() {
         {/* Info Column */}
         <div className="space-y-6">
           <div className="rounded-[var(--radius-xl)] border border-[var(--brand-border)] bg-[var(--brand-subtle)] p-6">
-            <h3 className="text-blue-400 font-semibold mb-2">Platform Fee Notice</h3>
+            <h3 className="text-orange-600 font-semibold mb-2">Platform Fee Notice</h3>
             <p className="text-zinc-600 text-sm leading-relaxed">
               OrangeFlow.in charges a flat <strong>5% platform fee</strong> on all incoming brand sponsorships and affiliate commission payouts. This covers our AI operational costs and Razorpay processing fees. The fee is automatically deducted before transfer.
             </p>

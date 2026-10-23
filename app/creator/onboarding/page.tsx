@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const steps = [
   {
-    id: 1, title: 'Welcome to OrangeFlow.in!', icon: Zap, color: '#2563eb',
+    id: 1, title: 'Welcome to OrangeFlow.in!', icon: Zap, color: '#f97316',
     desc: 'You\'re about to set up the most powerful Instagram automation tool for creators.',
     action: null,
   },
@@ -17,7 +17,7 @@ const steps = [
     action: { label: 'Connect Instagram', href: '/creator/instagram' },
   },
   {
-    id: 3, title: 'Create Your First Automation', icon: Zap, color: '#2563eb',
+    id: 3, title: 'Create Your First Automation', icon: Zap, color: '#f97316',
     desc: 'Set a keyword and write the DM response your followers will receive.',
     action: { label: 'Create Automation', href: '/creator/automations/new' },
   },

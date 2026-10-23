@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Bot, ChevronLeft, ChevronRight, Inbox, LayoutDashboard, LogOut, Megaphone, Settings, Sparkles } from 'lucide-react';
+import Image from 'next/image';
+import { Bot, ChevronLeft, ChevronRight, Inbox, LayoutDashboard, LogOut, Megaphone, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
@@ -47,7 +48,7 @@ export default function BrandLayout({ children }: { children: React.ReactNode })
     <div className="creator-shell">
       <motion.aside animate={{ width: collapsed ? 72 : 248 }} className="creator-sidebar" transition={{ duration: 0.22 }}>
         <div className="creator-sidebar__brand">
-          <div className="creator-brand-mark"><Sparkles size={15} fill="currentColor" /></div>
+          <div className="creator-brand-mark"><Image src="/icon.svg" alt="" width={26} height={26} className="h-6 w-6 object-contain" /></div>
           <AnimatePresence>{!collapsed && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-[15px] font-semibold tracking-tight">OrangeFlow<span className="text-[var(--brand-from)]">.in</span></motion.span>}</AnimatePresence>
         </div>
         <div className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-muted)]">Business workspace</div>

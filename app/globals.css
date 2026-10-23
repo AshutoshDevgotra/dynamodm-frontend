@@ -10,23 +10,23 @@
 :root {
   color-scheme: light;
 
-  --bg-base: #f4f6fb;
+  --bg-base: #fffaf5;
   --bg-elevated: #ffffff;
   --bg-card: #ffffff;
-  --bg-card-hover: #f8f9fc;
-  --bg-subtle: #eef1f7;
+  --bg-card-hover: #fff7ed;
+  --bg-subtle: #fff1e6;
   --bg-overlay: rgba(11, 18, 32, 0.45);
   --bg-primary: var(--bg-base);
   --bg-secondary: var(--bg-elevated);
 
-  --brand-from: #2563eb;
-  --brand-to: #1d4ed8;
-  --brand-mid: #3b82f6;
-  --brand-subtle: rgba(37, 99, 235, 0.1);
-  --brand-border: rgba(37, 99, 235, 0.22);
-  --brand-glow: rgba(37, 99, 235, 0.22);
-  --accent-yellow: #f5d90a;
-  --accent-coral: #ff4d3a;
+  --brand-from: #f97316;
+  --brand-to: #c2410c;
+  --brand-mid: #fb923c;
+  --brand-subtle: rgba(249, 115, 22, 0.1);
+  --brand-border: rgba(249, 115, 22, 0.25);
+  --brand-glow: rgba(249, 115, 22, 0.22);
+  --accent-yellow: #fbbf24;
+  --accent-coral: #ea580c;
 
   --success: #10b981;
   --success-subtle: rgba(16, 185, 129, 0.1);
@@ -40,19 +40,19 @@
   --danger-subtle: rgba(244, 63, 94, 0.1);
   --danger-border: rgba(244, 63, 94, 0.28);
 
-  --text-primary: #0b1220;
-  --text-secondary: #5b6475;
-  --text-muted: #8b93a7;
-  --text-disabled: #c5cad6;
+  --text-primary: #1c1917;
+  --text-secondary: #6b625c;
+  --text-muted: #9a8f86;
+  --text-disabled: #c9c0b8;
 
-  --border-subtle: rgba(11, 18, 32, 0.06);
-  --border-default: rgba(11, 18, 32, 0.1);
-  --border-strong: rgba(11, 18, 32, 0.16);
+  --border-subtle: rgba(67, 39, 19, 0.06);
+  --border-default: rgba(67, 39, 19, 0.1);
+  --border-strong: rgba(67, 39, 19, 0.16);
 
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
   --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
   --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.1);
-  --shadow-brand: 0 12px 32px rgba(37, 99, 235, 0.22);
+  --shadow-brand: 0 12px 32px rgba(234, 88, 12, 0.22);
   --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.06);
 
   --radius-xs: 4px;
@@ -64,9 +64,9 @@
   --radius-full: 9999px;
 
   --gradient-brand: linear-gradient(135deg, var(--brand-from) 0%, var(--brand-to) 100%);
-  --gradient-brand-soft: linear-gradient(180deg, #3b82f6 0%, #60a5fa 42%, #dbeafe 78%, #f4f6fb 100%);
-  --gradient-mesh: radial-gradient(ellipse at 20% 0%, rgba(59, 130, 246, 0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 15%, rgba(147, 197, 253, 0.25) 0%, transparent 50%);
+  --gradient-brand-soft: linear-gradient(180deg, #ea580c 0%, #fb923c 42%, #ffedd5 78%, #fffaf5 100%);
+  --gradient-mesh: radial-gradient(ellipse at 20% 0%, rgba(249, 115, 22, 0.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(254, 215, 170, 0.35) 0%, transparent 50%);
 }
 
 .dark {
@@ -81,9 +81,9 @@
   --bg-primary: var(--bg-base);
   --bg-secondary: var(--bg-elevated);
 
-  --brand-subtle: rgba(59, 130, 246, 0.16);
-  --brand-border: rgba(59, 130, 246, 0.32);
-  --brand-glow: rgba(59, 130, 246, 0.28);
+  --brand-subtle: rgba(249, 115, 22, 0.16);
+  --brand-border: rgba(249, 115, 22, 0.32);
+  --brand-glow: rgba(249, 115, 22, 0.28);
 
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
@@ -97,11 +97,11 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-brand: 0 0 40px rgba(37, 99, 235, 0.25);
+  --shadow-brand: 0 0 40px rgba(249, 115, 22, 0.25);
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
 
-  --gradient-mesh: radial-gradient(ellipse at 20% 50%, rgba(37, 99, 235, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(59, 130, 246, 0.12) 0%, transparent 60%);
+  --gradient-mesh: radial-gradient(ellipse at 20% 50%, rgba(249, 115, 22, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(251, 146, 60, 0.14) 0%, transparent 60%);
 }
 
 *,
@@ -196,7 +196,7 @@ a { color: inherit; }
 }
 
 .shimmer {
-  background: linear-gradient(90deg, var(--bg-subtle) 0%, rgba(37, 99, 235, 0.08) 45%, var(--bg-subtle) 100%);
+  background: linear-gradient(90deg, var(--bg-subtle) 0%, rgba(249, 115, 22, 0.08) 45%, var(--bg-subtle) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.6s ease-in-out infinite;
 }
@@ -206,7 +206,7 @@ a { color: inherit; }
 ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: var(--radius-full); }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
 
-::selection { background: rgba(37, 99, 235, 0.2); color: inherit; }
+::selection { background: rgba(249, 115, 22, 0.24); color: inherit; }
 
 :focus-visible {
   outline: 2px solid var(--brand-from);

@@ -57,7 +57,7 @@ export default function StorefrontDashboard() {
           {products.map((product) => (
             <div key={product.id} className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
-                <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${product.type === 'AFFILIATE' ? 'bg-orange-50 text-orange-500' : 'bg-blue-50 text-blue-600'}`}>
+                <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${product.type === 'AFFILIATE' ? 'bg-orange-50 text-orange-500' : 'bg-orange-100 text-orange-700'}`}>
                   {product.type === 'AFFILIATE' ? <LinkIcon size={18} /> : <ShoppingBag size={18} />}
                 </div>
                 <div>

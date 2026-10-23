@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, HelpCircle,
@@ -117,7 +118,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
   if (!user) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-9 w-9 animate-spin rounded-full border-[3px] border-blue-200 border-t-[var(--brand-from)]" />
+        <div className="h-9 w-9 animate-spin rounded-full border-[3px] border-orange-200 border-t-[var(--brand-from)]" />
       </div>
     );
   }
@@ -131,7 +132,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
       >
         <div className="creator-sidebar__brand">
           <div className="creator-brand-mark">
-            <Zap size={15} fill="currentColor" />
+            <Image src="/icon.svg" alt="" width={26} height={26} className="h-6 w-6 object-contain" />
           </div>
           <AnimatePresence>
             {!collapsed && (

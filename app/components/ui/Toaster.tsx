@@ -30,7 +30,7 @@ export function Toaster() {
     return () => { toastFn = null; };
   }, []);
 
-  const colors = { success: '#10b981', error: '#ef4444', info: '#2563eb' };
+  const colors = { success: '#10b981', error: '#ef4444', info: '#f97316' };
 
   if (!mounted) return null;
 

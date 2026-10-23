@@ -22,7 +22,7 @@ const PLANS = [
     description: 'For creators getting started',
     features: ['3 Automations', '500 Leads', '1,000 DMs/month', '7-day analytics'],
     icon: Zap,
-    color: '#2563eb',
+    color: '#f97316',
     badge: 'Best value',
   },
   {

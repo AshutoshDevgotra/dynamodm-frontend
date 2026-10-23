@@ -26,7 +26,7 @@ export default function SignupPage() {
   };
 
   const strength = passwordStrength(form.password);
-  const strengthColors = ['#ef4444', '#f59e0b', '#10b981', '#2563eb'];
+  const strengthColors = ['#ef4444', '#f59e0b', '#10b981', '#f97316'];
   const strengthLabels = ['Weak', 'Fair', 'Good', 'Strong'];
 
   const handleSubmit = async (e: React.FormEvent) => {

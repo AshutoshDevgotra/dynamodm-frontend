@@ -49,7 +49,7 @@ export default function Navbar() {
                   href={link.href}
                   className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
                     active
-                      ? 'bg-[#f5d90a] text-zinc-900'
+                      ? 'bg-orange-100 text-orange-900'
                       : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
                   }`}
                 >

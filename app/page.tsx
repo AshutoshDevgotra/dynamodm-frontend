@@ -42,7 +42,7 @@ export default function HomePage() {
       <Navbar />
 
       <section className="landing-section px-4 pt-28 pb-12 sm:px-6">
-        <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#2563eb_0%,#60a5fa_46%,#dbeafe_78%,#f4f6fb_100%)] px-6 pb-14 pt-20 text-center sm:px-12 sm:pt-24">
+        <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#c2410c_0%,#f97316_46%,#fed7aa_78%,#fffaf5_100%)] px-6 pb-14 pt-20 text-center sm:px-12 sm:pt-24">
           <p className="mb-5 text-sm font-medium text-white/80">AI-powered conversations for creators and businesses</p>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
             Turn every comment or
@@ -88,11 +88,11 @@ export default function HomePage() {
             <p className="mt-3 leading-7 text-zinc-600">Someone comments “LINK” or asks where to buy. Orange Flow sends the product, storefront, affiliate, Amazon, Flipkart, or Shopify link directly in the DM and captures the person as a lead.</p>
             <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-orange-800"><span className="rounded-full bg-white px-3 py-1.5">Comment trigger</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Product link</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Lead captured</span></div>
           </div>
-          <div className="rounded-[28px] border border-blue-200 bg-blue-50 p-8">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white"><Bot size={22} /></div>
+          <div className="rounded-[28px] border border-stone-200 bg-stone-50 p-8">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1c1917] text-orange-300"><Bot size={22} /></div>
             <h3 className="text-2xl font-semibold">For businesses: let AI understand intent</h3>
             <p className="mt-3 leading-7 text-zinc-600">When someone comments or messages your brand page, AI analyzes the question and replies using the context you add—your products, prices, policies, FAQs, offers, and tone of voice.</p>
-            <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-blue-800"><span className="rounded-full bg-white px-3 py-1.5">Customer question</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">AI + brand context</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Helpful answer</span></div>
+            <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-stone-700"><span className="rounded-full bg-white px-3 py-1.5">Customer question</span><ArrowRight size={14} className="mt-1 text-orange-500" /><span className="rounded-full bg-white px-3 py-1.5">AI + brand context</span><ArrowRight size={14} className="mt-1 text-orange-500" /><span className="rounded-full bg-white px-3 py-1.5">Helpful answer</span></div>
           </div>
         </div>
       </section>

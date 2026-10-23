@@ -33,7 +33,7 @@ export default function PricingCard({
       }`}
     >
       {badge && (
-        <div className="absolute -top-3 left-6 rounded-full bg-[#f5d90a] px-3 py-1 text-[11px] font-semibold text-zinc-900">
+        <div className="absolute -top-3 left-6 rounded-full bg-orange-200 px-3 py-1 text-[11px] font-semibold text-orange-950">
           {badge}
         </div>
       )}
@@ -46,7 +46,7 @@ export default function PricingCard({
       <ul className="mb-8 space-y-3">
         {features.map((f) => (
           <li key={f} className={`flex items-start gap-2.5 text-sm ${highlighted ? 'text-zinc-300' : 'text-zinc-600'}`}>
-            <Check size={16} className={highlighted ? 'mt-0.5 text-blue-300' : 'mt-0.5 text-[var(--brand-from)]'} />
+            <Check size={16} className={highlighted ? 'mt-0.5 text-orange-300' : 'mt-0.5 text-[var(--brand-from)]'} />
             {f}
           </li>
         ))}
