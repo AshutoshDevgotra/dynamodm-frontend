@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BarChart3, Bot, MessageCircle, Shield, Store, Target, Users } from 'lucide-react';
+import { ArrowRight, BarChart3, Bot, MessageCircle, Shield, Sparkles, Store, Target, Users } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FeatureCard from './components/home/FeatureCard';
@@ -45,8 +45,8 @@ export default function HomePage() {
         <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[linear-gradient(180deg,#2563eb_0%,#60a5fa_46%,#dbeafe_78%,#f4f6fb_100%)] px-6 pb-10 pt-16 text-center sm:px-12 sm:pt-20">
           <p className="mb-5 text-sm font-medium text-white/80">AI-powered conversations for creators and businesses</p>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-            Turn attention into
-            <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">every comment.</span>
+            Turn every comment
+            <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">and/or every lead into growth.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-base text-white/85 sm:text-lg">
             Auto-reply to comments, understand customer intent, and respond with the right product, link, or answer using your brand context.
@@ -69,6 +69,31 @@ export default function HomePage() {
           <span>Official Graph API</span>
           <span>Razorpay payouts</span>
           <span>Built for creators &amp; businesses</span>
+        </div>
+      </section>
+
+      <section className="container py-16 sm:py-24">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <span className="badge badge-brand mb-4"><Sparkles size={13} /> One platform, two growth engines</span>
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+            Built for creators.
+            <span className="mt-2 block font-serif text-4xl italic font-normal sm:text-5xl">Ready for business.</span>
+          </h2>
+          <p className="mt-4 text-[var(--text-secondary)]">Turn a comment into a useful reply, a product link, a qualified lead, or a sale—without losing the human context.</p>
+        </div>
+        <div className="grid gap-5 lg:grid-cols-2">
+          <div className="rounded-[28px] border border-orange-200 bg-orange-50 p-8">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white"><Store size={22} /></div>
+            <h3 className="text-2xl font-semibold">For creators: make every comment shoppable</h3>
+            <p className="mt-3 leading-7 text-zinc-600">Someone comments “LINK” or asks where to buy. Orange Flow sends the product, storefront, affiliate, Amazon, Flipkart, or Shopify link directly in the DM and captures the person as a lead.</p>
+            <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-orange-800"><span className="rounded-full bg-white px-3 py-1.5">Comment trigger</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Product link</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Lead captured</span></div>
+          </div>
+          <div className="rounded-[28px] border border-blue-200 bg-blue-50 p-8">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white"><Bot size={22} /></div>
+            <h3 className="text-2xl font-semibold">For businesses: let AI understand intent</h3>
+            <p className="mt-3 leading-7 text-zinc-600">When someone comments or messages your brand page, AI analyzes the question and replies using the context you add—your products, prices, policies, FAQs, offers, and tone of voice.</p>
+            <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-blue-800"><span className="rounded-full bg-white px-3 py-1.5">Customer question</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">AI + brand context</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Helpful answer</span></div>
+          </div>
         </div>
       </section>
 
