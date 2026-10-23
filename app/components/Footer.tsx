@@ -21,15 +21,15 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-black/6 bg-white">
-      <div className="container pt-32 pb-20 sm:pt-40 sm:pb-24">
-        <div className="grid grid-cols-1 gap-14 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <Logo />
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--text-secondary)]">
+    <footer className="border-t border-white/10 bg-[#0b1220] text-white">
+      <div className="container py-14 sm:py-16">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.8fr_1fr_1fr] md:gap-16">
+          <div className="max-w-md">
+            <Logo light />
+            <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
               Orange Flow helps creators monetize attention and helps businesses turn customer conversations into qualified leads with AI.
             </p>
-            <div className="mt-5 flex gap-2">
+            <div className="mt-6 flex gap-2.5">
               {[
                 { icon: Share2, href: '#', label: 'Social' },
                 { icon: Globe, href: '#', label: 'Website' },
@@ -39,7 +39,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-black/8 text-zinc-500 hover:border-black/15 hover:text-zinc-900"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-white/40 hover:bg-white/10 hover:text-white"
                 >
                   <Icon size={15} />
                 </a>
@@ -49,11 +49,11 @@ export default function Footer() {
 
           {Object.entries(columns).map(([title, items]) => (
             <div key={title}>
-              <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">{title}</h4>
-              <ul className="flex list-none flex-col gap-2.5">
+              <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-white">{title}</h4>
+              <ul className="flex list-none flex-col gap-3.5">
                 {items.map((item) => (
                   <li key={item.label}>
-                    <Link href={item.href} className="text-sm text-zinc-600 hover:text-zinc-900">
+                    <Link href={item.href} className="text-sm text-slate-300 transition hover:text-white">
                       {item.label}
                     </Link>
                   </li>
@@ -63,9 +63,9 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-black/6 pt-8 text-[13px] text-zinc-400 sm:flex-row sm:items-center">
-          <p>© {year} OrangeFlow.in. All rights reserved.</p>
-          <p>Made in India</p>
+        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center">
+          <p>{String.fromCharCode(169)} {year} OrangeFlow.in. All rights reserved.</p>
+          <p className="text-slate-300">Made in India <span className="ml-1" aria-hidden="true">{String.fromCodePoint(0x1f1ee, 0x1f1f3)}</span></p>
         </div>
       </div>
     </footer>
