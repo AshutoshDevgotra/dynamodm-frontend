@@ -171,9 +171,9 @@ export default function HomePage() {
 
       <section className="landing-section px-4 pb-16 sm:px-6">
         <div className="mx-auto max-w-[1160px] rounded-[32px] bg-[#0b1220] px-8 py-16 text-center text-white">
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+          <h2 style={{ color: '#ffffff' }} className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
             Make every conversation count
-            <span className="mt-2 block font-serif text-4xl italic font-normal sm:text-5xl">Free to start. No commitments.</span>
+            <span style={{ color: 'rgba(255,255,255,0.72)' }} className="mt-2 block font-serif text-4xl italic font-normal text-white/70 sm:text-5xl">Free to start. No commitments.</span>
           </h2>
           <Link href="/signup" className="btn-primary mt-8 !bg-white !text-zinc-900 hover:!bg-zinc-100">
             Start for Free <ArrowRight size={16} />
