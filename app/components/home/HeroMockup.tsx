@@ -35,7 +35,7 @@ export default function HeroMockup() {
                 key={item.label}
                 className={`mb-0.5 rounded-lg px-3 py-2 text-[12px] font-medium ${
                   item.active
-                    ? 'bg-[#F4ECF4] text-[#8B6B87] font-semibold'
+                    ? 'bg-[#FFF0E7] text-[#FF5A1F] font-semibold'
                     : 'text-[#6B7280]'
                 }`}
               >
@@ -63,7 +63,7 @@ export default function HeroMockup() {
                   <div className="text-[12px] font-semibold text-[#111111]">SIP Recipe Giveaway</div>
                   <div className="text-[11px] text-[#9ca3af]">Keyword: SIP · Comment → DM</div>
                 </div>
-                <div className="flex items-center gap-1 rounded-full bg-[#F4ECF4] px-2.5 py-1 text-[10px] font-bold text-[#8B6B87]">
+                <div className="flex items-center gap-1 rounded-full bg-[#FFF0E7] px-2.5 py-1 text-[10px] font-bold text-[#FF5A1F]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#8B6B87]" /> Active
                 </div>
               </div>

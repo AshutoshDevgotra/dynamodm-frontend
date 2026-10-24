@@ -9,7 +9,7 @@ interface LogoProps {
 export default function Logo({ light = false, className = '' }: LogoProps) {
   return (
     <Link href="/" className={`group flex items-center gap-2.5 no-underline ${className}`} aria-label="OrangeFlow.in home">
-      <span className="flex h-8 w-8 max-h-8 max-w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#EDE3EC] shadow-sm ring-1 ring-[#B99AAA]/30 transition-transform group-hover:scale-105">
+      <span className="flex h-8 w-8 max-h-8 max-w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#FFE0D2] shadow-sm ring-1 ring-[#FFB08F]/30 transition-transform group-hover:scale-105">
         <Image src="/favicon.ico" alt="" width={32} height={32} className="h-full w-full max-h-full max-w-full object-cover" />
       </span>
       <span
@@ -17,7 +17,7 @@ export default function Logo({ light = false, className = '' }: LogoProps) {
           light ? 'text-white' : 'text-[#111111]'
         }`}
       >
-        OrangeFlow<span className="text-[#8B6B87]">.</span>
+        OrangeFlow<span className="text-[#FF5A1F]">.</span>
       </span>
     </Link>
   );

@@ -58,7 +58,7 @@ export default function Navbar() {
                   href={link.href}
                   className={`rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors ${
                     active
-                      ? 'bg-[#C5AFC3] text-[#433646] shadow-sm'
+                      ? 'bg-[#FF5A1F] text-white shadow-sm'
                       : 'text-[#111111] hover:text-[#8B6B87]'
                   }`}
                 >
@@ -78,7 +78,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/signup"
-              className="btn-primary !py-2 !px-5 text-[13px] shadow-md hover:shadow-lg transition"
+              className="btn-primary !bg-[#FF5A1F] !text-white !py-2 !px-5 text-[13px] shadow-md hover:shadow-lg transition"
             >
               Start for Free
             </Link>
@@ -128,7 +128,7 @@ export default function Navbar() {
                       onClick={() => setMobileOpen(false)}
                       className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${
                         active
-                        ? 'bg-[#C5AFC3] text-[#433646]'
+                        ? 'bg-[#FF5A1F] text-white'
                           : 'text-[#111111] hover:bg-[#F5F7FA]'
                       }`}
                     >

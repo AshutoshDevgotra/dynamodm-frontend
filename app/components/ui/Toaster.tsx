@@ -45,7 +45,7 @@ export function Toaster() {
             borderLeft: `3px solid ${colors[t.type]}`,
             borderRadius: 12,
             padding: '12px 18px',
-            color: '#4A3742',
+            color: '#6B2A16',
             fontSize: 14,
             fontWeight: 500,
             maxWidth: 360,

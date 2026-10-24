@@ -125,7 +125,7 @@ export default function CreatorDashboard() {
 
   const quickActions = [
     { label: 'Create an AutoDM', href: '/creator/automations/new', icon: Zap, color: 'var(--brand-from)' },
-    { label: 'Find brand collabs', href: '/creator/collabs', icon: Users, color: '#db2777' },
+    { label: 'Find brand collabs', href: '/creator/collabs', icon: Users, color: '#FF8A5C' },
     { label: 'Add to creator shop', href: '/creator/storefront', icon: Plus, color: 'var(--brand-mid)' },
     { label: 'See audience insights', href: '/creator/analytics', icon: TrendingUp, color: 'var(--success)' },
   ];
@@ -179,8 +179,8 @@ export default function CreatorDashboard() {
 
       {/* Stats Grid */}
       <div className="creator-stat-grid">
-        <StatCard title="DMs Sent" value={stats?.dmsSent?.toLocaleString() || '0'} sub="Last 30 days" icon={MessageSquare} color="#8b5cf6" delay={0} />
-        <StatCard title="Total Leads" value={stats?.leadsTotal?.toLocaleString() || '0'} sub={`+${stats?.leadsNew || 0} this month`} icon={Users} color="#06b6d4" delay={0.1} />
+        <StatCard title="DMs Sent" value={stats?.dmsSent?.toLocaleString() || '0'} sub="Last 30 days" icon={MessageSquare} color="#FF5A1F" delay={0} />
+        <StatCard title="Total Leads" value={stats?.leadsTotal?.toLocaleString() || '0'} sub={`+${stats?.leadsNew || 0} this month`} icon={Users} color="#FF8A5C" delay={0.1} />
         <StatCard title="Comments" value={stats?.commentsReceived?.toLocaleString() || '0'} sub="Received & processed" icon={Activity} color="#10b981" delay={0.2} />
         <StatCard title="Success Rate" value={`${stats?.successRate || 0}%`} sub={`${stats?.automationsActive || 0} active rules`} icon={CheckCircle} color="#f59e0b" delay={0.3} />
       </div>

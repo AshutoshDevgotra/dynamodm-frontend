@@ -28,12 +28,12 @@ export default function PricingCard({
     <div
       className={`relative flex flex-col rounded-[24px] p-8 ${
         highlighted
-          ? 'bg-[#F4ECF4] border border-[#B99AAA] shadow-[0_8px_30px_rgba(112,85,103,0.15)]'
-          : 'border border-[#E5E7EB] bg-white shadow-sm'
+          ? 'bg-[#FFEFE4] border border-[#F0D6C6] shadow-[0_8px_30px_rgba(216,137,99,0.15)]'
+          : 'border border-[#F0D6C6] bg-[#FFEFE4] shadow-sm'
       }`}
     >
       {badge && (
-        <div className="absolute -top-3 left-6 rounded-full bg-[#8B6B87] px-3 py-1 text-[11px] font-semibold text-white shadow-sm shadow-[#705567]/30">
+        <div className="absolute -top-3 left-6 rounded-full bg-[#FFB08F] px-3 py-1 text-[11px] font-semibold text-[#6B2A16] shadow-sm shadow-[#D94A16]/20">
           {badge}
         </div>
       )}
@@ -49,7 +49,7 @@ export default function PricingCard({
       <ul className="mb-8 space-y-3 flex-1">
         {features.map((f) => (
           <li key={f} className="flex items-start gap-2.5 text-sm text-[#6B7280]">
-            <Check size={16} className="mt-0.5 shrink-0 text-[#8B6B87]" />
+            <Check size={16} className="mt-0.5 shrink-0 text-[#FF5A1F]" />
             {f}
           </li>
         ))}
@@ -59,7 +59,7 @@ export default function PricingCard({
         href={href}
         className={`flex w-full items-center justify-center rounded-full py-3 text-sm font-semibold transition-colors ${
           highlighted
-          ? 'bg-[#A98FA8] text-[#332B38] hover:bg-[#8B6B87]'
+          ? 'bg-[#FFB08F] text-[#6B2A16] hover:bg-[#FF5A1F] hover:text-white active:bg-[#B83B12]'
             : 'border border-[#E5E7EB] bg-white text-[#111111] hover:bg-[#F8F1ED] hover:border-[#B99AAA]'
         }`}
       >

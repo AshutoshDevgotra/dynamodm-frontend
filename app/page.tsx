@@ -146,8 +146,8 @@ export default function HomePage() {
 
         <div className="grid gap-7 lg:grid-cols-2">
           {/* Creator card */}
-          <div className="rounded-[28px] border border-[#E7D1C1] bg-[#F8EEE6] p-8">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#C5AFC3] text-[#433646] shadow-md shadow-[#8B6B87]/20">
+          <div className="rounded-[28px] border border-[#F0D6C6] bg-[#FFEFE4] p-8">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4D8C8] text-[#C87552] shadow-md shadow-[#D88963]/20">
               <Store size={22} />
             </div>
             <h3 className="text-[1.4rem]">For creators: make every comment shoppable</h3>
@@ -164,8 +164,8 @@ export default function HomePage() {
           </div>
 
           {/* Business card */}
-          <div className="rounded-[28px] border border-[#E5DED4] bg-[#F5F1EB] p-8">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#705567] text-white">
+          <div className="rounded-[28px] border border-[#F0D6C6] bg-[#FFEFE4] p-8">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E6A27F] text-[#4A3026]">
               <Bot size={22} />
             </div>
             <h3 className="text-[1.4rem]">For businesses: let AI understand intent</h3>
@@ -233,7 +233,7 @@ export default function HomePage() {
               { title: 'Brand perspectives', body: 'A place to share how thoughtful creator partnerships help brands grow.', label: 'Brand review' },
               { title: 'Community picks', body: 'Highlight the products, links, and workflows creators love to share.', label: 'Community favorite' },
             ].map((story) => (
-              <div key={story.title} className="flex min-h-[220px] flex-col rounded-[24px] border border-[#E4D8CB] bg-[#FBF8F4] p-6 sm:p-7">
+              <div key={story.title} className="flex min-h-[220px] flex-col rounded-[24px] border border-[#F0D6C6] bg-[#FFEFE4] p-6 sm:p-7">
                 <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[#F0E7DC] px-3 py-1.5 text-xs font-semibold text-[#735A46]"><Sparkles size={12} /> {story.label}</span>
                 <h3 className="mt-6 text-xl text-[#332B25]">{story.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-[#71655B]">{story.body}</p>
@@ -256,9 +256,9 @@ export default function HomePage() {
           </div>
           <div className="grid gap-7 md:grid-cols-3">
             {steps.map((step) => (
-              <div key={step.n} className="rounded-[24px] border border-[#E5E7EB] bg-white p-8 shadow-sm">
+              <div key={step.n} className="steps-card rounded-[24px] border border-[#F0D6C6] bg-[#FFEFE4] p-8 shadow-sm">
                 <div className="mb-4 inline-flex items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#C5AFC3] text-[12px] font-bold text-[#433646]">{step.n}</span>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F6C4AA] text-[12px] font-bold text-[#6B2A16]">{step.n}</span>
                 </div>
                 <h3 className="text-[1.2rem]">{step.title}</h3>
                 <p className="mt-3 text-[16px] leading-[1.75] text-[#6B7280]">{step.body}</p>
@@ -309,19 +309,19 @@ export default function HomePage() {
       <section className="py-20 sm:py-28">
         <div className="container">
           <div className="gradient-navy mx-auto max-w-[1000px] rounded-[32px] px-8 py-16 text-center shadow-[0_24px_60px_rgba(112,85,103,0.22)]">
-            <h2 className="!text-white" style={{ letterSpacing: '-0.045em' }}>
+            <h2 className="!text-[#6B2A16]" style={{ letterSpacing: '-0.045em' }}>
               Make every{' '}
-              <span className="text-[#8B6B87]">conversation</span>{' '}
+              <span className="text-[#FF5A1F]">conversation</span>{' '}
               count.
             </h2>
-            <p className="mx-auto mt-5 max-w-md text-[16px] leading-relaxed text-white/70">
+            <p className="mx-auto mt-5 max-w-md text-[16px] leading-relaxed text-[#8B4A32]">
               Free to start. No credit card. Cancel anytime.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Link href="/signup" className="btn-primary !bg-[#C5AFC3] !text-[#433646] !px-8 !py-3.5 text-[15px] hover:!bg-[#B99AAA]">
+              <Link href="/signup" className="btn-primary !bg-[#FFB08F] !text-[#6B2A16] !px-8 !py-3.5 text-[15px] hover:!bg-[#FF5A1F] hover:!text-white active:!bg-[#B83B12]">
                 Start for Free <ArrowRight size={16} />
               </Link>
-              <Link href="/pricing" className="btn-outline !border-white/30 !text-white hover:!bg-white/10 !px-8 !py-3.5 text-[15px]">
+              <Link href="/pricing" className="btn-outline !border-[#C97D59] !text-[#6B2A16] hover:!bg-[#FFE7D9] !px-8 !py-3.5 text-[15px]">
                 See pricing
               </Link>
             </div>

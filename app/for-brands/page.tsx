@@ -14,14 +14,14 @@ const stats = [
 
 export default function ForBrandsPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="brands-page min-h-screen">
       <Navbar />
 
       {/* Hero */}
-      <section className="px-4 pt-[68px] pb-8 sm:px-6">
+      <section className="brands-hero-section px-4 pt-[68px] pb-8 sm:px-6">
         <div className="premium-hero mx-auto max-w-[1160px] overflow-hidden rounded-[36px] px-6 py-20 text-center text-white sm:px-12">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm text-white/80 ring-1 ring-white/15">
-            <Sparkles size={14} className="text-[#C8B1C7]" /> AI customer conversations for brands
+            <Sparkles size={14} className="text-[#FFB08F]" /> AI customer conversations for brands
           </div>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
             Turn comments into
@@ -42,7 +42,7 @@ export default function ForBrandsPage() {
       </section>
 
       {/* Stats */}
-      <section className="container grid grid-cols-2 gap-6 py-14 md:grid-cols-4">
+      <section className="brands-stats container grid grid-cols-2 gap-6 py-14 md:grid-cols-4">
         {stats.map((stat) => (
           <div key={stat.label} className="text-center">
             <div className="text-3xl font-semibold tracking-tight text-[#111111]">{stat.value}</div>
@@ -52,14 +52,14 @@ export default function ForBrandsPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="container grid gap-5 pb-20 md:grid-cols-3">
+      <section id="features" className="brands-feature-section container grid gap-5 pb-20 md:grid-cols-3">
         {[
           { icon: Target, title: 'Trigger-word campaigns', body: 'Set multiple keywords for a reel or product and automatically send a website, Amazon, Flipkart, or Shopify link.' },
           { icon: Sparkles, title: 'Context-aware AI', body: 'Add your brand, catalog, offers, policies, and FAQs. AI uses that context to understand intent and give a useful answer.' },
           { icon: Shield, title: 'Lead capture that works', body: 'Keep the conversation moving, collect high-intent leads, and give your sales team the context they need.' },
         ].map(({ icon: Icon, title, body }) => (
-          <div key={title} className="rounded-[24px] border border-[#E5E7EB] bg-white p-8 shadow-sm">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-subtle)] text-[#8B6B87]">
+          <div key={title} className="brands-feature-card rounded-[24px] border border-[#F0D6C6] bg-[#F1DDD0] p-8 shadow-sm">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-subtle)] text-[#FF5A1F]">
               <Icon size={22} />
             </div>
             <h3 className="text-xl font-semibold text-[#111111]">{title}</h3>
@@ -69,13 +69,13 @@ export default function ForBrandsPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="px-4 pb-16 sm:px-6">
-        <div className="mx-auto max-w-[1160px] rounded-[32px] bg-[#705567] px-8 py-16 text-center shadow-[0_24px_60px_rgba(112,85,103,0.25)]">
+      <section className="brands-cta-section px-4 pb-16 sm:px-6">
+        <div className="mx-auto max-w-[1160px] rounded-[32px] bg-[#6B2A16] px-8 py-16 text-center shadow-[0_24px_60px_rgba(107,42,22,0.25)]">
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
             Ready to scale
             <span className="font-serif italic font-normal"> every conversation?</span>
           </h2>
-          <Link href="/signup?role=brand" className="btn-primary mt-8 inline-flex !bg-[#C5AFC3] !text-[#433646] hover:!bg-[#B99AAA]">
+          <Link href="/signup?role=brand" className="btn-primary mt-8 inline-flex !bg-[#FFB08F] !text-[#6B2A16] hover:!bg-[#FF5A1F] hover:!text-white active:!bg-[#B83B12]">
             Create business account <ArrowRight size={16} />
           </Link>
         </div>
