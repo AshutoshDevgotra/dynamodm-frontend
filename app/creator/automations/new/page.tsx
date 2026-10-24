@@ -179,12 +179,6 @@ export default function NewAutomationPage() {
               </div>
             </div>
 
-            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}>
-              <label style={{ fontSize: 13, fontWeight: 650 }}>Before the primary DM (optional)</label>
-              <p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Add a follow or email request that should be sent first.</p>
-              {(['FOLLOW', 'EMAIL'] as const).map((type) => <div key={type} style={{ marginTop: 8 }}><input className="input-field" placeholder={type === 'FOLLOW' ? 'DM asking them to follow you' : 'DM asking for their email'} value={form.preDms.find((item) => item.type === type)?.message || ''} onChange={(e) => setForm({ ...form, preDms: [...form.preDms.filter((item) => item.type !== type), ...(e.target.value ? [{ type, message: e.target.value }] : [])] })} /></div>)}
-            </div>
-
             {form.triggerType === 'comment' && (
               <div style={{ marginBottom: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 6 }}>
@@ -274,7 +268,15 @@ export default function NewAutomationPage() {
             <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Turn comments into followers first, then deliver the resource only after the follow is confirmed.</p>
             <div style={{ padding: 16, marginBottom: 24, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: 12 }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Users size={18} color="#4ade80" /><div><div style={{ fontWeight: 700, fontSize: 13 }}>Follow-to-unlock</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Followers receive the link/PDF. Everyone else gets a friendly prompt to follow first, creating a path from comment to follower.</div></div></div>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14, fontSize: 13, fontWeight: 600 }}><input type="checkbox" checked={form.requireFollow} onChange={(e) => setForm({ ...form, requireFollow: e.target.checked })} /> Require a follow before sending the resource</label>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 14 }}>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 650 }}>Require a follow before the primary DM</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 3 }}>{form.requireFollow ? 'On — non-followers get a Follow us button first.' : 'Off — everyone receives the primary DM immediately.'}</div>
+                </div>
+                <button type="button" onClick={() => setForm({ ...form, requireFollow: !form.requireFollow })} aria-pressed={form.requireFollow} aria-label={form.requireFollow ? 'Disable follow-to-unlock' : 'Enable follow-to-unlock'} style={{ flexShrink: 0, width: 48, height: 28, padding: 2, border: `1px solid ${form.requireFollow ? 'var(--brand-from)' : 'var(--border-strong)'}`, borderRadius: 999, background: form.requireFollow ? 'var(--brand-from)' : 'var(--bg-subtle)', cursor: 'pointer', transition: 'all 0.2s' }}>
+                  <span style={{ display: 'block', width: 22, height: 22, borderRadius: '50%', background: '#fff', transform: `translateX(${form.requireFollow ? 18 : 0}px)`, transition: 'transform 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,.2)' }} />
+                </button>
+              </div>
               {form.requireFollow && <textarea className="input-field" rows={2} style={{ marginTop: 10 }} value={form.followRequiredMessage} onChange={(e) => setForm({ ...form, followRequiredMessage: e.target.value })} />}
             </div>
 
