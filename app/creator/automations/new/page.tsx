@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Camera } from 'lucide-react';
+import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Camera, Users } from 'lucide-react';
 import { toast } from '../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../components/ui/InstagramPostSelector';
 
@@ -20,6 +20,7 @@ export default function NewAutomationPage() {
   const [saving, setSaving] = useState(false);
   const [checkingInstagram, setCheckingInstagram] = useState(true);
   const [instagramConnected, setInstagramConnected] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
   const [form, setForm] = useState<{
     name: string;
     keyword: string;
@@ -30,6 +31,17 @@ export default function NewAutomationPage() {
     ctaLink: string;
     sendPublicReply: boolean;
     publicReplyMessage: string;
+    requireFollow: boolean;
+    followRequiredMessage: string;
+    aiFallback: boolean;
+    aiFallbackInstruction: string;
+    excludedKeywords: string;
+    delaySeconds: number;
+    preDms: { type: 'FOLLOW' | 'EMAIL'; message: string }[];
+    primaryDmType: 'TEXT' | 'TEXT_BUTTON';
+    buttonLabel: string;
+    buttonUrl: string;
+    trackButtonClicks: boolean;
   }>({
     name: '',
     keyword: '',
@@ -39,7 +51,18 @@ export default function NewAutomationPage() {
     responseMessage: '',
     ctaLink: '',
     sendPublicReply: false,
-    publicReplyMessage: '',
+    publicReplyMessage: 'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩',
+    requireFollow: true,
+    followRequiredMessage: 'First follow us to get the link or any PDF or the resource.',
+    aiFallback: false,
+    aiFallbackInstruction: '',
+    excludedKeywords: '',
+    delaySeconds: 60,
+    preDms: [],
+    primaryDmType: 'TEXT_BUTTON',
+    buttonLabel: 'Get the resource',
+    buttonUrl: '',
+    trackButtonClicks: true,
   });
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
@@ -70,7 +93,7 @@ export default function NewAutomationPage() {
       const res = await fetch('/api/automations', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, publicReplyMessages: form.publicReplyMessage.split(/\r?\n/).map((message) => message.trim()).filter(Boolean) }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -135,7 +158,7 @@ export default function NewAutomationPage() {
         {step === 1 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Configure Trigger</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>What keyword should trigger this automation?</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Choose where the automation listens and what kind of interaction should trigger it.</p>
 
             <div style={{ marginBottom: 20 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Automation Name *</label>
@@ -145,14 +168,21 @@ export default function NewAutomationPage() {
 
             <div style={{ marginBottom: 24 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Trigger Type *</label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
                 <div onClick={() => setForm({ ...form, triggerType: 'comment' })} style={{ padding: '12px', border: `2px solid ${form.triggerType === 'comment' ? '#8b5cf6' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === 'comment' ? 'rgba(139,92,246,0.1)' : 'transparent' }}>
                   <div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === 'comment' ? '#a78bfa' : 'var(--text-primary)' }}>Post Comment</div>
                 </div>
                 <div onClick={() => setForm({ ...form, triggerType: 'dm' })} style={{ padding: '12px', border: `2px solid ${form.triggerType === 'dm' ? '#8b5cf6' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === 'dm' ? 'rgba(139,92,246,0.1)' : 'transparent' }}>
                   <div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === 'dm' ? '#a78bfa' : 'var(--text-primary)' }}>Direct Message</div>
                 </div>
+                {([{ value: 'story', label: 'Story reply' }, { value: 'live', label: 'Live comment' }, { value: 'keyword', label: 'Keyword anywhere' }] as const).map((option) => <div key={option.value} onClick={() => setForm({ ...form, triggerType: option.value })} style={{ padding: '12px', border: `2px solid ${form.triggerType === option.value ? '#8b5cf6' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === option.value ? 'rgba(139,92,246,0.1)' : 'transparent' }}><div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === option.value ? '#a78bfa' : 'var(--text-primary)' }}>{option.label}</div></div>)}
               </div>
+            </div>
+
+            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}>
+              <label style={{ fontSize: 13, fontWeight: 650 }}>Before the primary DM (optional)</label>
+              <p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Add a follow or email request that should be sent first.</p>
+              {(['FOLLOW', 'EMAIL'] as const).map((type) => <div key={type} style={{ marginTop: 8 }}><input className="input-field" placeholder={type === 'FOLLOW' ? 'DM asking them to follow you' : 'DM asking for their email'} value={form.preDms.find((item) => item.type === type)?.message || ''} onChange={(e) => setForm({ ...form, preDms: [...form.preDms.filter((item) => item.type !== type), ...(e.target.value ? [{ type, message: e.target.value }] : [])] })} /></div>)}
             </div>
 
             {form.triggerType === 'comment' && (
@@ -171,10 +201,16 @@ export default function NewAutomationPage() {
             )}
 
             <div style={{ marginBottom: 24 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Trigger Keyword *</label>
+              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Trigger Keyword {form.triggerType === 'comment' ? '(optional)' : '*'}</label>
               <input className="input-field" placeholder='e.g. SIP, GUIDE, FREE' value={form.keyword}
                 onChange={(e) => setForm({ ...form, keyword: e.target.value })} style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 600, letterSpacing: '0.05em' }} />
-              <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>Case-insensitive. You can enter multiple keywords separated by commas.</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>Leave blank for any comment. Exclusions and AI meaning-match can be configured below.</p>
+            </div>
+
+            <div style={{ display: 'grid', gap: 12, marginBottom: 20 }}>
+              <input className="input-field" placeholder="Excluded keywords (comma separated)" value={form.excludedKeywords} onChange={(e) => setForm({ ...form, excludedKeywords: e.target.value })} />
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 14, border: '1px solid #60a5fa', borderRadius: 12, background: 'rgba(96,165,250,0.08)', fontSize: 13, fontWeight: 650 }}><input type="checkbox" checked={form.aiFallback} onChange={(e) => setForm({ ...form, aiFallback: e.target.checked })} /> Reply without keywords using AI meaning-match</label>
+              {form.aiFallback && <textarea className="input-field" rows={2} placeholder="Describe which comments should count (for example: comments asking for the guide)" value={form.aiFallbackInstruction} onChange={(e) => setForm({ ...form, aiFallbackInstruction: e.target.value })} />}
             </div>
 
             <div style={{ marginBottom: 24 }}>
@@ -210,6 +246,9 @@ export default function NewAutomationPage() {
                 style={{ resize: 'vertical', lineHeight: 1.6 }} />
             </div>
 
+            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Set a time delay</label><p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Wait before sending the first DM.</p><input className="input-field" type="number" min={0} max={86400} value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: Number(e.target.value) })} /></div>
+            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Primary DM type</label><select className="input-field" style={{ marginTop: 8 }} value={form.primaryDmType} onChange={(e) => setForm({ ...form, primaryDmType: e.target.value as 'TEXT' | 'TEXT_BUTTON' })}><option value="TEXT_BUTTON">Text + Button</option><option value="TEXT">Text only</option></select>{form.primaryDmType === 'TEXT_BUTTON' && <div style={{ display: 'grid', gap: 8, marginTop: 8 }}><input className="input-field" placeholder="Button label" value={form.buttonLabel} onChange={(e) => setForm({ ...form, buttonLabel: e.target.value })} /><input className="input-field" placeholder="Button URL" value={form.buttonUrl || form.ctaLink} onChange={(e) => setForm({ ...form, buttonUrl: e.target.value, ctaLink: e.target.value })} /><label style={{ fontSize: 12 }}><input type="checkbox" checked={form.trackButtonClicks} onChange={(e) => setForm({ ...form, trackButtonClicks: e.target.checked })} /> Track button clicks</label></div>}</div>
+
             <div style={{ marginBottom: 20 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>CTA Link (optional)</label>
               <input className="input-field" placeholder="https://your-link.com/free-guide" value={form.ctaLink}
@@ -231,12 +270,17 @@ export default function NewAutomationPage() {
         {/* Step 3 — Settings */}
         {step === 3 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Optional Public Reply</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>The private DM is always sent. Add a public comment reply only if you want one.</p>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Growth & safety settings</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Turn comments into followers first, then deliver the resource only after the follow is confirmed.</p>
+            <div style={{ padding: 16, marginBottom: 24, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: 12 }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Users size={18} color="#4ade80" /><div><div style={{ fontWeight: 700, fontSize: 13 }}>Follow-to-unlock</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Followers receive the link/PDF. Everyone else gets a friendly prompt to follow first, creating a path from comment to follower.</div></div></div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14, fontSize: 13, fontWeight: 600 }}><input type="checkbox" checked={form.requireFollow} onChange={(e) => setForm({ ...form, requireFollow: e.target.checked })} /> Require a follow before sending the resource</label>
+              {form.requireFollow && <textarea className="input-field" rows={2} style={{ marginTop: 10 }} value={form.followRequiredMessage} onChange={(e) => setForm({ ...form, followRequiredMessage: e.target.value })} />}
+            </div>
 
             <div style={{ marginBottom: 24 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Public comment reply (optional)</label>
+                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Public comment replies (2–3 variants)</label>
                 <button onClick={() => setForm({ ...form, sendPublicReply: !form.sendPublicReply })}
                   aria-label={form.sendPublicReply ? 'Disable public comment reply' : 'Enable public comment reply'}
                   style={{ background: form.sendPublicReply ? 'var(--brand-from)' : 'var(--bg-subtle)', border: `1px solid ${form.sendPublicReply ? 'var(--brand-from)' : 'var(--border-strong)'}`, borderRadius: 20, width: 44, height: 24, cursor: 'pointer', position: 'relative', transition: 'all 0.3s' }}>
@@ -244,9 +288,10 @@ export default function NewAutomationPage() {
                 </button>
               </div>
               {form.sendPublicReply && (
-                <textarea className="input-field" rows={3} placeholder="e.g. Check your DMs! 📩"
+                <textarea className="input-field" rows={4} placeholder={'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩'}
                   value={form.publicReplyMessage} onChange={(e) => setForm({ ...form, publicReplyMessage: e.target.value })} />
               )}
+              {form.sendPublicReply && <div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>One reply is selected per comment to keep the conversation natural.</div>}
             </div>
 
             {/* Summary */}
@@ -278,19 +323,54 @@ export default function NewAutomationPage() {
 
           {step < 3 ? (
             <button onClick={() => {
-              if (step === 1 && (!form.name || !form.keyword)) { toast('Name and keyword are required', 'error'); return; }
+              if (step === 1 && (!form.name || (form.triggerType !== 'comment' && !form.keyword))) { toast('Name and the trigger keyword are required for this trigger', 'error'); return; }
               if (step === 2 && !form.responseMessage) { toast('Response message is required', 'error'); return; }
               setStep(step + 1);
             }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
               Next <ArrowRight size={16} />
             </button>
           ) : (
-            <button onClick={handleSave} disabled={saving} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
-              {saving ? 'Creating...' : <><CheckCircle size={16} /> Create Automation</>}
+            <button onClick={() => setReviewOpen(true)} disabled={saving} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
+              <CheckCircle size={16} /> Review & launch
             </button>
           )}
         </div>
       </div>
+
+      {reviewOpen && (
+        <div role="dialog" aria-modal="true" aria-labelledby="launch-title" style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'rgba(0,0,0,0.68)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+          <div style={{ width: 'min(620px, 100%)', maxHeight: '92vh', overflowY: 'auto', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 18, boxShadow: '0 24px 80px rgba(0,0,0,0.45)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '20px 24px', borderBottom: '1px solid var(--border-subtle)' }}>
+              <div><h2 id="launch-title" style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>Launch AutoDM</h2><p style={{ color: 'var(--text-muted)', fontSize: 13 }}>Awesome! Let&apos;s review once before we launch.</p></div>
+              <button type="button" onClick={() => setReviewOpen(false)} aria-label="Close review" style={{ background: 'none', border: 0, color: 'var(--text-muted)', fontSize: 24, cursor: 'pointer', lineHeight: 1 }}>×</button>
+            </div>
+
+            <div style={{ padding: 24, display: 'grid', gap: 18 }}>
+              <div style={{ display: 'flex', gap: 14, alignItems: 'center', padding: 14, background: 'var(--bg-subtle)', borderRadius: 12 }}><div style={{ width: 54, height: 54, borderRadius: 10, background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', display: 'grid', placeItems: 'center', color: '#fff', fontWeight: 800 }}>IG</div><div><div style={{ fontSize: 13, fontWeight: 750 }}>Comments on this post</div><div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 4 }}>{form.targetPosts.length ? `${form.targetPosts.length} selected post${form.targetPosts.length > 1 ? 's' : ''}` : 'Any post or reel'}</div></div></div>
+
+              <div style={{ display: 'grid', gap: 10 }}>
+                <ReviewRow label="When someone..." value={form.triggerType === 'comment' ? 'comments on this specific post' : form.triggerType === 'story' ? 'replies to your story' : form.triggerType === 'live' ? 'comments on your live' : form.triggerType === 'dm' ? 'sends you a DM' : 'matches the trigger keyword'} />
+                {form.keyword && <ReviewRow label="Comment condition" value={`includes “${form.keyword}”`} />}
+                {form.excludedKeywords && <ReviewRow label="Excluded keywords" value={form.excludedKeywords} />}
+                {form.aiFallback && <ReviewRow label="AI fallback" value={form.aiFallbackInstruction || 'Meaning-match enabled'} />}
+                <ReviewRow label="Then wait" value={`${form.delaySeconds || 0} seconds after the trigger`} />
+                {form.requireFollow && <ReviewRow label="Before the primary DM" value={form.followRequiredMessage} />}
+                {form.preDms.map((item) => <ReviewRow key={item.type} label={item.type === 'FOLLOW' ? 'Pre-DM follow request' : 'Pre-DM email request'} value={item.message} />)}
+              </div>
+
+              <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}><div style={{ fontSize: 13, fontWeight: 750, marginBottom: 8 }}>Public comment reply · Replies rotate: 1 of {Math.max(1, form.publicReplyMessage.split(/\r?\n/).filter((value) => value.trim()).length)}</div>{form.publicReplyMessage.split(/\r?\n/).filter((value) => value.trim()).map((reply, index) => <div key={`${reply}-${index}`} style={{ color: 'var(--text-secondary)', fontSize: 13, padding: '6px 0' }}><strong>{index + 1}.</strong> {reply}</div>)}</div>
+
+              <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}><div style={{ fontSize: 13, fontWeight: 750, marginBottom: 8 }}>Message to your audience</div><div style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.65, whiteSpace: 'pre-wrap', background: 'var(--bg-subtle)', padding: 14, borderRadius: 10 }}>{form.responseMessage || 'Your primary DM will appear here.'}{form.ctaLink && `\n\n${form.ctaLink}`}</div>{form.primaryDmType === 'TEXT_BUTTON' && <div style={{ marginTop: 8, color: 'var(--brand-from)', fontSize: 12 }}>Button: {form.buttonLabel || 'Get the resource'}{form.trackButtonClicks ? ' · Click tracking on' : ''}</div>}</div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '16px 24px', borderTop: '1px solid var(--border-subtle)' }}><button type="button" className="btn-secondary" onClick={() => setReviewOpen(false)}>Back</button><button type="button" className="btn-primary" disabled={saving} onClick={handleSave}>{saving ? 'Launching...' : 'Confirm & launch'}</button></div>
+          </div>
+        </div>
+      )}
     </div>
   );
+}
+
+function ReviewRow({ label, value }: { label: string; value: string }) {
+  return <div style={{ display: 'grid', gridTemplateColumns: '150px 1fr', gap: 12, fontSize: 13, padding: '7px 0', borderBottom: '1px solid var(--border-subtle)' }}><span style={{ color: 'var(--text-muted)' }}>{label}</span><span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>{value}</span></div>;
 }

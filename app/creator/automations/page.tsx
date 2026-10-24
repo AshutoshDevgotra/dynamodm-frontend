@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Plus, Zap, ToggleLeft, ToggleRight, Edit, Trash2, MessageCircle, Target, Clock, Link2 } from 'lucide-react';
+import { Plus, Zap, ToggleLeft, ToggleRight, Edit, Trash2, MessageCircle, Target, Clock, Link2, Users, Sparkles } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
 
 interface Automation {
@@ -18,6 +18,8 @@ interface Automation {
   delaySeconds: number;
   stats: { triggered: number; dmsSent: number; failed: number };
   createdAt: string;
+  requireFollow?: boolean;
+  publicReplyMessages?: string[];
 }
 
 export default function AutomationsPage() {
@@ -66,6 +68,13 @@ export default function AutomationsPage() {
         </Link>
       </div>
 
+      <div className="creator-card creator-card--padded" style={{ marginBottom: 24, background: 'linear-gradient(120deg, rgba(34,197,94,0.12), rgba(139,92,246,0.10))' }}>
+        <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: 6, color: '#4ade80', paddingTop: 2 }}><Users size={20} /><Sparkles size={15} /></div>
+          <div><h2 style={{ fontSize: 16, fontWeight: 750, marginBottom: 5 }}>Turn engagement into follower growth</h2><p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.6, maxWidth: 720 }}>Follow-to-unlock asks non-followers to follow before they receive your guide, PDF, or link. Three rotating public replies keep the comment experience warm and varied, helping more conversations become followers without repeating one bot-like line.</p></div>
+        </div>
+      </div>
+
       {loading ? (
         <div className="flex justify-center py-20"><div className="h-9 w-9 animate-spin rounded-full border-[3px] border-[var(--brand-border)] border-t-[var(--brand-from)]" /></div>
       ) : automations.length === 0 ? (
@@ -104,6 +113,7 @@ export default function AutomationsPage() {
                       <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--text-muted)' }}>
                         <MessageCircle size={12} /> {auto.triggerType === 'dm' ? 'Direct Message' : 'Post Comment'} ({matchTypeLabels[auto.matchType]})
                       </span>
+                      {auto.requireFollow && <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#4ade80' }}><Users size={12} /> Follow-to-unlock</span>}
                       {auto.targetPosts && auto.targetPosts.length > 0 && (
                         <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--text-muted)' }}>
                           <Link2 size={12} /> Specific Post

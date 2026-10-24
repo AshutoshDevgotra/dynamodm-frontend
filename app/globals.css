@@ -739,6 +739,7 @@ h4 { font-size: clamp(1.1rem, 1.8vw, 1.35rem);  line-height: 1.2;  letter-spacin
 .creator-dashboard [class*="bg-\\[\\#0b1220\\]"] button:hover {
   background: #FFB08F;
   border-color: #FF8A5C;
+  color: #FFFFFF;
 }
 
 /* Direct fallback for the legacy dark-panel utility on the upgrade card. */
@@ -751,7 +752,7 @@ h4 { font-size: clamp(1.1rem, 1.8vw, 1.35rem);  line-height: 1.2;  letter-spacin
 .creator-dashboard [class*="0b1220"] button:hover .text-orange-200,
 .creator-dashboard [class*="0b1220"] button:hover [class*="group-hover:text-orange-800"],
 .creator-dashboard [class*="0b1220"] button:hover p {
-  color: #6B2A16 !important;
+  color: #FFFFFF !important;
 }
 .creator-dashboard [class*="hover:border-orange-300"]:hover { border-color: #E3C1AD !important; }
 .creator-dashboard [class*="hover:bg-orange-200"]:hover { background-color: #FFB08F !important; }
@@ -873,8 +874,17 @@ details summary { list-style: none; }
 .creator-brand-mark {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-lg);
+  border-radius: 50%;
+  overflow: hidden;
   box-shadow: var(--shadow-brand);
+}
+
+.creator-brand-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .creator-sidebar__nav {

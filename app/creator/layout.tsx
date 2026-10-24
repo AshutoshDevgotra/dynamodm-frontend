@@ -40,6 +40,18 @@ interface ConnectedInstagram {
   isConnected?: boolean;
 }
 
+function InstagramAvatar({ src, fallback, className }: { src?: string; fallback: string; className: string }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  useEffect(() => setImageFailed(false), [src]);
+  const showImage = Boolean(src) && !imageFailed;
+  return showImage ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img className={`${className} creator-user-avatar--image`} src={src} alt={fallback} onError={() => setImageFailed(true)} />
+  ) : (
+    <div className={className} aria-label={fallback}><User size={15} aria-hidden="true" /></div>
+  );
+}
+
 const normalizeRole = (role?: string) => String(role ?? '').trim().toUpperCase();
 
 export default function CreatorLayout({ children }: { children: React.ReactNode }) {
@@ -144,7 +156,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
       >
         <div className="creator-sidebar__brand">
           <div className="creator-brand-mark">
-            <Image src="/icon.svg" alt="" width={26} height={26} className="h-6 w-6 object-contain" />
+            <Image src="/favicon.ico" alt="OrangeFlow.in" width={26} height={26} className="h-6 w-6 object-contain" />
           </div>
           <span className="font-logo text-[16px] font-bold tracking-[-0.03em]">
             OrangeFlow<span className="text-[var(--brand-from)]">.in</span>
@@ -175,14 +187,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
 
         <div className="creator-sidebar__footer">
           <div className="creator-user-summary">
-            {instagram?.isConnected && instagram.profilePic ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className="creator-user-avatar creator-user-avatar--image" src={instagram.profilePic} alt={instagram.igUsername || 'Instagram'} />
-            ) : (
-              <div className="creator-user-avatar">
-                {(instagram?.igUsername || user.name)?.[0]?.toUpperCase()}
-              </div>
-            )}
+            <InstagramAvatar className="creator-user-avatar" src={instagram?.isConnected ? instagram.profilePic : undefined} fallback={instagram?.igUsername || user.name || 'Creator'} />
             <div className="min-w-0">
               <div className="truncate text-[13px] font-semibold">{instagram?.isConnected ? `@${instagram.igUsername}` : user.name}</div>
               <div className="truncate text-[11px] text-[var(--text-muted)]">{instagram?.isConnected ? 'Connected Instagram' : user.email}</div>
@@ -229,9 +234,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
               <Bell size={15} />
               <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-[var(--brand-from)]" />
             </button>
-            <div className="creator-topbar__avatar">
-              {user.name?.[0]?.toUpperCase()}
-            </div>
+            <InstagramAvatar className="creator-topbar__avatar" src={instagram?.isConnected ? instagram.profilePic : undefined} fallback={instagram?.igUsername || user.name || 'Creator'} />
           </div>
         </header>
         <main className="creator-content">{children}</main>

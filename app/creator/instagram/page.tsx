@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Camera, CheckCircle, ExternalLink, RefreshCw, Unlink, Sparkles } from 'lucide-react';
+import { Camera, CheckCircle, ExternalLink, RefreshCw, Unlink, Sparkles, MessageCircle, BarChart3, UserRound } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
 
 interface IGAccount {
@@ -69,10 +69,6 @@ export default function InstagramPage() {
 
   const handleConnect = async () => {
     setConnecting(true);
-    const isMobile =
-      typeof window !== 'undefined' &&
-      (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent));
-
     try {
       const response = await fetch('/api/instagram/login', { headers });
       const data = await response.json();
@@ -80,36 +76,8 @@ export default function InstagramPage() {
         throw new Error(data.message || 'Unable to start Instagram connection');
       }
 
-      // On mobile devices, ALWAYS navigate in the same tab so it opens in that browser only
-      if (isMobile) {
-        window.location.href = data.data.authUrl;
-        return;
-      }
-
-      // On desktop, try seamless popup, and if blocked or unavailable, stay in the same tab
-      const width = 600;
-      const height = 700;
-      const left = window.screen.width / 2 - width / 2;
-      const top = window.screen.height / 2 - height / 2;
-      const popup = window.open(
-        data.data.authUrl,
-        'InstagramOAuth2025',
-        `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,status=yes,resizable=yes`
-      );
-
-      if (!popup) {
-        // Popup was blocked or disallowed: navigate smoothly in the same tab
-        window.location.href = data.data.authUrl;
-        return;
-      }
-
-      const timer = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(timer);
-          setConnecting(false);
-          fetchStatus();
-        }
-      }, 1000);
+      // Keep the complete Meta permission and login flow in this tab.
+      window.location.assign(data.data.authUrl);
     } catch (error) {
       setConnecting(false);
       toast(error instanceof Error ? error.message : 'Unable to start Instagram connection', 'error');
@@ -212,6 +180,12 @@ export default function InstagramPage() {
             <p style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7, maxWidth: 460, margin: '0 auto 28px' }}>
               Connect your Instagram Creator or Business account to build your creator profile, discover brand opportunities, and power helpful automations.
             </p>
+
+            <div style={{ textAlign: 'left', maxWidth: 460, margin: '0 auto 22px', padding: 16, border: '1px solid rgba(139,92,246,0.28)', borderRadius: 14, background: 'rgba(139,92,246,0.08)' }}>
+              <div style={{ fontSize: 13, fontWeight: 750, marginBottom: 10 }}>Review permissions before Instagram login</div>
+              {[{ icon: UserRound, label: 'View profile and access media', required: true }, { icon: MessageCircle, label: 'Access and manage comments', required: false }, { icon: MessageCircle, label: 'Access and manage messages', required: false }, { icon: BarChart3, label: 'Access and manage insights', required: false }].map(({ icon: Icon, label, required }) => <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 12, color: 'var(--text-secondary)', padding: '6px 0' }}><Icon size={14} color="#a78bfa" />{label}{required && <span style={{ color: '#fb7185', fontSize: 11 }}>(required)</span>}</div>)}
+              <div style={{ color: 'var(--text-muted)', fontSize: 11, lineHeight: 1.5, marginTop: 6 }}>Instagram will show the final consent screen next. Nothing is connected until you approve it.</div>
+            </div>
 
             <button onClick={handleConnect} disabled={connecting} className="btn-primary" style={{ fontSize: 15, padding: '12px 28px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
               <Camera size={18} />

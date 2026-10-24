@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
+import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Users } from 'lucide-react';
 import { toast } from '../../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../../components/ui/InstagramPostSelector';
 
@@ -29,6 +29,8 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     ctaLink: string;
     sendPublicReply: boolean;
     publicReplyMessage: string;
+    requireFollow: boolean;
+    followRequiredMessage: string;
   }>({
     name: '',
     keyword: '',
@@ -38,7 +40,9 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     responseMessage: '',
     ctaLink: '',
     sendPublicReply: false,
-    publicReplyMessage: '',
+    publicReplyMessage: 'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩',
+    requireFollow: true,
+    followRequiredMessage: 'First follow us to get the link or any PDF or the resource.',
   });
 
   useEffect(() => {
@@ -72,6 +76,8 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             ctaLink: rule.ctaLink || '',
             sendPublicReply: rule.sendPublicReply || false,
             publicReplyMessage: rule.publicReplyMessage || '',
+            requireFollow: rule.requireFollow ?? false,
+            followRequiredMessage: rule.followRequiredMessage || 'First follow us to get the link or any PDF or the resource.',
           });
         } else {
           toast(data.message || 'Failed to load automation', 'error');
@@ -106,7 +112,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
       const res = await fetch(`/api/automations/${id}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, publicReplyMessages: form.publicReplyMessage.split(/\r?\n/).map((message) => message.trim()).filter(Boolean) }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -263,12 +269,17 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
         {/* Step 3 — Settings */}
         {step === 3 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Optional Public Reply</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>The private DM is always sent. Add a public comment reply only if you want one.</p>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Growth & safety settings</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Turn comments into followers first, then deliver the resource only after the follow is confirmed.</p>
+            <div style={{ padding: 16, marginBottom: 24, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: 12 }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Users size={18} color="#4ade80" /><div><div style={{ fontWeight: 700, fontSize: 13 }}>Follow-to-unlock</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Followers receive the link/PDF. Everyone else gets a friendly prompt to follow first.</div></div></div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14, fontSize: 13, fontWeight: 600 }}><input type="checkbox" checked={form.requireFollow} onChange={(e) => setForm({ ...form, requireFollow: e.target.checked })} /> Require a follow before sending the resource</label>
+              {form.requireFollow && <textarea className="input-field" rows={2} style={{ marginTop: 10 }} value={form.followRequiredMessage} onChange={(e) => setForm({ ...form, followRequiredMessage: e.target.value })} />}
+            </div>
 
             <div style={{ marginBottom: 24 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Public comment reply (optional)</label>
+                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Public comment replies (2–3 variants)</label>
                 <button onClick={() => setForm({ ...form, sendPublicReply: !form.sendPublicReply })}
                   aria-label={form.sendPublicReply ? 'Disable public comment reply' : 'Enable public comment reply'}
                   style={{ background: form.sendPublicReply ? 'var(--brand-from)' : 'var(--bg-subtle)', border: `1px solid ${form.sendPublicReply ? 'var(--brand-from)' : 'var(--border-strong)'}`, borderRadius: 20, width: 44, height: 24, cursor: 'pointer', position: 'relative', transition: 'all 0.3s' }}>
@@ -276,9 +287,10 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
                 </button>
               </div>
               {form.sendPublicReply && (
-                <textarea className="input-field" rows={3} placeholder="e.g. Check your DMs! 📩"
+                <textarea className="input-field" rows={4} placeholder={'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩'}
                   value={form.publicReplyMessage} onChange={(e) => setForm({ ...form, publicReplyMessage: e.target.value })} />
               )}
+              {form.sendPublicReply && <div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>One reply is selected per comment to keep the conversation natural.</div>}
             </div>
 
             {/* Summary */}

@@ -25,7 +25,10 @@ export default function LoginPage() {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+      if (!res.ok) {
+        if (res.status === 429) throw new Error('Too many login attempts. Please wait a few minutes and try again.');
+        throw new Error(data.message);
+      }
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('user', JSON.stringify(data.data.user));
       toast('Welcome back!', 'success');
