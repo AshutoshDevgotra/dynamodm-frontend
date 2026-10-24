@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Camera, CheckCircle, ExternalLink, RefreshCw, Unlink, Sparkles, MessageCircle, BarChart3, UserRound } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
 
@@ -18,6 +19,7 @@ interface IGAccount {
 }
 
 export default function InstagramPage() {
+  const router = useRouter();
   const [account, setAccount] = useState<IGAccount | null>(null);
   const [loading, setLoading] = useState(true);
   const [connecting, setConnecting] = useState(false);
@@ -57,15 +59,17 @@ export default function InstagramPage() {
     }
 
     const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
       if (event.data?.type === 'INSTAGRAM_AUTH_SUCCESS' || event.data?.type === 'META_AUTH_SUCCESS') {
         toast(`🎉 Instagram connected: @${event.data.username || 'account'}`, 'success');
         setConnecting(false);
         fetchStatus();
+        router.push('/creator');
       }
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [fetchStatus]);
+  }, [fetchStatus, router]);
 
   const handleConnect = async () => {
     setConnecting(true);
@@ -76,8 +80,14 @@ export default function InstagramPage() {
         throw new Error(data.message || 'Unable to start Instagram connection');
       }
 
-      // Keep the complete Meta permission and login flow in this tab.
-      window.location.assign(data.data.authUrl);
+      const popup = window.open(
+        data.data.authUrl,
+        'instagram-oauth',
+        'popup=yes,width=620,height=760,left=200,top=80'
+      );
+
+      // Fall back to same-tab navigation if the browser blocks popups.
+      if (!popup) window.location.assign(data.data.authUrl);
     } catch (error) {
       setConnecting(false);
       toast(error instanceof Error ? error.message : 'Unable to start Instagram connection', 'error');
