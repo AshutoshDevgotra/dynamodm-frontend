@@ -87,7 +87,7 @@ export default function ForgotPasswordPage() {
             <ArrowLeft size={15} /> Back to sign in
           </Link>
           <div className="mb-6 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-50 text-violet-600"><Mail size={22} /></div>
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-[#FF5A1F]"><Mail size={22} /></div>
             <h1 className="text-2xl font-semibold tracking-tight">Reset your password</h1>
             <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
               {step === 'email' && 'Enter your account email and we’ll send you a one-time code.'}

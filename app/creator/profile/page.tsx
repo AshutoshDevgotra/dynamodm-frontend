@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { User, Save, ExternalLink } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
 
@@ -48,16 +49,16 @@ export default function ProfilePage() {
   if (loading) return <div style={{ textAlign: 'center', padding: 80 }}>Loading...</div>;
 
   return (
-    <div style={{ maxWidth: 600 }}>
+    <div style={{ maxWidth: 600, width: '100%' }}>
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>My Profile</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Update your public creator profile.</p>
       </div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="card" style={{ padding: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 32 }}>
-            <div style={{ width: 80, height: 80, borderRadius: '50%', background: form.avatar ? 'transparent' : 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: 'white', overflow: 'hidden', border: '2px solid rgba(139,92,246,0.3)', flexShrink: 0 }}>
+        <div className="card" style={{ padding: 28 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 32, flexWrap: 'wrap' }}>
+            <div style={{ width: 80, height: 80, borderRadius: '50%', background: form.avatar ? 'transparent' : 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: 'white', overflow: 'hidden', border: '2px solid rgba(249,115,22,0.3)', flexShrink: 0 }}>
               {form.avatar ? <img src={form.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : form.name?.[0]?.toUpperCase() || <User size={32} />}
             </div>
             <div>
@@ -75,15 +76,13 @@ export default function ProfilePage() {
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Avatar URL</label>
               <input className="input-field" value={form.avatar} onChange={(e) => setForm({ ...form, avatar: e.target.value })} placeholder="https://..." type="url" />
             </div>
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <button type="submit" disabled={saving} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
                 <Save size={15} /> {saving ? 'Saving...' : 'Save Changes'}
               </button>
-              <a href={`/u/creator`} target="_blank" rel="noopener noreferrer">
-                <button type="button" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
-                  <ExternalLink size={14} /> View Public Profile
-                </button>
-              </a>
+              <Link href="/creator/storefront" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
+                <ExternalLink size={14} /> View Storefront
+              </Link>
             </div>
           </form>
         </div>

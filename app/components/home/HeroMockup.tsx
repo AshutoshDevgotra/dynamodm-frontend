@@ -5,7 +5,7 @@ export default function HeroMockup() {
         <div className="grid gap-3 rounded-[22px] bg-white p-4 sm:grid-cols-[1fr_1.1fr] sm:p-5">
           <div className="rounded-2xl bg-[#f6f7fb] p-4">
             <div className="mb-4 flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-fuchsia-500 to-orange-400" />
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF5A1F] to-[#ffaa88] shadow-sm" />
               <div>
                 <div className="text-xs font-semibold">@priya.creates</div>
                 <div className="text-[11px] text-zinc-400">New comment</div>

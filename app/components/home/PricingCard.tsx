@@ -28,12 +28,12 @@ export default function PricingCard({
     <div
       className={`relative rounded-[28px] p-8 ${
         highlighted
-          ? 'gradient-creator text-white shadow-[0_24px_60px_rgba(168,85,247,0.2)]'
+          ? 'gradient-creator text-white shadow-[0_24px_60px_rgba(255,90,31,0.25)]'
           : 'border border-black/6 bg-white text-[var(--text-primary)] shadow-[0_12px_40px_rgba(15,23,42,0.05)]'
       }`}
     >
       {badge && (
-        <div className="absolute -top-3 left-6 rounded-full bg-orange-200 px-3 py-1 text-[11px] font-semibold text-orange-950">
+        <div className="absolute -top-3 left-6 rounded-full bg-[#FF5A1F] px-3 py-1 text-[11px] font-semibold text-white shadow-sm shadow-[#FF5A1F]/30">
           {badge}
         </div>
       )}

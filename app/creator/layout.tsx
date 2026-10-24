@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, Handshake, HelpCircle,
-  LayoutDashboard, LogOut, Megaphone, Settings, ShoppingBag, User, Users, Zap,
+  LayoutDashboard, LogOut, Megaphone, Menu, Settings, ShoppingBag, User, Users, X, Zap,
 } from 'lucide-react';
 
 const navItems = [
@@ -46,8 +46,13 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [instagram, setInstagram] = useState<ConnectedInstagram | null>(null);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -97,7 +102,6 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         setUser(authenticatedUser);
         if (hasWorkspaceAccess || authenticatedUser.role === 'ADMIN') loadInstagram();
         if (urlToken) {
-          // If ?plan= came through OAuth, redirect to subscriptions checkout
           const planParam = params.get('plan');
           if (planParam) {
             router.replace(`/creator/payments/subscriptions?plan=${planParam}`);
@@ -127,22 +131,32 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
 
   return (
     <div className="creator-shell">
-      <motion.aside
-        animate={{ width: collapsed ? 72 : 248 }}
-        transition={{ duration: 0.22, ease: 'easeInOut' }}
-        className={`creator-sidebar ${collapsed ? 'creator-sidebar--collapsed' : ''}`}
+      {mobileMenuOpen && (
+        <div
+          className="creator-backdrop md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <aside
+        className={`creator-sidebar ${collapsed ? 'creator-sidebar--collapsed' : ''} ${mobileMenuOpen ? 'creator-sidebar--open' : ''}`}
       >
         <div className="creator-sidebar__brand">
           <div className="creator-brand-mark">
             <Image src="/icon.svg" alt="" width={26} height={26} className="h-6 w-6 object-contain" />
           </div>
-          <AnimatePresence>
-            {!collapsed && (
-              <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-[15px] font-semibold tracking-tight">
-                OrangeFlow<span className="text-[var(--brand-from)]">.in</span>
-              </motion.span>
-            )}
-          </AnimatePresence>
+          <span className="font-logo text-[16px] font-bold tracking-[-0.03em]">
+            OrangeFlow<span className="text-[var(--brand-from)]">.in</span>
+          </span>
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(false)}
+            className="ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg border border-black/8 text-zinc-500 md:hidden"
+            aria-label="Close menu"
+          >
+            <X size={16} />
+          </button>
         </div>
 
         <nav className="creator-sidebar__nav">
@@ -150,36 +164,29 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
             <Link
               key={href}
               href={href}
+              onClick={() => setMobileMenuOpen(false)}
               className={`sidebar-link creator-nav-link ${isActive(href) ? 'active' : ''}`}
             >
               <Icon size={18} className="shrink-0" />
-              <AnimatePresence>
-                {!collapsed && (
-                  <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    {label}
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              <span>{label}</span>
             </Link>
           ))}
         </nav>
 
         <div className="creator-sidebar__footer">
           <div className="creator-user-summary">
-              {instagram?.isConnected && instagram.profilePic ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="creator-user-avatar creator-user-avatar--image" src={instagram.profilePic} alt={instagram.igUsername || 'Instagram'} />
-              ) : (
-                <div className="creator-user-avatar">
-                  {(instagram?.igUsername || user.name)?.[0]?.toUpperCase()}
-                </div>
-              )}
-            {!collapsed && (
-              <div className="min-w-0">
-                  <div className="truncate text-[13px] font-semibold">{instagram?.isConnected ? `@${instagram.igUsername}` : user.name}</div>
-                  <div className="truncate text-[11px] text-[var(--text-muted)]">{instagram?.isConnected ? 'Connected Instagram' : user.email}</div>
+            {instagram?.isConnected && instagram.profilePic ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="creator-user-avatar creator-user-avatar--image" src={instagram.profilePic} alt={instagram.igUsername || 'Instagram'} />
+            ) : (
+              <div className="creator-user-avatar">
+                {(instagram?.igUsername || user.name)?.[0]?.toUpperCase()}
               </div>
             )}
+            <div className="min-w-0">
+              <div className="truncate text-[13px] font-semibold">{instagram?.isConnected ? `@${instagram.igUsername}` : user.name}</div>
+              <div className="truncate text-[11px] text-[var(--text-muted)]">{instagram?.isConnected ? 'Connected Instagram' : user.email}</div>
+            </div>
           </div>
           <button
             type="button"
@@ -187,25 +194,36 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
             className="sidebar-link creator-logout-link mt-1 w-full border-none bg-transparent text-rose-500"
           >
             <LogOut size={16} />
-            {!collapsed && <span>Log out</span>}
+            <span>Log out</span>
           </button>
         </div>
 
         <button
           type="button"
           onClick={() => setCollapsed(!collapsed)}
-          className="creator-sidebar-toggle"
+          className="creator-sidebar-toggle hidden md:flex"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
         </button>
-      </motion.aside>
+      </aside>
 
       <div className={`creator-main ${collapsed ? 'creator-main--collapsed' : ''}`}>
         <header className="creator-topbar">
-          <div className="text-sm font-medium text-zinc-500">
-            {navItems.find((n) => isActive(n.href))?.label || 'Dashboard'}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-black/8 bg-white text-zinc-700 shadow-sm md:hidden"
+              aria-label="Toggle navigation menu"
+            >
+              <Menu size={18} />
+            </button>
+            <div className="text-sm font-semibold text-zinc-700">
+              {navItems.find((n) => isActive(n.href))?.label || 'Dashboard'}
+            </div>
           </div>
+
           <div className="creator-topbar__actions">
             <button type="button" className="relative flex h-9 w-9 items-center justify-center rounded-full border border-black/8 text-zinc-500" aria-label="Notifications">
               <Bell size={15} />

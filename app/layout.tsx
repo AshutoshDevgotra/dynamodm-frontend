@@ -1,6 +1,21 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
+
+const logoFont = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-logo',
+  display: 'swap',
+});
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#09090b',
+};
 
 export const metadata: Metadata = {
   title: {
@@ -25,8 +40,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
-      <body suppressHydrationWarning className="font-sans antialiased bg-[var(--bg-base)] text-[var(--text-primary)]">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning className="overflow-x-hidden">
+      <body
+        suppressHydrationWarning
+        className={`${logoFont.variable} font-sans antialiased bg-[var(--bg-base)] text-[var(--text-primary)] min-h-screen w-full overflow-x-hidden selection:bg-[var(--brand-from)] selection:text-white`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -42,6 +42,20 @@ export default function InstagramPage() {
   useEffect(() => {
     fetchStatus();
 
+    // Check for callback params when returning in the same tab/browser
+    const params = new URLSearchParams(window.location.search);
+    const connectedUsername = params.get('connected');
+    const authError = params.get('error');
+
+    if (connectedUsername) {
+      toast(`🎉 Instagram connected: @${connectedUsername}`, 'success');
+      window.history.replaceState({}, '', window.location.pathname);
+      fetchStatus();
+    } else if (authError) {
+      toast(`Connection issue: ${authError}`, 'error');
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === 'INSTAGRAM_AUTH_SUCCESS' || event.data?.type === 'META_AUTH_SUCCESS') {
         toast(`🎉 Instagram connected: @${event.data.username || 'account'}`, 'success');
@@ -55,21 +69,9 @@ export default function InstagramPage() {
 
   const handleConnect = async () => {
     setConnecting(true);
-    const width = 600;
-    const height = 700;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-    const popup = window.open(
-      'about:blank',
-      'InstagramOAuth2025',
-      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,status=yes,resizable=yes`
-    );
-
-    if (!popup) {
-      setConnecting(false);
-      toast('Please allow popups to connect Instagram', 'error');
-      return;
-    }
+    const isMobile =
+      typeof window !== 'undefined' &&
+      (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent));
 
     try {
       const response = await fetch('/api/instagram/login', { headers });
@@ -78,10 +80,28 @@ export default function InstagramPage() {
         throw new Error(data.message || 'Unable to start Instagram connection');
       }
 
-      // The popup is created synchronously from the click, so browsers allow
-      // it. Navigation happens only after the authenticated backend returns
-      // Instagram's permission URL.
-      popup.location.replace(data.data.authUrl);
+      // On mobile devices, ALWAYS navigate in the same tab so it opens in that browser only
+      if (isMobile) {
+        window.location.href = data.data.authUrl;
+        return;
+      }
+
+      // On desktop, try seamless popup, and if blocked or unavailable, stay in the same tab
+      const width = 600;
+      const height = 700;
+      const left = window.screen.width / 2 - width / 2;
+      const top = window.screen.height / 2 - height / 2;
+      const popup = window.open(
+        data.data.authUrl,
+        'InstagramOAuth2025',
+        `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,status=yes,resizable=yes`
+      );
+
+      if (!popup) {
+        // Popup was blocked or disallowed: navigate smoothly in the same tab
+        window.location.href = data.data.authUrl;
+        return;
+      }
 
       const timer = setInterval(() => {
         if (popup.closed) {
@@ -91,7 +111,6 @@ export default function InstagramPage() {
         }
       }, 1000);
     } catch (error) {
-      popup.close();
       setConnecting(false);
       toast(error instanceof Error ? error.message : 'Unable to start Instagram connection', 'error');
     }
@@ -126,9 +145,9 @@ export default function InstagramPage() {
   }
 
   return (
-    <div style={{ maxWidth: 720 }}>
+    <div style={{ maxWidth: 720, width: '100%' }}>
       <div style={{ marginBottom: 32 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
           <h1 style={{ fontSize: 28, fontWeight: 800 }}>Your Instagram profile</h1>
           <span className="badge badge-brand" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <Sparkles size={12} /> Ready to grow
@@ -142,12 +161,12 @@ export default function InstagramPage() {
       {isConnected && username ? (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           {/* Connected Card */}
-          <div className="card" style={{ padding: 28, marginBottom: 24 }}>
+          <div className="card" style={{ padding: 24, marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20, color: '#22c55e' }}>
               <CheckCircle size={16} />
               <span style={{ fontSize: 13, fontWeight: 600 }}>Your Instagram account is ready</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
               {account?.profilePic ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={account.profilePic} alt={username} style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(139,92,246,0.4)' }} />
@@ -163,12 +182,12 @@ export default function InstagramPage() {
                   <div style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 2 }}>{account.followersCount.toLocaleString()} followers</div>
                 )}
               </div>
-              <a href={`https://instagram.com/${username}`} target="_blank" rel="noopener noreferrer" style={{ marginLeft: 'auto', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, fontSize: 13 }}>
+              <a href={`https://instagram.com/${username}`} rel="noopener noreferrer" style={{ marginLeft: 'auto', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, fontSize: 13 }}>
                 <ExternalLink size={14} /> View Profile
               </a>
             </div>
 
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <button onClick={handleConnect} disabled={connecting} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
                 <RefreshCw size={14} className={connecting ? 'animate-spin' : ''} /> Reconnect
               </button>
@@ -178,14 +197,14 @@ export default function InstagramPage() {
             </div>
           </div>
 
-          <div className="card" style={{ padding: 28 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Your creator profile is ready</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7 }}>Use your profile insights to discover better-fit brand opportunities, build trust with brands, and activate automations when you are ready.</p>
+          <div className="card" style={{ padding: 24 }}>
+            <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Your creator profile is ready</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7 }}>Use your profile insights to discover better-fit brand opportunities, build trust with brands, and activate automations when you are ready.</p>
           </div>
         </motion.div>
       ) : (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="gradient-border" style={{ padding: 36, textAlign: 'center' }}>
+          <div className="gradient-border" style={{ padding: 32, textAlign: 'center' }}>
             <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
               <Camera size={30} color="white" />
             </div>
@@ -196,7 +215,7 @@ export default function InstagramPage() {
 
             <button onClick={handleConnect} disabled={connecting} className="btn-primary" style={{ fontSize: 15, padding: '12px 28px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
               <Camera size={18} />
-              {connecting ? 'Opening Instagram...' : 'Connect with Instagram'}
+              {connecting ? 'Connecting in this browser...' : 'Connect with Instagram'}
             </button>
 
             <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 16 }}>

@@ -83,11 +83,11 @@ export default function HomePage() {
           <p className="mt-4 text-[var(--text-secondary)]">Turn a comment into a useful reply, a product link, a qualified lead, or a sale—without losing the human context.</p>
         </div>
         <div className="grid gap-7 lg:grid-cols-2">
-          <div className="rounded-[28px] border border-violet-200 bg-violet-50 p-8">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-600 text-white"><Store size={22} /></div>
+          <div className="rounded-[28px] border border-[#FF5A1F]/20 bg-[#fff9f6] p-8 shadow-sm">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FF5A1F] text-white shadow-md shadow-[#FF5A1F]/25"><Store size={22} /></div>
             <h3 className="text-2xl font-semibold">For creators: make every comment shoppable</h3>
             <p className="mt-3 leading-7 text-zinc-600">Someone comments “LINK” or asks where to buy. Orange Flow sends the product, storefront, affiliate, Amazon, Flipkart, or Shopify link directly in the DM and captures the person as a lead.</p>
-            <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-violet-800"><span className="rounded-full bg-white px-3 py-1.5">Comment trigger</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Product link</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5">Lead captured</span></div>
+            <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-[#FF5A1F]"><span className="rounded-full bg-white px-3 py-1.5 shadow-sm">Comment trigger</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5 shadow-sm">Product link</span><ArrowRight size={14} className="mt-1" /><span className="rounded-full bg-white px-3 py-1.5 shadow-sm">Lead captured</span></div>
           </div>
           <div className="rounded-[28px] border border-stone-200 bg-stone-50 p-8">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1c1917] text-orange-300"><Bot size={22} /></div>
@@ -176,7 +176,7 @@ export default function HomePage() {
       </section>
 
       <section className="landing-section px-4 pb-16 sm:px-6">
-        <div className="gradient-creator mx-auto max-w-[1160px] rounded-[32px] px-8 py-16 text-center text-white shadow-[0_24px_70px_rgba(168,85,247,0.2)]">
+        <div className="gradient-creator mx-auto max-w-[1160px] rounded-[32px] px-8 py-16 text-center text-white shadow-[0_24px_70px_rgba(255,90,31,0.22)]">
           <h2 style={{ color: '#ffffff' }} className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
             Make every conversation count
             <span style={{ color: 'rgba(255,255,255,0.72)' }} className="mt-2 block font-serif text-4xl italic font-normal text-white/70 sm:text-5xl">Free to start. No commitments.</span>

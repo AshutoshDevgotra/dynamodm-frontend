@@ -18,7 +18,7 @@ export default function ForBrandsPage() {
       <Navbar />
 
       <section className="px-4 pt-24 pb-8 sm:px-6">
-        <div className="mx-auto max-w-[1160px] overflow-hidden rounded-[36px] bg-[#0b1220] px-6 py-20 text-center text-white sm:px-12">
+        <div className="premium-hero mx-auto max-w-[1160px] overflow-hidden rounded-[36px] px-6 py-20 text-center text-white sm:px-12">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/8 px-4 py-1.5 text-sm text-zinc-300 ring-1 ring-white/10">
             <Sparkles size={14} className="text-[#f5d90a]" /> AI customer conversations for brands
           </div>
