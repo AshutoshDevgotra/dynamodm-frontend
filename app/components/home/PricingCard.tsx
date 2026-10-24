@@ -26,37 +26,42 @@ export default function PricingCard({
 }: PricingCardProps) {
   return (
     <div
-      className={`relative rounded-[28px] p-8 ${
+      className={`relative flex flex-col rounded-[24px] p-8 ${
         highlighted
-          ? 'gradient-creator text-white shadow-[0_24px_60px_rgba(255,90,31,0.25)]'
-          : 'border border-black/6 bg-white text-[var(--text-primary)] shadow-[0_12px_40px_rgba(15,23,42,0.05)]'
+          ? 'bg-[#F4ECF4] border border-[#B99AAA] shadow-[0_8px_30px_rgba(112,85,103,0.15)]'
+          : 'border border-[#E5E7EB] bg-white shadow-sm'
       }`}
     >
       {badge && (
-        <div className="absolute -top-3 left-6 rounded-full bg-[#FF5A1F] px-3 py-1 text-[11px] font-semibold text-white shadow-sm shadow-[#FF5A1F]/30">
+        <div className="absolute -top-3 left-6 rounded-full bg-[#8B6B87] px-3 py-1 text-[11px] font-semibold text-white shadow-sm shadow-[#705567]/30">
           {badge}
         </div>
       )}
-      <h3 className="text-lg font-semibold">{name}</h3>
-      <p className={`mt-1 text-sm ${highlighted ? 'text-zinc-400' : 'text-zinc-500'}`}>{description}</p>
+
+      <h3 className="text-lg font-semibold text-[#111111]">{name}</h3>
+      <p className="mt-1 text-sm text-[#6B7280]">{description}</p>
+
       <div className="mt-6 mb-7 flex items-end gap-1">
-        <span className="text-4xl font-bold tracking-tight">{price}</span>
-        <span className={`mb-1 text-sm ${highlighted ? 'text-zinc-500' : 'text-zinc-400'}`}>{period}</span>
+        <span className="text-4xl font-bold tracking-tight text-[#111111]">{price}</span>
+        <span className="mb-1 text-sm text-[#6B7280]">{period}</span>
       </div>
-      <ul className="mb-8 space-y-3">
+
+      <ul className="mb-8 space-y-3 flex-1">
         {features.map((f) => (
-          <li key={f} className={`flex items-start gap-2.5 text-sm ${highlighted ? 'text-zinc-300' : 'text-zinc-600'}`}>
-            <Check size={16} className={highlighted ? 'mt-0.5 text-orange-300' : 'mt-0.5 text-[var(--brand-from)]'} />
+          <li key={f} className="flex items-start gap-2.5 text-sm text-[#6B7280]">
+            <Check size={16} className="mt-0.5 shrink-0 text-[#8B6B87]" />
             {f}
           </li>
         ))}
       </ul>
+
       <Link
         href={href}
         className={`flex w-full items-center justify-center rounded-full py-3 text-sm font-semibold transition-colors ${
-          highlighted ? 'bg-white hover:bg-zinc-100' : 'btn-primary !rounded-full'
+          highlighted
+          ? 'bg-[#A98FA8] text-[#332B38] hover:bg-[#8B6B87]'
+            : 'border border-[#E5E7EB] bg-white text-[#111111] hover:bg-[#F8F1ED] hover:border-[#B99AAA]'
         }`}
-        style={highlighted ? { color: '#18181b' } : undefined}
       >
         {cta}
       </Link>

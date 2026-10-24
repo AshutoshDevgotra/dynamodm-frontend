@@ -19,9 +19,9 @@ export default function TermsPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-28 pb-16">
+      <main className="pt-[68px] pb-16">
         <div className="container-sm">
-          <h1 className="text-4xl font-semibold tracking-tight">Terms of Service</h1>
+          <h1 className="text-4xl font-semibold tracking-tight pt-14">Terms of Service</h1>
           <p className="mt-2 mb-10 text-sm text-[var(--text-muted)]">Last updated: June 2026</p>
           <div className="space-y-8">
             {sections.map((s) => (

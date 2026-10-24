@@ -95,9 +95,9 @@ export default function RefundPolicyPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-28 pb-16">
+      <main className="pt-[68px] pb-16">
         <div className="container-sm">
-          <h1 className="text-4xl font-semibold tracking-tight">Return and Refund Policy</h1>
+          <h1 className="text-4xl font-semibold tracking-tight pt-14">Return and Refund Policy</h1>
           <p className="mt-2 mb-10 text-sm text-[var(--text-muted)]">Effective Date: 4 October 2026</p>
 
           <p className="mb-10 text-[15px] leading-8 text-[var(--text-secondary)]">

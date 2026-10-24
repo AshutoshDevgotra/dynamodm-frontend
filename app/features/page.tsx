@@ -36,12 +36,12 @@ const features = [
     points: ['Delivery vs failures', 'Lead growth', 'Campaign funnels'],
   },
   {
-    icon: Bot, title: 'Reliable delivery',
+    icon: Shield, title: 'Reliable delivery',
     desc: 'Reliable delivery with smart pacing so helpful DMs actually reach people.',
     points: ['Automatic retries', 'Hourly caps', 'Failure logs'],
   },
   {
-    icon: Shield, title: 'Built for trust',
+    icon: Zap, title: 'Built for trust',
     desc: 'Clear opt-outs, thoughtful pacing, and a safe experience for your audience.',
     points: ['Helpful replies', 'Clear controls', 'Safe delivery'],
   },
@@ -61,33 +61,33 @@ export default function FeaturesPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-28 pb-16">
+      <main className="pt-[68px] pb-16">
         <div className="container">
-          <div className="mx-auto mb-14 max-w-2xl text-center">
+          <div className="mx-auto mb-14 max-w-2xl pt-16 text-center">
             <span className="badge badge-brand mb-4">
               <Zap size={13} /> All features
             </span>
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
+            <h1 className="text-[#111111]">
               Everything to
-              <span className="block font-serif italic font-normal">automate and grow</span>
+              <span className="block font-serif text-[0.88em]">automate and grow</span>
             </h1>
-            <p className="mt-4 text-lg text-[var(--text-secondary)]">
+            <p className="mt-4 text-lg text-[#6B7280]">
               One conversation engine for creators who want to grow and businesses that want to convert interest into action.
             </p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
             {features.map((feature) => (
-              <div key={feature.title} className="rounded-[28px] border border-black/6 bg-white p-8">
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-subtle)] text-[var(--brand-from)]">
+              <div key={feature.title} className="rounded-[24px] border border-[#E5E7EB] bg-white p-8 shadow-sm">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-subtle)] text-[#8B6B87]">
                   <feature.icon size={22} />
                 </div>
-                <h2 className="text-xl font-semibold">{feature.title}</h2>
-                <p className="mt-2 text-[var(--text-secondary)]">{feature.desc}</p>
+                <h2 className="text-xl font-semibold text-[#111111]">{feature.title}</h2>
+                <p className="mt-2 text-[#6B7280]">{feature.desc}</p>
                 <ul className="mt-5 space-y-2">
                   {feature.points.map((p) => (
-                    <li key={p} className="flex items-center gap-2 text-sm text-zinc-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-from)]" />
+                    <li key={p} className="flex items-center gap-2 text-sm text-[#6B7280]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#8B6B87] shrink-0" />
                       {p}
                     </li>
                   ))}

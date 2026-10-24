@@ -1,12 +1,30 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Sora, Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 
-const logoFont = Plus_Jakarta_Sans({
+/* ── Display / heading font — Sora ExtraBold ── */
+const soraFont = Sora({
   subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
-  variable: '--font-logo',
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+/* ── Body font — Inter ── */
+const interFont = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+/* ── Serif italic accent — Playfair Display ── */
+const playfairFont = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  style: ['italic'],
+  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -14,7 +32,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#09090b',
+  themeColor: '#ffffff',
 };
 
 export const metadata: Metadata = {
@@ -40,10 +58,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning className="overflow-x-hidden">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`overflow-x-hidden ${soraFont.variable} ${interFont.variable} ${playfairFont.variable}`}
+    >
       <body
         suppressHydrationWarning
-        className={`${logoFont.variable} font-sans antialiased bg-[var(--bg-base)] text-[var(--text-primary)] min-h-screen w-full overflow-x-hidden selection:bg-[var(--brand-from)] selection:text-white`}
+        className="font-sans antialiased bg-white text-[var(--text-primary)] min-h-screen w-full overflow-x-hidden"
       >
         <Providers>{children}</Providers>
       </body>

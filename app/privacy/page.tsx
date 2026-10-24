@@ -80,9 +80,9 @@ export default function PrivacyPage() {
     <>
       <Navbar />
 
-      <main className="pt-28 pb-16">
+      <main className="pt-[68px] pb-16">
         <div className="container-sm">
-          <h1 className="text-4xl font-semibold tracking-tight">
+          <h1 className="text-4xl font-semibold tracking-tight pt-14">
             Privacy Policy
           </h1>
 

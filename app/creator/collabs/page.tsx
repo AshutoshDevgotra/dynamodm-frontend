@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { ArrowRight, BriefcaseBusiness, Camera, CheckCircle2, Heart, MapPin, Sparkles, Users } from 'lucide-react';
 
 const opportunities = [
-  { brand: 'Glow Theory', category: 'Beauty & wellness', budget: '₹25,000 – ₹45,000', fit: '98% fit', color: 'from-[#FF5A1F] via-[#ff7e4f] to-[#ffa27e]' },
-  { brand: 'Roamly', category: 'Travel & lifestyle', budget: '₹15,000 – ₹30,000', fit: '94% fit', color: 'from-[#1c0c05] via-[#4d1906] to-[#FF5A1F]' },
-  { brand: 'Nourish Co.', category: 'Food & nutrition', budget: '₹20,000 – ₹35,000', fit: '91% fit', color: 'from-[#FF5A1F] via-[#ff9b77] to-[#fff3ed]' },
+  { brand: 'Glow Theory', category: 'Beauty & wellness', budget: '₹25,000 – ₹45,000', fit: '98% fit', color: 'from-[#C5AFC3] via-[#A98FA8] to-[#EDE3EC]' },
+  { brand: 'Roamly', category: 'Travel & lifestyle', budget: '₹15,000 – ₹30,000', fit: '94% fit', color: 'from-[#4A3742] via-[#705567] to-[#C5AFC3]' },
+  { brand: 'Nourish Co.', category: 'Food & nutrition', budget: '₹20,000 – ₹35,000', fit: '91% fit', color: 'from-[#8B6B87] via-[#C8B1C7] to-[#F4ECF4]' },
 ];
 
 const metrics: Array<{ label: string; value: string; detail: string; icon: React.ElementType }> = [
