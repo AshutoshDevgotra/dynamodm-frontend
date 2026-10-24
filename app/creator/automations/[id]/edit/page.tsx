@@ -42,7 +42,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     sendPublicReply: false,
     publicReplyMessage: 'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩',
     requireFollow: true,
-    followRequiredMessage: 'First follow us to get the link or any PDF or the resource.',
+    followRequiredMessage: 'Follow us.',
   });
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             sendPublicReply: rule.sendPublicReply || false,
             publicReplyMessage: rule.publicReplyMessage || '',
             requireFollow: rule.requireFollow ?? false,
-            followRequiredMessage: rule.followRequiredMessage || 'First follow us to get the link or any PDF or the resource.',
+            followRequiredMessage: 'Follow us.',
           });
         } else {
           toast(data.message || 'Failed to load automation', 'error');
@@ -276,13 +276,13 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 14 }}>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 650 }}>Require a follow before the primary DM</div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 3 }}>{form.requireFollow ? 'On — non-followers get a Follow us button first.' : 'Off — everyone receives the primary DM immediately.'}</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 3 }}>{form.requireFollow ? 'On — non-followers get Follow us and Already followed buttons first.' : 'Off — everyone receives the primary DM immediately.'}</div>
                 </div>
                 <button type="button" onClick={() => setForm({ ...form, requireFollow: !form.requireFollow })} aria-pressed={form.requireFollow} aria-label={form.requireFollow ? 'Disable follow-to-unlock' : 'Enable follow-to-unlock'} style={{ flexShrink: 0, width: 48, height: 28, padding: 2, border: `1px solid ${form.requireFollow ? 'var(--brand-from)' : 'var(--border-strong)'}`, borderRadius: 999, background: form.requireFollow ? 'var(--brand-from)' : 'var(--bg-subtle)', cursor: 'pointer', transition: 'all 0.2s' }}>
                   <span style={{ display: 'block', width: 22, height: 22, borderRadius: '50%', background: '#fff', transform: `translateX(${form.requireFollow ? 18 : 0}px)`, transition: 'transform 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,.2)' }} />
                 </button>
               </div>
-              {form.requireFollow && <textarea className="input-field" rows={2} style={{ marginTop: 10 }} value={form.followRequiredMessage} onChange={(e) => setForm({ ...form, followRequiredMessage: e.target.value })} />}
+              {form.requireFollow && <div style={{ marginTop: 10, padding: '10px 12px', borderRadius: 10, background: 'var(--bg-subtle)', color: 'var(--text-secondary)', fontSize: 12 }}>Non-followers receive: <strong>“Follow us.”</strong> with a <strong>Follow</strong> button linking to your Instagram profile.</div>}
             </div>
 
             <div style={{ marginBottom: 24 }}>
