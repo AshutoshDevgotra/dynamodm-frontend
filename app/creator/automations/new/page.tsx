@@ -57,7 +57,7 @@ export default function NewAutomationPage() {
     aiFallback: false,
     aiFallbackInstruction: '',
     excludedKeywords: '',
-    delaySeconds: 60,
+    delaySeconds: 0,
     preDms: [],
     primaryDmType: 'TEXT_BUTTON',
     buttonLabel: 'Get the resource',
@@ -76,7 +76,7 @@ export default function NewAutomationPage() {
   }, [token]);
 
   const handleSave = async () => {
-    if (!form.name || !form.keyword || !form.responseMessage) {
+    if (!form.responseMessage) {
       toast('Please fill all required fields', 'error');
       return;
     }
@@ -161,9 +161,8 @@ export default function NewAutomationPage() {
               <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Choose where the automation listens and what kind of interaction should trigger it.</p>
 
             <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Automation Name *</label>
-              <input className="input-field" placeholder="e.g. Free Investment Guide" value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Automation identity</label>
+              <div className="input-field" style={{ color: 'var(--text-muted)', background: 'var(--bg-subtle)' }}>Generated automatically from your Instagram account</div>
             </div>
 
             <div style={{ marginBottom: 24 }}>
@@ -240,7 +239,7 @@ export default function NewAutomationPage() {
                 style={{ resize: 'vertical', lineHeight: 1.6 }} />
             </div>
 
-            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Set a time delay</label><p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Wait before sending the first DM.</p><input className="input-field" type="number" min={0} max={86400} value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: Number(e.target.value) })} /></div>
+            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Optional time delay</label><p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Default is immediate. You can delay the first DM by up to 60 seconds.</p><input className="input-field" type="number" min={0} max={60} value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: Math.min(60, Math.max(0, Number(e.target.value) || 0)) })} /></div>
             <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Primary DM type</label><select className="input-field" style={{ marginTop: 8 }} value={form.primaryDmType} onChange={(e) => setForm({ ...form, primaryDmType: e.target.value as 'TEXT' | 'TEXT_BUTTON' })}><option value="TEXT_BUTTON">Text + Button</option><option value="TEXT">Text only</option></select>{form.primaryDmType === 'TEXT_BUTTON' && <div style={{ display: 'grid', gap: 8, marginTop: 8 }}><input className="input-field" placeholder="Button label" value={form.buttonLabel} onChange={(e) => setForm({ ...form, buttonLabel: e.target.value })} /><input className="input-field" placeholder="Button URL" value={form.buttonUrl || form.ctaLink} onChange={(e) => setForm({ ...form, buttonUrl: e.target.value, ctaLink: e.target.value })} /><label style={{ fontSize: 12 }}><input type="checkbox" checked={form.trackButtonClicks} onChange={(e) => setForm({ ...form, trackButtonClicks: e.target.checked })} /> Track button clicks</label></div>}</div>
 
             <div style={{ marginBottom: 20 }}>
@@ -325,7 +324,7 @@ export default function NewAutomationPage() {
 
           {step < 3 ? (
             <button onClick={() => {
-              if (step === 1 && (!form.name || (form.triggerType !== 'comment' && !form.keyword))) { toast('Name and the trigger keyword are required for this trigger', 'error'); return; }
+              if (step === 1 && (form.triggerType !== 'comment' && !form.keyword)) { toast('The trigger keyword is required for this trigger', 'error'); return; }
               if (step === 2 && !form.responseMessage) { toast('Response message is required', 'error'); return; }
               setStep(step + 1);
             }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>

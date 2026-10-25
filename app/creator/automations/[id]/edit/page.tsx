@@ -31,6 +31,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     publicReplyMessage: string;
     requireFollow: boolean;
     followRequiredMessage: string;
+    delaySeconds: number;
   }>({
     name: '',
     keyword: '',
@@ -43,6 +44,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     publicReplyMessage: 'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩',
     requireFollow: true,
     followRequiredMessage: 'Follow us.',
+    delaySeconds: 0,
   });
 
   useEffect(() => {
@@ -78,6 +80,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             publicReplyMessage: rule.publicReplyMessage || '',
             requireFollow: rule.requireFollow ?? false,
             followRequiredMessage: 'Follow us.',
+            delaySeconds: Math.min(60, Math.max(0, Number(rule.delaySeconds) || 0)),
           });
         } else {
           toast(data.message || 'Failed to load automation', 'error');
@@ -97,7 +100,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
         toast('Add a public reply message or turn off the optional public reply', 'error');
         return;
       }
-    if (!form.name || !form.keyword || !form.responseMessage) {
+    if (!form.keyword || !form.responseMessage) {
       toast('Please fill all required fields', 'error');
       return;
     }
@@ -176,9 +179,8 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>What keyword should trigger this automation?</p>
 
             <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Automation Name *</label>
-              <input className="input-field" placeholder="e.g. Free Investment Guide" value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Automation identity</label>
+              <div className="input-field" style={{ color: 'var(--text-muted)', background: 'var(--bg-subtle)' }}>{form.name || 'Generated automatically from your Instagram account'}</div>
             </div>
 
             <div style={{ marginBottom: 24 }}>
@@ -270,6 +272,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
         {step === 3 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Growth & safety settings</h2>
+            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Optional time delay</label><p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Default is immediate. Maximum delay is 60 seconds.</p><input className="input-field" type="number" min={0} max={60} value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: Math.min(60, Math.max(0, Number(e.target.value) || 0)) })} /></div>
             <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Turn comments into followers first, then deliver the resource only after the follow is confirmed.</p>
             <div style={{ padding: 16, marginBottom: 24, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: 12 }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Users size={18} color="#4ade80" /><div><div style={{ fontWeight: 700, fontSize: 13 }}>Follow-to-unlock</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Followers receive the link/PDF. Everyone else gets a friendly prompt to follow first.</div></div></div>
@@ -330,7 +333,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
 
           {step < 3 ? (
             <button onClick={() => {
-              if (step === 1 && (!form.name || !form.keyword)) { toast('Name and keyword are required', 'error'); return; }
+              if (step === 1 && !form.keyword) { toast('A trigger keyword is required', 'error'); return; }
               if (step === 2 && !form.responseMessage) { toast('Response message is required', 'error'); return; }
               setStep(step + 1);
             }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
