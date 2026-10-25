@@ -156,10 +156,10 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
       >
         <div className="creator-sidebar__brand">
           <div className="creator-brand-mark">
-            <Image src="/favicon.ico" alt="OrangeFlow.in" width={26} height={26} className="h-6 w-6 object-contain" />
+            <Image src="/favicon.ico" alt="OrangeFlow" width={26} height={26} className="h-6 w-6 object-contain" />
           </div>
-          <span className="font-logo text-[16px] font-bold tracking-[-0.03em]">
-            OrangeFlow<span className="text-[var(--brand-from)]">.in</span>
+          <span className="font-logo text-[16px] font-bold tracking-[-0.03em] text-[#111111]">
+            OrangeFlow<span className="text-[#FF5A1F]">.</span>
           </span>
           <button
             type="button"
