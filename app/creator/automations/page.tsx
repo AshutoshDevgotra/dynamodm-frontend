@@ -47,9 +47,15 @@ export default function AutomationsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this automation? This cannot be undone.')) return;
-    await fetch(`/api/automations/${id}`, { method: 'DELETE', headers });
-    setAutomations((prev) => prev.filter((a) => a._id !== id));
-    toast('Automation deleted', 'success');
+    try {
+      const res = await fetch(`/api/automations/${id}`, { method: 'DELETE', headers });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) throw new Error(data.message || 'Unable to delete automation.');
+      setAutomations((prev) => prev.filter((a) => a._id !== id));
+      toast('Automation deleted', 'success');
+    } catch (error) {
+      toast(error instanceof Error ? error.message : 'Unable to delete automation.', 'error');
+    }
   };
 
   const matchTypeLabels: Record<string, string> = { exact: 'Exact', contains: 'Contains', starts_with: 'Starts With', regex: 'Regex' };
