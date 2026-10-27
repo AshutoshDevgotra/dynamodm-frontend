@@ -30,7 +30,7 @@ interface AuthUser {
   email: string;
   avatar?: string;
   role: string;
-  subscription?: { plan?: string; status?: string };
+  subscription?: { plan?: string; status?: string; isUnlimited?: boolean };
 }
 
 interface ConnectedInstagram {
@@ -106,10 +106,10 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         const status = String(authenticatedUser.subscription?.status || '').toLowerCase();
         const hasPaidAccess = ['starter', 'pro', 'premium', 'enterprise'].includes(plan) && !['cancelled', 'expired', 'past_due'].includes(status);
         const hasFreeAccess = plan === '' || plan === 'free';
-        const hasWorkspaceAccess = hasFreeAccess || hasPaidAccess;
+        const hasWorkspaceAccess = Boolean(authenticatedUser.subscription?.isUnlimited) || hasFreeAccess || hasPaidAccess;
         const isBillingPage = pathname?.startsWith('/creator/payments/subscriptions');
         if (authenticatedUser.role !== 'ADMIN' && !hasWorkspaceAccess && !isBillingPage) {
-          router.replace('/creator/payments/subscriptions');
+          router.replace('/creator/payments/subscriptions?reason=trial_expired');
           return;
         }
 

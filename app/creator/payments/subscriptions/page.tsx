@@ -54,6 +54,7 @@ export default function SubscriptionsPage() {
   const [loading, setLoading] = useState<string | null>(null);
   const [currentPlan, setCurrentPlan] = useState<string>('free');
   const [razorpayReady, setRazorpayReady] = useState(false);
+  const trialExpired = searchParams.get('reason') === 'trial_expired';
 
   // Load Razorpay script
   useEffect(() => {
@@ -161,6 +162,12 @@ export default function SubscriptionsPage() {
 
   return (
     <div style={{ maxWidth: 800 }}>
+      {trialExpired && (
+        <div role="alert" style={{ marginBottom: 24, padding: 18, borderRadius: 14, border: '1px solid rgba(245,158,11,.45)', background: 'rgba(245,158,11,.12)', color: 'var(--text-primary)' }}>
+          <strong>Your 3-day trial has ended.</strong>
+          <div style={{ marginTop: 6, color: 'var(--text-secondary)', fontSize: 14 }}>Upgrade your plan to resume comment automations, DM delivery, and lead capture.</div>
+        </div>
+      )}
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Upgrade Plan</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
