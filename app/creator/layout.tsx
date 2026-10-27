@@ -68,7 +68,9 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const urlToken = params.get('token');
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const urlToken = params.get('token') || hashParams.get('token');
+    const hashPlan = hashParams.get('plan');
     const token = urlToken || localStorage.getItem('token');
     if (urlToken) localStorage.setItem('token', urlToken);
     if (!token) {
@@ -114,7 +116,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         setUser(authenticatedUser);
         if (hasWorkspaceAccess || authenticatedUser.role === 'ADMIN') loadInstagram();
         if (urlToken) {
-          const planParam = params.get('plan');
+          const planParam = params.get('plan') || hashPlan;
           if (planParam) {
             router.replace(`/creator/payments/subscriptions?plan=${planParam}`);
           } else {

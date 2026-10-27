@@ -50,7 +50,8 @@ export default function CreatorDashboard() {
   const [checkoutPlan, setCheckoutPlan] = useState<string | null>(null);
 
   useEffect(() => {
-    const oauthToken = new URLSearchParams(window.location.search).get('token');
+    const oauthToken = new URLSearchParams(window.location.search).get('token')
+      || new URLSearchParams(window.location.hash.replace(/^#/, '')).get('token');
     if (oauthToken) {
       localStorage.setItem('token', oauthToken);
       window.history.replaceState({}, document.title, window.location.pathname);

@@ -27,7 +27,13 @@ export default function BrandLayout({ children }: { children: React.ReactNode })
   }, [pathname]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const hashToken = hashParams.get('token');
+    if (hashToken) {
+      localStorage.setItem('token', hashToken);
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+    }
+    const token = hashToken || localStorage.getItem('token');
     if (!token) { router.replace(`/login?redirect=${encodeURIComponent(pathname || '/brand/dashboard')}`); return; }
     fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
       .then(async (res) => {
