@@ -13,6 +13,8 @@ interface IGAccount {
   profilePic?: string;
   followersCount?: number;
   isConnected?: boolean;
+  reconnectRequired?: boolean;
+  reconnectReason?: string;
   scopes?: string[];
   updatedAt?: string;
 }
@@ -173,6 +175,12 @@ export default function InstagramPage() {
         </motion.div>
       ) : (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          {account?.reconnectRequired && (
+            <div role="alert" style={{ marginBottom: 18, padding: 16, borderRadius: 12, border: '1px solid rgba(239,68,68,.35)', background: 'rgba(239,68,68,.10)', color: 'var(--text-primary)' }}>
+              <strong>Reconnect Instagram to resume automations.</strong>
+              <div style={{ marginTop: 5, color: 'var(--text-secondary)', fontSize: 13 }}>{account.reconnectReason || 'Your Instagram session expired or was invalidated.'}</div>
+            </div>
+          )}
           <div className="gradient-border" style={{ padding: 32, textAlign: 'center' }}>
             <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
               <Camera size={30} color="white" />

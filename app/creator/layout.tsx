@@ -38,6 +38,8 @@ interface ConnectedInstagram {
   name?: string;
   profilePic?: string;
   isConnected?: boolean;
+  reconnectRequired?: boolean;
+  reconnectReason?: string;
 }
 
 function InstagramAvatar({ src, fallback, className }: { src?: string; fallback: string; className: string }) {
@@ -216,6 +218,12 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
       </aside>
 
       <div className={`creator-main ${collapsed ? 'creator-main--collapsed' : ''}`}>
+        {instagram?.reconnectRequired && (
+          <div role="alert" style={{ margin: '12px 16px 0', padding: '12px 16px', borderRadius: 12, border: '1px solid rgba(239,68,68,.35)', background: 'rgba(239,68,68,.10)', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 13 }}>{instagram.reconnectReason || 'Your Instagram session expired. Reconnect Instagram to resume automations.'}</span>
+            <Link href="/creator/instagram" style={{ color: '#dc2626', fontWeight: 700, fontSize: 13, textDecoration: 'underline' }}>Reconnect Instagram</Link>
+          </div>
+        )}
         <header className="creator-topbar">
           <div className="flex items-center gap-3">
             <button
