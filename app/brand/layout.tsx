@@ -67,7 +67,7 @@ export default function BrandLayout({ children }: { children: React.ReactNode })
 
       <aside className={`creator-sidebar ${collapsed ? 'creator-sidebar--collapsed' : ''} ${mobileMenuOpen ? 'creator-sidebar--open' : ''}`}>
         <div className="creator-sidebar__brand">
-          <div className="creator-brand-mark"><Image src="/icon.svg" alt="" width={26} height={26} className="h-6 w-6 object-contain" /></div>
+          <div className="creator-brand-mark"><Image src="/favicon.ico" alt="" width={26} height={26} className="h-6 w-6 object-contain" /></div>
           <span className="font-logo text-[16px] font-bold tracking-[-0.03em]">OrangeFlow<span className="text-[var(--brand-from)]">.in</span></span>
           <button
             type="button"
