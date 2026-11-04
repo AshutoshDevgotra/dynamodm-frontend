@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Blog',
   description: 'Practical Instagram automation, auto DM, creator growth, and customer conversation guides from Orange Flow.',
   alternates: { canonical: 'https://orangeflow.in/blog' },
+  openGraph: { type: 'website', url: 'https://orangeflow.in/blog' },
 };
 
 export default async function BlogPage({

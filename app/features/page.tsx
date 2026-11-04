@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Features',
+  alternates: { canonical: 'https://orangeflow.in/features' },
   description: 'Explore OrangeFlow.in features — AI conversations, Instagram automation, lead capture, analytics, and storefronts.',
 };
 

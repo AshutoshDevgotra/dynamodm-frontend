@@ -6,6 +6,13 @@ import FeatureCard from './components/home/FeatureCard';
 import PricingCard from './components/home/PricingCard';
 import HeroMockup from './components/home/HeroMockup';
 import GrowthLoop from './components/home/GrowthLoop';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'AI conversations for creators and businesses',
+  description: 'Turn Instagram comments and DMs into helpful customer journeys with AI conversations, automation, lead capture, and storefronts.',
+  alternates: { canonical: 'https://orangeflow.in' },
+};
 
 const features = [
   { icon: MessageCircle, title: 'Follow-to-DM growth', description: 'Ask for a follow before delivering the promised guide, offer, or link—then keep the conversation moving.' },

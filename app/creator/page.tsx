@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Zap, Users, MessageSquare, TrendingUp, ArrowRight, AlertCircle, Activity, CheckCircle, Plus, Crown, ShieldCheck } from 'lucide-react';
 import { toast } from '../components/ui/Toaster';
+import { track } from '../../lib/fbq';
 
 declare global {
   interface Window { Razorpay: any; }
@@ -111,6 +112,7 @@ export default function CreatorDashboard() {
           });
           const verifyData = await verifyRes.json();
           if (!verifyRes.ok || !verifyData.success) throw new Error(verifyData.message || 'Payment verification failed');
+          track('Purchase', { value: Number(amount) / 100, currency: 'INR', content_name: planId, content_category: 'subscription' });
           setCurrentPlan(planId);
           toast(`${planName} activated. Your dashboard limits are updated.`, 'success');
         },

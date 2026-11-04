@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Sora, Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
+import MetaPixel from '../components/MetaPixel';
 
 /* ── Display / heading font — Sora ExtraBold ── */
 const soraFont = Sora({
@@ -50,10 +51,11 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://orangeflow.in',
     siteName: 'OrangeFlow.in',
+    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'OrangeFlow.in social preview' }],
     title: 'OrangeFlow.in — AI conversations for creators and businesses',
     description: 'Automate Instagram conversations, answer customers with brand context, and capture more leads.',
   },
-  twitter: { card: 'summary_large_image', title: 'OrangeFlow.in', description: 'AI-powered Instagram conversations for creators and businesses' },
+  twitter: { card: 'summary_large_image', title: 'OrangeFlow.in', description: 'AI-powered Instagram conversations for creators and businesses', images: ['/og-default.png'] },
   robots: { index: true, follow: true },
 };
 
@@ -68,7 +70,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning
         className="font-sans antialiased bg-white text-[var(--text-primary)] min-h-screen w-full overflow-x-hidden"
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <MetaPixel />
+        </Providers>
       </body>
     </html>
   );

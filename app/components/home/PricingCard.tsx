@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { Check } from 'lucide-react';
+import { track } from '../../../lib/fbq';
 
 export interface PricingCardProps {
   name: string;
@@ -11,6 +14,7 @@ export interface PricingCardProps {
   highlighted: boolean;
   badge?: string;
   href: string;
+  trackPlanSelection?: boolean;
 }
 
 export default function PricingCard({
@@ -23,6 +27,7 @@ export default function PricingCard({
   highlighted,
   badge,
   href,
+  trackPlanSelection = false,
 }: PricingCardProps) {
   return (
     <div
@@ -57,6 +62,16 @@ export default function PricingCard({
 
       <Link
         href={href}
+        onClick={() => {
+          if (!trackPlanSelection) return;
+          const numericValue = Number(price.replace(/[^0-9.]/g, ''));
+          track('InitiateCheckout', {
+            content_name: name,
+            content_category: 'subscription',
+            ...(Number.isFinite(numericValue) ? { value: numericValue } : {}),
+            currency: 'INR',
+          });
+        }}
         className={`flex w-full items-center justify-center rounded-full py-3 text-sm font-semibold transition-colors ${
           highlighted
           ? 'bg-[#FFB08F] text-[#6B2A16] hover:bg-[#FF5A1F] hover:text-white active:bg-[#B83B12]'

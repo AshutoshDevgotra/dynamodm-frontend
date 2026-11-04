@@ -4,9 +4,11 @@ import { Check, ShieldCheck, Zap } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PricingCard from '../components/home/PricingCard';
+import { PricingViewContent } from '../components/MetaPixelEvents';
 
 export const metadata: Metadata = {
   title: 'Pricing',
+  alternates: { canonical: 'https://orangeflow.in/pricing' },
   description: 'OrangeFlow.in pricing — start free and scale your AI conversations and automations.',
 };
 
@@ -33,6 +35,7 @@ export default function PricingPage() {
   return (
     <>
       <Navbar />
+      <PricingViewContent />
       <main className="pt-[68px] pb-16">
         <div className="container">
           {/* Hero */}
@@ -49,7 +52,7 @@ export default function PricingPage() {
 
           {/* Plan grid — 5 plans across lg screens, wrap gracefully on smaller */}
           <div className="mb-8 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {plans.map((plan) => <PricingCard key={plan.name} {...plan} />)}
+            {plans.map((plan) => <PricingCard key={plan.name} {...plan} trackPlanSelection />)}
           </div>
 
           {/* Trust cards */}

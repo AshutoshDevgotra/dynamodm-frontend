@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, Check, Eye, EyeOff } from 'lucide-react';
 import { toast } from '../components/ui/Toaster';
 import Logo from '../components/Logo';
+import { track } from '../../lib/fbq';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -43,6 +44,7 @@ export default function SignupPage() {
       if (!res.ok) throw new Error(data.message);
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('user', JSON.stringify(data.data.user));
+      track('CompleteRegistration', { status: true, content_category: isBusiness ? 'brand' : 'creator' });
       toast('Account created. Let\'s get started.', 'success');
       const plan = new URLSearchParams(window.location.search).get('plan');
       router.push(isBusiness ? '/brand/dashboard' : plan ? `/creator/payments/subscriptions?plan=${encodeURIComponent(plan)}` : '/creator/payments/subscriptions');

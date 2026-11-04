@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Check, Zap, Crown, ShieldCheck, ArrowRight } from 'lucide-react';
 import { toast } from '../../../components/ui/Toaster';
+import { track } from '../../../../lib/fbq';
 
 declare global {
   interface Window {
@@ -133,6 +134,7 @@ export default function SubscriptionsPage() {
             });
             const verifyData = await verifyRes.json();
             if (verifyData.success) {
+              track('Purchase', { value: Number(amount) / 100, currency: 'INR', content_name: planId, content_category: 'subscription' });
               toast(`🎉 ${planName} activated! Enjoy your new features.`, 'success');
               setCurrentPlan(planId);
               // Clean URL

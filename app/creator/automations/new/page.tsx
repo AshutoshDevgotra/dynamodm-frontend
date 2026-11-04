@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Camera, Users } from 'lucide-react';
 import { toast } from '../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../components/ui/InstagramPostSelector';
+import { trackCustom } from '../../../../lib/fbq';
 
 const matchTypes = [
   { value: 'contains', label: 'Contains', desc: 'Comment includes the keyword anywhere' },
@@ -97,6 +98,7 @@ export default function NewAutomationPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
+      trackCustom('CreateAutomation');
       toast('Automation created! 🎉', 'success');
       router.push('/creator/automations');
     } catch (err: unknown) {

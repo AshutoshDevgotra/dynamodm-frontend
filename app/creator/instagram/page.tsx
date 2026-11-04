@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Camera, CheckCircle, ExternalLink, RefreshCw, Unlink, Sparkles, MessageCircle, BarChart3, UserRound } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
+import { trackCustom } from '../../../lib/fbq';
 
 interface IGAccount {
   username?: string;
@@ -50,6 +51,7 @@ export default function InstagramPage() {
     const authError = params.get('error');
 
     if (connectedUsername) {
+      trackCustom('ConnectInstagram');
       toast(`🎉 Instagram connected: @${connectedUsername}`, 'success');
       window.history.replaceState({}, '', window.location.pathname);
       fetchStatus();
@@ -61,6 +63,7 @@ export default function InstagramPage() {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
       if (event.data?.type === 'INSTAGRAM_AUTH_SUCCESS' || event.data?.type === 'META_AUTH_SUCCESS') {
+        trackCustom('ConnectInstagram');
         toast(`🎉 Instagram connected: @${event.data.username || 'account'}`, 'success');
         setConnecting(false);
         fetchStatus();
