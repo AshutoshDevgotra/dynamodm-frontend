@@ -1219,6 +1219,25 @@ details summary { list-style: none; }
   animation: dot-pulse 2s ease-in-out infinite;
 }
 
+/* Blog article typography */
+.blog-prose h2 {
+  margin: 3.25rem 0 1rem;
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
+  line-height: 1.12;
+}
+
+.blog-prose h3 {
+  margin: 2rem 0 0.65rem;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  line-height: 1.2;
+}
+
+.blog-prose strong { color: #332B25; font-weight: 700; }
+.blog-prose code { border-radius: 5px; background: #F8F4EE; padding: 0.15rem 0.35rem; font-size: 0.9em; }
+.blog-prose a { color: #A94D2D; font-weight: 600; text-decoration: underline; text-decoration-color: #F0B49A; text-underline-offset: 3px; }
+.blog-prose a:hover { color: #8D563A; }
+.blog-prose li::marker { color: #FF5A1F; }
+
 /* ─────────────────────────────────────────────────────────────────────────
    Mobile typography overrides
 ───────────────────────────────────────────────────────────────────────── */

@@ -12,6 +12,8 @@ const navLinks = [
   { href: '/features', label: 'AI Automations' },
   { href: '/for-brands', label: 'For Brands' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/about', label: 'About' },
 ];
 
 export default function Navbar() {

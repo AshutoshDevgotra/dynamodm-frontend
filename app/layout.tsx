@@ -36,6 +36,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://orangeflow.in'),
   title: {
     default: 'OrangeFlow.in — AI conversations for creators and businesses',
     template: '%s | OrangeFlow.in',
