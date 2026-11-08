@@ -37,7 +37,7 @@ export default function SupportPage() {
   const links = [
     { icon: Book, label: 'Getting started', desc: 'Simple setup guides', href: '#', color: 'var(--brand-from)' },
     { icon: MessageCircle, label: 'Live Chat', desc: 'Chat with our team (Pro+)', href: '#', color: '#06b6d4' },
-    { icon: Mail, label: 'Email Support', desc: 'support@orangeflow.in', href: 'mailto:support@orangeflow.in', color: '#10b981' },
+    { icon: Mail, label: 'Email Support', desc: 'team@houseoforange.in', href: 'mailto:team@houseoforange.in', color: '#10b981' },
   ];
 
   return (

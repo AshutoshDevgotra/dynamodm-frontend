@@ -83,6 +83,10 @@ export default function CampaignFAQ() {
               <a href="/contact" className="font-semibold text-[#FF7800] underline-offset-2 hover:underline">
                 Contact our team
               </a>{' '}
+              at{' '}
+              <a href="mailto:team@houseoforange.in" className="font-semibold text-[#FF7800] underline-offset-2 hover:underline">
+                team@houseoforange.in
+              </a>{' '}
               — we're happy to help.
             </p>
           </div>

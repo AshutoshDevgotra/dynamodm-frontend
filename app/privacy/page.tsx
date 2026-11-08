@@ -72,7 +72,7 @@ export default function PrivacyPage() {
     {
       title: '13. Contact Us',
       content:
-        'If you have questions, concerns, or requests regarding this Privacy Policy or your personal information, please contact House of Orange at admin@houseoforange.in or +91 9877292856. Our address is 144 Green Avenue, Mukerian, Punjab - 144211, India.',
+        'If you have questions, concerns, or requests regarding this Privacy Policy or your personal information, please contact House of Orange at team@houseoforange.in or +91 9877292856. Our address is 144 Green Avenue, Mukerian, Punjab - 144211, India.',
     },
   ];
 

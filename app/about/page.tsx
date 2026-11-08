@@ -81,8 +81,8 @@ export default function AboutPage() {
               <p className="mt-2 text-sm leading-7 text-[#6F6258]">
                 Questions about Orange Flow, plans, or getting started? Email the House of Orange team.
               </p>
-              <a href="mailto:admin@houseoforange.in" className="mt-5 inline-flex items-center gap-2 font-semibold text-[#A94D2D] hover:text-[#8D563A]">
-                admin@houseoforange.in <ArrowRight size={16} />
+              <a href="mailto:team@houseoforange.in" className="mt-5 inline-flex items-center gap-2 font-semibold text-[#A94D2D] hover:text-[#8D563A]">
+                team@houseoforange.in <ArrowRight size={16} />
               </a>
             </div>
           </div>
