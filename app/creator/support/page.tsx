@@ -38,6 +38,7 @@ export default function SupportPage() {
     { icon: Book, label: 'Getting started', desc: 'Simple setup guides', href: '#', color: 'var(--brand-from)' },
     { icon: MessageCircle, label: 'Live Chat', desc: 'Chat with our team (Pro+)', href: '#', color: '#06b6d4' },
     { icon: Mail, label: 'Email Support', desc: 'team@houseoforange.in', href: 'mailto:team@houseoforange.in', color: '#10b981' },
+    { icon: MessageCircle, label: 'WhatsApp', desc: '+91 9877292856', href: 'https://wa.me/919877292856?text=Hi%20OrangeFlow%20team%2C%20I%20have%20a%20question.', color: '#25D366' },
   ];
 
   return (
