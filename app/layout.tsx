@@ -3,6 +3,7 @@ import { Sora, Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import MetaPixel from '../components/MetaPixel';
+import WhatsAppButton from './components/WhatsAppButton';
 
 /* ── Display / heading font — Sora ExtraBold ── */
 const soraFont = Sora({
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           {children}
           <MetaPixel />
+          <WhatsAppButton />
         </Providers>
       </body>
     </html>
