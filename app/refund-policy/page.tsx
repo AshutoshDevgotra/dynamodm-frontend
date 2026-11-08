@@ -38,12 +38,12 @@ const sections = [
       'Once your cancellation request has been processed, you will receive confirmation via email or other available communication channels.',
       'Cancellation of a subscription only prevents future billing. It does not automatically result in a refund for the current billing period.',
     ],
-    contact: ['Email: support@houseoforange.in', 'WhatsApp: +91 7982454237'],
+    contact: ['Email: team@houseoforange.in', 'WhatsApp: +91 7982454237'],
   },
   {
     title: '5. Failed or Duplicate Payments',
     paragraphs: [
-      'If you believe you have been charged more than once for the same subscription or that a payment was processed incorrectly due to a technical issue, please contact us at support@houseoforange.in with your payment details.',
+      'If you believe you have been charged more than once for the same subscription or that a payment was processed incorrectly due to a technical issue, please contact us at team@houseoforange.in with your payment details.',
       'We will review the transaction and, where a duplicate or erroneous charge is confirmed, process an appropriate refund.',
     ],
   },
@@ -84,7 +84,7 @@ const sections = [
     contact: [
       'House of Orange',
       'Website: automation.houseoforange.in',
-      'Email: support@houseoforange.in',
+      'Email: team@houseoforange.in',
       'WhatsApp: +91 977292856',
       'Address: Green Avenue, 144, Green Avenue, Mukerian, Punjab 144211, India',
     ],

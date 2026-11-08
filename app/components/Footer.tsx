@@ -48,7 +48,7 @@ export default function Footer() {
                 { icon: InstagramIcon, href: 'https://www.instagram.com/orangeflow.in/', label: 'Orange Flow on Instagram', external: true },
                 { icon: Share2, href: '#', label: 'Social' },
                 { icon: Globe, href: '#', label: 'Website' },
-                { icon: Mail, href: 'mailto:hello@orangeflow.in', label: 'Email' },
+                { icon: Mail, href: 'mailto:team@houseoforange.in', label: 'Email' },
               ].map(({ icon: Icon, href, label, external }) => (
                 <a
                   key={label}

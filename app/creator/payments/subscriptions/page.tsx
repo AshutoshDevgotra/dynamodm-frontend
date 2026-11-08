@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import { Check, Zap, Crown, ShieldCheck, ArrowRight } from 'lucide-react';
 import { toast } from '../../../components/ui/Toaster';
 import { track } from '../../../../lib/fbq';
+import { CAMPAIGN, getCampaignPlan, getIntroTerms } from '../../../../lib/campaign';
+import { trackCampaignCheckout } from '../../../components/campaign/CampaignTracker';
 
 declare global {
   interface Window {
@@ -55,6 +57,7 @@ export default function SubscriptionsPage() {
   const [loading, setLoading] = useState<string | null>(null);
   const [currentPlan, setCurrentPlan] = useState<string>('free');
   const [razorpayReady, setRazorpayReady] = useState(false);
+  const [confirmedTerms, setConfirmedTerms] = useState(false);
   const trialExpired = searchParams.get('reason') === 'trial_expired';
 
   // Load Razorpay script
@@ -96,9 +99,17 @@ export default function SubscriptionsPage() {
       return;
     }
 
+    // If campaign active, require terms confirmation
+    const campaignPlan = getCampaignPlan(planId);
+    if (CAMPAIGN.active && campaignPlan && !confirmedTerms) {
+      toast('Please confirm the introductory pricing terms below before continuing.', 'error');
+      document.getElementById('terms-confirmation')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
     setLoading(planId);
     try {
-      // Create Razorpay order
+      // Create Razorpay order — server applies campaign pricing
       const res = await fetch('/api/payments/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -107,11 +118,36 @@ export default function SubscriptionsPage() {
       const data = await res.json();
       if (!data.success) throw new Error(data.message || 'Failed to create order');
 
-      const { orderId, amount, currency, keyId, planName } = data.data;
+      const { orderId, amount, currency, keyId, planName, campaign: campaignResponse } = data.data;
+
+      // Verify the checkout amount matches the expected campaign price
+      // This prevents frontend spoofing — the server is the source of truth
+      if (CAMPAIGN.active && campaignPlan) {
+        const expectedAmount = campaignPlan.offerPriceInr * 100;
+        if (amount !== expectedAmount && amount !== campaignPlan.regularPriceInr * 100) {
+          throw new Error('Unexpected checkout amount. Please refresh and try again.');
+        }
+      }
+
+      // Compute display amount for description
+      const displayAmount = amount / 100;
+      const regularAmount = campaignResponse?.regularPriceInr ?? displayAmount;
+      const isIntro = campaignResponse && campaignResponse.offerPriceInr === displayAmount;
+      const description = isIntro
+        ? `${planName} — ₹${displayAmount}/month for first ${campaignResponse.introductoryCycles} months, then ₹${regularAmount}/month`
+        : `${planName} — Monthly Subscription`;
+
+      // Track campaign checkout
+      if (CAMPAIGN.active && campaignPlan) {
+        trackCampaignCheckout(planId, displayAmount);
+      }
 
       // Get user info for prefill
       const userRaw = localStorage.getItem('user');
       const user = userRaw ? JSON.parse(userRaw) : {};
+
+      // Preserve UTM params through checkout
+      const utmSource = sessionStorage.getItem('utm_source') || 'direct';
 
       // Open Razorpay checkout modal
       const rzp = new window.Razorpay({
@@ -120,10 +156,14 @@ export default function SubscriptionsPage() {
         currency,
         order_id: orderId,
         name: 'OrangeFlow.in',
-        description: `${planName} — Monthly Subscription`,
+        description,
         image: 'https://orangeflow.in/favicon.ico',
         prefill: { name: user.name || '', email: user.email || '' },
-        theme: { color: '#8b5cf6' },
+        notes: {
+          ...(CAMPAIGN.active ? { campaign: CAMPAIGN.campaignId } : {}),
+          utm_source: utmSource,
+        },
+        theme: { color: CAMPAIGN.active ? '#FF7800' : '#8b5cf6' },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
           // Verify payment on backend
           try {
@@ -134,7 +174,13 @@ export default function SubscriptionsPage() {
             });
             const verifyData = await verifyRes.json();
             if (verifyData.success) {
-              track('Purchase', { value: Number(amount) / 100, currency: 'INR', content_name: planId, content_category: 'subscription' });
+              track('Purchase', {
+                value: displayAmount,
+                currency: 'INR',
+                content_name: planId,
+                content_category: 'subscription',
+                ...(CAMPAIGN.active ? { campaign_id: CAMPAIGN.campaignId } : {}),
+              });
               toast(`🎉 ${planName} activated! Enjoy your new features.`, 'success');
               setCurrentPlan(planId);
               // Clean URL
@@ -170,6 +216,20 @@ export default function SubscriptionsPage() {
           <div style={{ marginTop: 6, color: 'var(--text-secondary)', fontSize: 14 }}>Upgrade your plan to resume comment automations, DM delivery, and lead capture.</div>
         </div>
       )}
+
+      {/* Diwali campaign banner */}
+      {CAMPAIGN.active && (
+        <div
+          role="note"
+          style={{ marginBottom: 24, padding: 18, borderRadius: 14, border: '1px solid rgba(255,168,0,0.40)', background: 'rgba(255,120,0,0.08)', color: 'var(--text-primary)' }}
+        >
+          <strong style={{ color: '#FF7800' }}>🪔 Diwali Extended Offer active</strong>
+          <div style={{ marginTop: 6, fontSize: 14, color: 'var(--text-secondary)' }}>
+            Introductory pricing applied automatically at checkout. Offer prices shown below.
+          </div>
+        </div>
+      )}
+
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Upgrade Plan</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
@@ -183,6 +243,10 @@ export default function SubscriptionsPage() {
         {PLANS.map((plan) => {
           const Icon = plan.icon;
           const isActive = currentPlan === plan.id;
+          const campaignPlan = CAMPAIGN.active ? getCampaignPlan(plan.id) : null;
+          const displayPrice = campaignPlan ? `₹${campaignPlan.offerPriceInr}` : plan.price;
+          const regularPrice = campaignPlan ? plan.price : null;
+
           return (
             <motion.div
               key={plan.id}
@@ -201,6 +265,11 @@ export default function SubscriptionsPage() {
                   Current Plan
                 </div>
               )}
+              {campaignPlan && !isActive && (
+                <div style={{ position: 'absolute', top: -12, right: 24, background: '#FF7800', color: '#0D0500', fontSize: 11, fontWeight: 800, padding: '3px 10px', borderRadius: 999 }}>
+                  SAVE {campaignPlan.discountPercent}%
+                </div>
+              )}
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
                 <div style={{ width: 40, height: 40, borderRadius: 10, background: `${plan.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -212,10 +281,19 @@ export default function SubscriptionsPage() {
                 </div>
               </div>
 
-              <div style={{ fontSize: 32, fontWeight: 800, marginBottom: 20 }}>
-                {plan.price}
+              <div style={{ fontSize: 32, fontWeight: 800, marginBottom: 4, display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                {displayPrice}
                 <span style={{ fontSize: 14, fontWeight: 400, color: 'var(--text-muted)' }}>{plan.period}</span>
+                {regularPrice && (
+                  <span style={{ fontSize: 14, fontWeight: 400, color: '#9CA3AF', textDecoration: 'line-through' }}>{regularPrice}</span>
+                )}
               </div>
+
+              {campaignPlan && (
+                <div style={{ marginBottom: 16, fontSize: 12, color: '#FF7800', fontWeight: 600 }}>
+                  Save ₹{campaignPlan.savingsPerMonthInr}/month · First {campaignPlan.introductoryCycles} months
+                </div>
+              )}
 
               <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {plan.features.map((f) => (
@@ -230,15 +308,42 @@ export default function SubscriptionsPage() {
                 onClick={() => handleCheckout(plan.id)}
                 disabled={!!loading || isActive || !razorpayReady}
                 className="btn-primary"
-                style={{ width: '100%', background: isActive ? 'var(--bg-secondary)' : plan.color, opacity: (loading && loading !== plan.id) ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+                style={{ width: '100%', background: isActive ? 'var(--bg-secondary)' : (campaignPlan ? '#FF7800' : plan.color), opacity: (loading && loading !== plan.id) ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
               >
-                {loading === plan.id ? 'Opening checkout...' : isActive ? 'Active' : `Upgrade to ${plan.name}`}
+                {loading === plan.id ? 'Opening checkout...' : isActive ? 'Active' : campaignPlan ? `Get ${plan.name} at ₹${campaignPlan.offerPriceInr}` : `Upgrade to ${plan.name}`}
                 {!isActive && loading !== plan.id && <ArrowRight size={16} />}
               </button>
             </motion.div>
           );
         })}
       </div>
+
+      {/* Introductory pricing terms confirmation — required if campaign active */}
+      {CAMPAIGN.active && (
+        <div
+          id="terms-confirmation"
+          style={{ marginTop: 28, padding: 20, borderRadius: 14, border: '1px solid rgba(255,120,0,0.25)', background: 'rgba(255,120,0,0.05)' }}
+        >
+          <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 14 }}>
+            <strong style={{ color: 'var(--text-primary)' }}>Introductory pricing terms:</strong>{' '}
+            {(() => {
+              const proPlan = getCampaignPlan('pro');
+              return proPlan ? getIntroTerms(proPlan) : '';
+            })()}{' '}
+            By subscribing, you agree to the recurring charge at the regular plan price from the fourth billing cycle.
+          </p>
+          <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer', fontSize: 13, color: 'var(--text-primary)', fontWeight: 600 }}>
+            <input
+              type="checkbox"
+              checked={confirmedTerms}
+              onChange={(e) => setConfirmedTerms(e.target.checked)}
+              style={{ marginTop: 2, accentColor: '#FF7800', width: 16, height: 16 }}
+              aria-label="I understand and agree to the introductory pricing and recurring charge terms"
+            />
+            I understand the introductory pricing and agree to the recurring charge at the regular plan price after 3 months.
+          </label>
+        </div>
+      )}
 
       <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 13, color: 'var(--text-muted)' }}>
         <ShieldCheck size={14} />
