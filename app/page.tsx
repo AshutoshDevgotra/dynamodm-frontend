@@ -6,6 +6,13 @@ import FeatureCard from './components/home/FeatureCard';
 import PricingCard from './components/home/PricingCard';
 import HeroMockup from './components/home/HeroMockup';
 import GrowthLoop from './components/home/GrowthLoop';
+import AnnouncementBar from './components/campaign/AnnouncementBar';
+import DiwaliHero from './components/campaign/DiwaliHero';
+import ProblemSolution from './components/campaign/ProblemSolution';
+import ProductDemo from './components/campaign/ProductDemo';
+import FloatingOfferBanner from './components/campaign/FloatingOfferBanner';
+import { CampaignTracker } from './components/campaign/CampaignTracker';
+import { DiwaliKeyframes } from './components/campaign/DiwaliAnimations';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -52,10 +59,18 @@ const faqs = [
 export default function HomePage() {
   return (
     <div className="landing-page min-h-screen bg-white">
+      <AnnouncementBar />
       <Navbar />
+      <DiwaliKeyframes />
+      <CampaignTracker event="LandingView" />
 
-      {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="hero-section pt-[68px]">
+      {/* ── Diwali Hero (above existing hero) ─────────────────────── */}
+      <div className="pt-[68px]">
+        <DiwaliHero />
+      </div>
+
+      {/* ── Original Hero ─────────────────────────────────────────── */}
+      <section className="hero-section">
         <div className="container">
           <div className="mx-auto max-w-[860px] pb-10 pt-20 text-center sm:pt-28">
 
@@ -116,6 +131,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Problem / Solution ────────────────────────────────────── */}
+      <ProblemSolution />
+
       {/* Press / social proof strip */}
       <section aria-label="Featured in" className="landing-compact-section border-y border-[#EEE7DF] bg-white py-8 sm:py-10">
         <div className="container">
@@ -127,6 +145,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── Product Demonstration ─────────────────────────────────── */}
+      <ProductDemo />
 
       {/* ── Built for callout ─────────────────────────────────────── */}
       <section className="landing-compact-section container py-8">
@@ -276,7 +297,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Pricing ──────────────────────────────────────────────── */}
-      <section className="container py-20 sm:py-28">
+      <section className="container py-20 sm:py-28" id="pricing">
         <div className="mx-auto mb-14 max-w-2xl text-center">
           <h2>
             Simple,{' '}
@@ -337,6 +358,7 @@ export default function HomePage() {
       </section>
 
       <Footer />
+      <FloatingOfferBanner />
     </div>
   );
 }
