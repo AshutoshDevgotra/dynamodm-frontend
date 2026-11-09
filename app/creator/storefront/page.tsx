@@ -22,15 +22,20 @@ const MOCK_PRODUCTS: StoreProduct[] = [
 export default function StorefrontDashboard() {
   const [products, setProducts] = useState<StoreProduct[]>(MOCK_PRODUCTS);
   const [showAdd, setShowAdd] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [draft, setDraft] = useState({ title: '', description: '', url: '', type: 'AFFILIATE' });
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState('');
+  const [storefrontUrl, setStorefrontUrl] = useState('');
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
+    
+    // Fetch products
     fetch('/api/products', { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => response.json())
       .then((data) => {
@@ -47,7 +52,39 @@ export default function StorefrontDashboard() {
         }
       })
       .catch(() => undefined);
+    
+    // Fetch storefront URL
+    fetch('/api/creator/profile', { headers: { Authorization: `Bearer ${token}` } })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success && data.data?.creator?.igUsername) {
+          const baseUrl = window.location.origin;
+          setStorefrontUrl(`${baseUrl}/${data.data.creator.igUsername}`);
+        }
+      })
+      .catch(() => undefined);
   }, []);
+
+  const copyStorefrontLink = async () => {
+    if (!storefrontUrl) return;
+    try {
+      await navigator.clipboard.writeText(storefrontUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = storefrontUrl;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   const handleImageChange = (file?: File) => {
     if (!file) return;
@@ -89,8 +126,56 @@ export default function StorefrontDashboard() {
           <h1 className="text-2xl font-semibold tracking-tight">Storefront & links</h1>
           <p className="mt-1 text-sm text-[var(--text-secondary)]">Manage affiliate links, digital products, and clicks.</p>
         </div>
-        <div className="flex flex-wrap gap-2"><button type="button" className="btn-secondary"><Share2 size={16} /> Share my page</button><button type="button" className="btn-primary" onClick={() => setShowAdd((open) => !open)}><Plus size={16} /> Add product</button></div>
+        <div className="flex flex-wrap gap-2"><button type="button" className="btn-secondary" onClick={() => setShowShare(true)}><Share2 size={16} /> Share my page</button><button type="button" className="btn-primary" onClick={() => setShowAdd((open) => !open)}><Plus size={16} /> Add product</button></div>
       </div>
+
+      {showShare && (
+        <div className="creator-card creator-card--padded mb-6 border-green-200 bg-gradient-to-br from-green-50 to-white">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="creator-icon-tile h-9 w-9 rounded-full bg-green-100 text-green-600">
+                <Share2 size={16} />
+              </div>
+              <div>
+                <h2 className="font-semibold">Share your storefront</h2>
+                <p className="text-xs text-[var(--text-secondary)]">Copy and share this link anywhere.</p>
+              </div>
+            </div>
+            <button onClick={() => setShowShare(false)} className="text-zinc-400 hover:text-zinc-600">×</button>
+          </div>
+          {storefrontUrl ? (
+            <>
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={storefrontUrl} 
+                  className="input-field flex-1 bg-white font-mono text-sm"
+                  onClick={(e) => (e.target as HTMLInputElement).select()}
+                />
+                <button 
+                  onClick={copyStorefrontLink} 
+                  className={`btn-primary whitespace-nowrap ${copied ? 'bg-green-600' : ''}`}
+                >
+                  {copied ? '✓ Copied!' : 'Copy link'}
+                </button>
+              </div>
+              <div className="mt-3 flex gap-2">
+                <a 
+                  href={storefrontUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700"
+                >
+                  <ExternalLink size={14} /> Preview storefront
+                </a>
+              </div>
+            </>
+          ) : (
+            <p className="text-sm text-zinc-500">Loading your storefront link...</p>
+          )}
+        </div>
+      )}
 
       {showAdd && <div className="creator-card creator-card--padded mb-6 border-orange-200 bg-gradient-to-br from-orange-50 to-white"><div className="mb-4 flex items-center gap-2"><div className="creator-icon-tile h-9 w-9 rounded-full"><Sparkles size={16} /></div><div><h2 className="font-semibold">Add to your creator shop</h2><p className="text-xs text-[var(--text-secondary)]">Share products, recommendations, and offers from one link.</p></div></div><div className="grid gap-3 md:grid-cols-2"><input className="input-field" placeholder="Product or recommendation name" value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} /><input className="input-field" placeholder="Buying or affiliate link" value={draft.url} onChange={(e) => setDraft({ ...draft, url: e.target.value })} /><label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-orange-300 bg-white px-4 py-3 text-sm font-semibold text-orange-700"><ImagePlus size={18} /><span>{image ? image.name : 'Upload product image'}</span><input className="sr-only" type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={(e) => handleImageChange(e.target.files?.[0])} /></label><select className="input-field" value={draft.type} onChange={(e) => setDraft({ ...draft, type: e.target.value })}><option value="AFFILIATE">Affiliate recommendation</option><option value="DIGITAL_PRODUCT">My digital product</option></select><textarea className="input-field md:col-span-2" placeholder="Short description for your audience" value={draft.description} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />{imagePreview && <img src={imagePreview} alt="Product preview" className="h-28 w-28 rounded-2xl object-cover ring-1 ring-orange-200" />}</div>{error && <p className="mt-3 text-sm font-medium text-rose-600">{error}</p>}<div className="mt-4 flex justify-end gap-2"><button className="btn-secondary" onClick={() => setShowAdd(false)}>Cancel</button><button className="btn-primary" disabled={saving} onClick={addProduct}><ImagePlus size={16} /> {saving ? 'Saving…' : 'Add to shop'}</button></div></div>}
 
