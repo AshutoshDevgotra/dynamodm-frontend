@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Users } from 'lucide-react';
 import { toast } from '../../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../../components/ui/InstagramPostSelector';
+import ResponseComposer, { type ResponseComposerValue } from '../../components/ResponseComposer';
 
 const matchTypes = [
   { value: 'contains', label: 'Contains', desc: 'Comment includes the keyword anywhere' },
@@ -14,19 +15,30 @@ const matchTypes = [
   { value: 'regex', label: 'Regex', desc: 'Advanced — use regex pattern' },
 ];
 
+const defaultComposer: ResponseComposerValue = {
+  responseMessage: '',
+  ctaLink: '',
+  buttons: [],
+  attachmentUrl: '',
+  attachment: null,
+  primaryDmType: 'TEXT',
+  buttonLabel: '',
+  buttonUrl: '',
+  trackButtonClicks: true,
+};
+
 export default function EditAutomationPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
+  const [composer, setComposer] = useState<ResponseComposerValue>(defaultComposer);
   const [form, setForm] = useState<{
     name: string;
     keyword: string;
     triggerType: string;
     targetPosts: string[];
     matchType: string;
-    responseMessage: string;
-    ctaLink: string;
     sendPublicReply: boolean;
     publicReplyMessage: string;
     requireFollow: boolean;
@@ -38,8 +50,6 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     triggerType: 'comment',
     targetPosts: [],
     matchType: 'contains',
-    responseMessage: '',
-    ctaLink: '',
     sendPublicReply: false,
     publicReplyMessage: 'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩',
     requireFollow: true,
@@ -74,13 +84,32 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             triggerType,
             targetPosts,
             matchType: rule.matchType || 'contains',
-            responseMessage,
-            ctaLink: rule.ctaLink || '',
             sendPublicReply: rule.sendPublicReply || false,
             publicReplyMessage: rule.publicReplyMessage || '',
             requireFollow: rule.requireFollow ?? false,
             followRequiredMessage: 'Follow us.',
             delaySeconds: Math.min(60, Math.max(0, Number(rule.delaySeconds) || 0)),
+          });
+
+          // Populate composer from stored primaryDm and attachment
+          const existingButtons: { title: string; url: string }[] = Array.isArray((rule.primaryDm as any)?.buttons)
+            ? (rule.primaryDm as any).buttons.map((b: any) => ({ title: b.title || '', url: b.url || '' }))
+            : rule.primaryDm?.buttonUrl && rule.primaryDm?.buttonLabel
+            ? [{ title: rule.primaryDm.buttonLabel, url: rule.primaryDm.buttonUrl }]
+            : [];
+
+          setComposer({
+            responseMessage,
+            ctaLink: rule.ctaLink || existingButtons[0]?.url || '',
+            buttons: existingButtons,
+            attachmentUrl: sendDmStep?.attachment || '',
+            attachment: sendDmStep?.attachment
+              ? { attachmentId: '', name: 'Existing attachment', size: 0, mimeType: 'application/pdf', url: sendDmStep.attachment }
+              : null,
+            primaryDmType: existingButtons.length > 0 ? 'TEXT_BUTTON' : 'TEXT',
+            buttonLabel: existingButtons[0]?.title || rule.primaryDm?.buttonLabel || '',
+            buttonUrl: existingButtons[0]?.url || rule.primaryDm?.buttonUrl || '',
+            trackButtonClicks: rule.primaryDm?.trackButtonClicks ?? true,
           });
         } else {
           toast(data.message || 'Failed to load automation', 'error');
@@ -100,7 +129,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
         toast('Add a public reply message or turn off the optional public reply', 'error');
         return;
       }
-    if (!form.keyword || !form.responseMessage) {
+    if (!form.keyword || !composer.responseMessage) {
       toast('Please fill all required fields', 'error');
       return;
     }
@@ -115,7 +144,18 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
       const res = await fetch(`/api/automations/${id}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, publicReplyMessages: form.publicReplyMessage.split(/\r?\n/).map((message) => message.trim()).filter(Boolean) }),
+        body: JSON.stringify({
+          ...form,
+          responseMessage: composer.responseMessage,
+          ctaLink: composer.ctaLink,
+          buttons: composer.buttons,
+          attachmentUrl: composer.attachmentUrl,
+          primaryDmType: composer.primaryDmType,
+          buttonLabel: composer.buttonLabel,
+          buttonUrl: composer.buttonUrl,
+          trackButtonClicks: composer.trackButtonClicks,
+          publicReplyMessages: form.publicReplyMessage.split(/\r?\n/).map((m) => m.trim()).filter(Boolean),
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -240,30 +280,18 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
         {step === 2 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>DM Response</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>What message should be sent when the keyword is detected?</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Craft the message sent when the trigger fires. Add emojis, a PDF, or up to 3 buttons.</p>
 
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Response Message * <span style={{ color: 'var(--text-muted)' }}>({form.responseMessage.length}/1000)</span></label>
-              <textarea className="input-field" rows={5} placeholder="Hey! Thanks for commenting. Here's your free guide 👇&#10;&#10;[link will be added below]"
-                value={form.responseMessage} maxLength={1000}
-                onChange={(e) => setForm({ ...form, responseMessage: e.target.value })}
-                style={{ resize: 'vertical', lineHeight: 1.6 }} />
-            </div>
+            <ResponseComposer
+              value={composer}
+              onChange={setComposer}
+              token={typeof window !== 'undefined' ? localStorage.getItem('token') ?? '' : ''}
+            />
 
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>CTA Link (optional)</label>
-              <input className="input-field" placeholder="https://your-link.com/free-guide" value={form.ctaLink}
-                onChange={(e) => setForm({ ...form, ctaLink: e.target.value })} type="url" />
-              <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>This link will be appended to your message automatically.</p>
-            </div>
-
-            {/* Live Preview */}
-            <div style={{ padding: '16px 20px', background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: 12 }}>
-              <div style={{ fontSize: 11, color: '#a78bfa', fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>DM Preview</div>
-              <div style={{ fontSize: 14, lineHeight: 1.7, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>
-                {form.responseMessage || 'Your message will appear here...'}
-                {form.ctaLink && `\n\n${form.ctaLink}`}
-              </div>
+            <div style={{ marginTop: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}>
+              <label style={{ fontSize: 13, fontWeight: 650 }}>Optional time delay</label>
+              <p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Default is immediate. Maximum delay is 60 seconds.</p>
+              <input className="input-field" type="number" min={0} max={60} value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: Math.min(60, Math.max(0, Number(e.target.value) || 0)) })} />
             </div>
           </motion.div>
         )}
@@ -334,7 +362,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
           {step < 3 ? (
             <button onClick={() => {
               if (step === 1 && !form.keyword) { toast('A trigger keyword is required', 'error'); return; }
-              if (step === 2 && !form.responseMessage) { toast('Response message is required', 'error'); return; }
+              if (step === 2 && !composer.responseMessage) { toast('Response message is required', 'error'); return; }
               setStep(step + 1);
             }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
               Next <ArrowRight size={16} />
