@@ -54,12 +54,12 @@ export default function StorefrontDashboard() {
       .catch(() => undefined);
     
     // Fetch storefront URL
-    fetch('/api/creator/profile', { headers: { Authorization: `Bearer ${token}` } })
+    fetch('/api/instagram/status', { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => response.json())
       .then((data) => {
-        if (data.success && data.data?.creator?.igUsername) {
+        if (data.success && data.data?.account?.igUsername) {
           const baseUrl = window.location.origin;
-          setStorefrontUrl(`${baseUrl}/${data.data.creator.igUsername}`);
+          setStorefrontUrl(`${baseUrl}/${data.data.account.igUsername}`);
         }
       })
       .catch(() => undefined);
