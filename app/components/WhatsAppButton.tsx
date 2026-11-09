@@ -11,7 +11,7 @@ function WhatsAppIcon() {
 
 /**
  * Floating WhatsApp contact button.
- * Fixed bottom-left so it doesn't overlap the campaign offer banner (bottom-right).
+ * Fixed bottom-right for quick access without covering the main page content.
  */
 export default function WhatsAppButton() {
   return (
@@ -20,7 +20,7 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noreferrer"
       aria-label="Chat with us on WhatsApp"
-      className="group fixed bottom-6 left-4 z-[65] flex items-center gap-2.5 overflow-hidden rounded-full shadow-lg transition-all duration-300 sm:left-6"
+      className="group fixed bottom-6 right-4 z-[65] flex items-center gap-2.5 overflow-hidden rounded-full shadow-lg transition-all duration-300 sm:right-6"
       style={{
         background: '#25D366',
         boxShadow: '0 4px 20px rgba(37,211,102,0.40)',
