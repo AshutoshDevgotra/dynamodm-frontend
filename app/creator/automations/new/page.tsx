@@ -59,7 +59,7 @@ export default function NewAutomationPage() {
     matchType: 'contains',
     sendPublicReply: false,
     publicReplyMessage: 'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩',
-    requireFollow: true,
+    requireFollow: false,
     followRequiredMessage: 'Follow us.',
     aiFallback: false,
     aiFallbackInstruction: '',
@@ -81,6 +81,13 @@ export default function NewAutomationPage() {
   const handleSave = async () => {
     if (!composer.responseMessage) {
       toast('Please add a response message', 'error');
+      return;
+    }
+    const hasIncompleteButton = composer.buttons.some(
+      (b) => (b.title.trim() && !b.url.trim()) || (!b.title.trim() && b.url.trim())
+    );
+    if (hasIncompleteButton) {
+      toast('Please provide both a label and a destination URL for your button', 'error');
       return;
     }
     if (form.triggerType === 'comment' && form.targetPosts.length === 0) {
@@ -183,13 +190,13 @@ export default function NewAutomationPage() {
             <div style={{ marginBottom: 24 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Trigger Type *</label>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
-                <div onClick={() => setForm({ ...form, triggerType: 'comment' })} style={{ padding: '12px', border: `2px solid ${form.triggerType === 'comment' ? '#8b5cf6' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === 'comment' ? 'rgba(139,92,246,0.1)' : 'transparent' }}>
-                  <div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === 'comment' ? '#a78bfa' : 'var(--text-primary)' }}>Post Comment</div>
+                <div onClick={() => setForm({ ...form, triggerType: 'comment' })} style={{ padding: '12px', border: `2px solid ${form.triggerType === 'comment' ? 'var(--brand-from)' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === 'comment' ? 'var(--brand-subtle)' : 'transparent' }}>
+                  <div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === 'comment' ? 'var(--brand-from)' : 'var(--text-primary)' }}>Post Comment</div>
                 </div>
-                <div onClick={() => setForm({ ...form, triggerType: 'dm' })} style={{ padding: '12px', border: `2px solid ${form.triggerType === 'dm' ? '#8b5cf6' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === 'dm' ? 'rgba(139,92,246,0.1)' : 'transparent' }}>
-                  <div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === 'dm' ? '#a78bfa' : 'var(--text-primary)' }}>Direct Message</div>
+                <div onClick={() => setForm({ ...form, triggerType: 'dm' })} style={{ padding: '12px', border: `2px solid ${form.triggerType === 'dm' ? 'var(--brand-from)' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === 'dm' ? 'var(--brand-subtle)' : 'transparent' }}>
+                  <div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === 'dm' ? 'var(--brand-from)' : 'var(--text-primary)' }}>Direct Message</div>
                 </div>
-                {([{ value: 'story', label: 'Story reply' }, { value: 'live', label: 'Live comment' }, { value: 'keyword', label: 'Keyword anywhere' }] as const).map((option) => <div key={option.value} onClick={() => setForm({ ...form, triggerType: option.value })} style={{ padding: '12px', border: `2px solid ${form.triggerType === option.value ? '#8b5cf6' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === option.value ? 'rgba(139,92,246,0.1)' : 'transparent' }}><div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === option.value ? '#a78bfa' : 'var(--text-primary)' }}>{option.label}</div></div>)}
+                {([{ value: 'story', label: 'Story reply' }, { value: 'live', label: 'Live comment' }, { value: 'keyword', label: 'Keyword anywhere' }] as const).map((option) => <div key={option.value} onClick={() => setForm({ ...form, triggerType: option.value })} style={{ padding: '12px', border: `2px solid ${form.triggerType === option.value ? 'var(--brand-from)' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === option.value ? 'var(--brand-subtle)' : 'transparent' }}><div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === option.value ? 'var(--brand-from)' : 'var(--text-primary)' }}>{option.label}</div></div>)}
               </div>
             </div>
 
@@ -228,10 +235,10 @@ export default function NewAutomationPage() {
                   <div key={m.value} onClick={() => setForm({ ...form, matchType: m.value })}
                     style={{
                       padding: '12px 14px', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s',
-                      border: `2px solid ${form.matchType === m.value ? '#8b5cf6' : 'var(--border-subtle)'}`,
-                      background: form.matchType === m.value ? 'rgba(139,92,246,0.1)' : 'transparent',
+                      border: `2px solid ${form.matchType === m.value ? 'var(--brand-from)' : 'var(--border-subtle)'}`,
+                      background: form.matchType === m.value ? 'var(--brand-subtle)' : 'transparent',
                     }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 2, color: form.matchType === m.value ? '#a78bfa' : 'var(--text-primary)' }}>{m.label}</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 2, color: form.matchType === m.value ? 'var(--brand-from)' : 'var(--text-primary)' }}>{m.label}</div>
                     <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{m.desc}</div>
                   </div>
                 ))}

@@ -42,14 +42,14 @@ export default function CampaignPricingCard({
       style={
         isFeatured
           ? {
-              background: 'linear-gradient(160deg, #0D0500 0%, #1A0800 100%)',
-              border: '1px solid rgba(255,168,0,0.40)',
-              boxShadow: '0 0 0 0 rgba(255,120,0,0.3)',
+                  background: 'linear-gradient(160deg, #6D3427 0%, #3C211B 100%)',
+                  border: '1px solid rgba(243,111,76,0.55)',
+                  boxShadow: '0 0 0 0 rgba(243,111,76,0.3)',
               animation: 'diwali-card-glow 2.5s ease-in-out infinite',
             }
           : {
-              background: '#FFEFE4',
-              border: '1px solid #F0D6C6',
+              background: '#FFFFFF',
+              border: '1px solid #E5E7EB',
               boxShadow: '0 2px 12px rgba(17,24,39,0.06)',
             }
       }
@@ -61,13 +61,13 @@ export default function CampaignPricingCard({
           style={
             isFeatured
               ? {
-                  background: 'linear-gradient(90deg, #FF7800, #FFA800)',
-                  color: '#0D0500',
+                  background: 'linear-gradient(90deg, #FFAD91, #F36F4C)',
+                  color: '#FFFFFF',
                   animation: 'diwali-badge-pulse 2s ease-in-out infinite',
                 }
               : {
-                  background: '#FFB08F',
-                  color: '#6B2A16',
+                  background: 'linear-gradient(135deg, #FFAD91, #F36F4C)',
+                  color: '#FFFFFF',
                 }
           }
         >
@@ -107,8 +107,8 @@ export default function CampaignPricingCard({
                 className="mb-1 rounded-full px-2.5 py-1 text-[11px] font-black"
                 style={
                   isFeatured
-                    ? { background: '#FF7800', color: '#0D0500' }
-                    : { background: '#FFDCD0', color: '#B83B12' }
+                    ? { background: '#F36F4C', color: '#FFFFFF' }
+                    : { background: '#FFE2D8', color: '#A94D36' }
                 }
               >
                 SAVE {campaign.discountPercent}%
@@ -123,7 +123,7 @@ export default function CampaignPricingCard({
               </span>
               <span
                 className="text-[12px] font-semibold"
-                style={{ color: isFeatured ? '#FFA800' : '#FF7800' }}
+                    style={{ color: isFeatured ? '#FFAD91' : '#D9573A' }}
               >
                 Save ₹{campaign.savingsPerMonthInr}/month
               </span>
@@ -144,9 +144,9 @@ export default function CampaignPricingCard({
         <p
           className="mb-5 rounded-xl px-3 py-2.5 text-[11px] leading-relaxed"
           style={
-            isFeatured
-              ? { background: 'rgba(255,120,0,0.12)', color: 'rgba(255,255,255,0.65)' }
-              : { background: 'rgba(255,120,0,0.07)', color: '#6B7280' }
+              isFeatured
+                ? { background: 'rgba(243,111,76,0.16)', color: 'rgba(255,255,255,0.72)' }
+                : { background: 'rgba(243,111,76,0.08)', color: '#6B7280' }
           }
         >
           {getIntroTerms(campaign)}
@@ -160,7 +160,7 @@ export default function CampaignPricingCard({
             <Check
               size={15}
               className="mt-0.5 shrink-0"
-              style={{ color: isFeatured ? '#FFA800' : '#FF5A1F' }}
+              style={{ color: isFeatured ? '#FFAD91' : '#F36F4C' }}
             />
             {f}
           </li>
@@ -179,13 +179,14 @@ export default function CampaignPricingCard({
         style={
           isFeatured
             ? {
-                background: 'linear-gradient(135deg, #FF7800 0%, #FFA800 100%)',
-                color: '#0D0500',
-                boxShadow: '0 4px 18px rgba(255,120,0,0.35)',
+                background: 'linear-gradient(135deg, #FFAD91 0%, #F36F4C 100%)',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 18px rgba(243,111,76,0.35)',
               }
             : {
-                background: '#FFB08F',
-                color: '#6B2A16',
+                background: '#FFFFFF',
+                color: '#111827',
+                border: '1px solid #E5E7EB',
               }
         }
       >

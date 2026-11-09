@@ -28,7 +28,7 @@ export default function InvoicesPage() {
   const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
     captured: { color: '#22c55e', icon: <CheckCircle size={14} color="#22c55e" /> },
     failed: { color: '#ef4444', icon: <XCircle size={14} color="#ef4444" /> },
-    created: { color: '#f59e0b', icon: <Calendar size={14} color="#f59e0b" /> },
+    created: { color: '#E58B6F', icon: <Calendar size={14} color="#E58B6F" /> },
   };
 
   return (

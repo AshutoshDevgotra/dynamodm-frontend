@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Activity, ExternalLink, Link as LinkIcon, Plus, ShoppingBag, ImagePlus, Share2, Sparkles } from 'lucide-react';
+import FeatureBanner from '../../components/creator/FeatureBanner';
 
 interface StoreProduct {
   id: number | string;
@@ -121,6 +122,16 @@ export default function StorefrontDashboard() {
 
   return (
     <div className="mx-auto max-w-5xl">
+      <FeatureBanner
+        eyebrow="Creator storefront"
+        title="Earn with your"
+        accent="store"
+        description="Share products, recommendations, and digital offers from one beautiful link."
+        ctaLabel="Create your shop"
+        href="#creator-shop"
+        visualSrc="/banners/earn-with-store.png"
+        theme="gold"
+      />
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Storefront & links</h1>
@@ -204,7 +215,7 @@ export default function StorefrontDashboard() {
         </div>
       </div>
 
-      <div className="creator-card overflow-hidden">
+      <div id="creator-shop" className="creator-card overflow-hidden">
         <div className="border-b border-black/6 px-5 py-4">
           <h2 className="text-base font-semibold">Your products</h2>
         </div>

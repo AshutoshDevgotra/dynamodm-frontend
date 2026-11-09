@@ -1,364 +1,57 @@
 import Link from 'next/link';
-import { ArrowRight, BarChart3, Bot, Check, MessageCircle, Shield, Sparkles, Store, Target, Users } from 'lucide-react';
+import { ArrowUpRight, BarChart3, Bot, Camera, Check, ChevronDown, MessageCircle, MousePointer2, ShieldCheck, Sparkles, Store, Users, Zap } from 'lucide-react';
+import type { Metadata } from 'next';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import FeatureCard from './components/home/FeatureCard';
-import PricingCard from './components/home/PricingCard';
 import HeroMockup from './components/home/HeroMockup';
-import GrowthLoop from './components/home/GrowthLoop';
-import AnnouncementBar from './components/campaign/AnnouncementBar';
-import DiwaliHero from './components/campaign/DiwaliHero';
-import ProblemSolution from './components/campaign/ProblemSolution';
-import ProductDemo from './components/campaign/ProductDemo';
-import FloatingOfferBanner from './components/campaign/FloatingOfferBanner';
 import { CampaignTracker } from './components/campaign/CampaignTracker';
-import { DiwaliKeyframes } from './components/campaign/DiwaliAnimations';
-import type { Metadata } from 'next';
+import FeatureBanner from './components/creator/FeatureBanner';
+import CreatorHorizontalScroll from './components/home/CreatorHorizontalScroll';
 
 export const metadata: Metadata = {
-  title: 'AI conversations for creators and businesses',
-  description: 'Turn Instagram comments and DMs into helpful customer journeys with AI conversations, automation, lead capture, and storefronts.',
+  title: 'Turn attention into action',
+  description: 'OrangeFlow helps creators and businesses turn Instagram comments and DMs into helpful conversations, leads, and sales.',
   alternates: { canonical: 'https://orangeflow.in' },
 };
 
-const features = [
-  { icon: MessageCircle, title: 'Follow-to-DM growth', description: 'Ask for a follow before delivering the promised guide, offer, or link—then keep the conversation moving.' },
-  { icon: Bot, title: 'AI brand conversations', description: 'Let AI understand customer intent and reply using your products, policies, offers, and brand context.' },
-  { icon: Store, title: 'Link-in-bio store', description: 'One storefront for digital products, affiliate links, socials, coaching, and lead magnets.' },
-  { icon: Users, title: 'Lead capture', description: 'Every meaningful conversation becomes a lead you can tag, export, and follow up with.' },
-  { icon: BarChart3, title: 'Clicks & commissions', description: 'See DMs sent, link clicks, leads, and conversions without a spreadsheet.' },
-  { icon: Target, title: 'Smart keywords', description: 'Exact match, contains, starts with, or regex — one rule can cover a campaign.' },
-  { icon: Shield, title: 'Reliable by design', description: 'Thoughtful delivery, safe pacing, and opt-out safeguards keep every conversation helpful.' },
-];
-
-const steps = [
-  { n: '01', title: 'Connect Instagram', body: 'Bring your Creator or Business account into your workspace in a few clicks.' },
-  { n: '02', title: 'Set a keyword', body: 'Write the DM, attach a link or PDF, and choose when it fires.' },
-  { n: '03', title: 'Convert conversations', body: 'Orange Flow sends the link, answer, or next step and logs the lead for you.' },
-];
-
 const plans = [
-  { name: 'Free', price: '₹0', period: '/mo', description: 'Try it with 10 DMs', features: ['1 automation rule', '10 DMs / month', 'Basic analytics', 'Policy-aware send pacing'], cta: 'Start free', highlighted: false, href: '/signup' },
-  { name: 'Starter', price: '₹99', period: '/mo', description: 'For creators getting started', features: ['3 automation rules', '500 leads / month', '1,000 DMs / month', '7-day analytics', 'Email support'], cta: 'Choose Starter', highlighted: true, badge: 'Best value', href: '/signup?plan=starter' },
-  { name: 'Pro', price: '₹499', period: '/mo', description: 'For growing creators', features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', 'Policy-aware send pacing', 'PDF attachments'], cta: 'Choose Pro', highlighted: false, href: '/signup?plan=pro' },
-  { name: 'Premium', price: '₹999', period: '/mo', description: 'For agencies & power users', features: ['Unlimited automations', 'Unlimited leads & DMs', 'AI-assisted message review', 'Consent and opt-out safeguards', 'Custom branding'], cta: 'Choose Premium', highlighted: false, href: '/signup?plan=premium' },
+  { name: 'Free', price: '₹0', suffix: '/mo', body: 'A simple way to try the workflow.', features: ['1 automation rule', '10 DMs / month', 'Basic analytics'], href: '/signup', featured: false },
+  { name: 'Starter', price: '₹99', suffix: '/mo', body: 'For creators getting started.', features: ['3 automation rules', '500 leads / month', '1,000 DMs / month', '7-day analytics'], href: '/signup?plan=starter', featured: true },
+  { name: 'Pro', price: '₹499', suffix: '/mo', body: 'For growing creator businesses.', features: ['10 automation rules', '5,000 leads / month', '10,000 DMs / month', 'PDF attachments'], href: '/signup?plan=pro', featured: false },
+  { name: 'Premium', price: '₹999', suffix: '/mo', body: 'For agencies and power users.', features: ['Unlimited automations', 'Unlimited leads and DMs', 'AI-assisted message review', 'Custom branding'], href: '/signup?plan=premium', featured: false },
 ];
 
 const faqs = [
-  { q: 'What is Orange Flow?', a: 'Orange Flow is a growth workspace for creators and businesses. Automate Instagram replies, give AI your brand context, capture leads, and share the right product or link.' },
-  { q: 'Can I automatically reply to Instagram comments?', a: 'Yes. Set a keyword trigger, write your reply, and send a relevant link or resource to people who comment on your content.' },
-  { q: 'Can I create my own product and affiliate shop?', a: 'Yes. Add product images, descriptions, and destination links to create a simple creator storefront for your own products and affiliate recommendations.' },
-  { q: 'Which affiliate platforms can I link to?', a: 'You can add affiliate links from programs you participate in, including destinations such as Meesho, Myntra, Nike, Flipkart, and Amazon. Availability and commission terms are set by each platform.' },
-  { q: 'Can I share a specific product from a reel?', a: 'You can connect a keyword to a specific product link, such as a Shopify store page or a marketplace listing, and deliver that link in an Instagram reply.' },
-  { q: 'What does the AI context bot use to answer?', a: 'It uses the product details, FAQs, policies, and brand voice you provide to help answer common customer questions. You remain in control of your brand information.' },
-  { q: 'How do brand collaborations work?', a: 'Creators can connect their Instagram presence and explore collaboration opportunities. House of Orange brings influencer-marketing experience to the creator and brand journey.' },
-  { q: 'Is there a free plan?', a: 'Yes. You can try the workflow with 10 DMs per month. Upgrade from ₹99 when you need more volume.' },
-  { q: 'Do I need an Instagram Business or Creator account?', a: 'Instagram automation requires an eligible Business or Creator account. Personal accounts are not supported for these workflows.' },
+  ['What is OrangeFlow?', 'OrangeFlow is a growth workspace for creators and businesses. Automate Instagram replies, give AI your brand context, capture leads, and share the right product or link.'],
+  ['Can I automatically reply to Instagram comments?', 'Yes. Set a keyword trigger, write your reply, and send a relevant link or resource to people who comment on your content.'],
+  ['Can I create a product or affiliate shop?', 'Yes. Add product images, descriptions, and destination links to create a simple storefront for your own products and affiliate recommendations.'],
+  ['What does the AI use to answer?', 'It uses the product details, FAQs, policies, and brand voice you provide. You remain in control of the information it can use.'],
+  ['Do I need an Instagram Business or Creator account?', 'Instagram automation requires an eligible Business or Creator account. Personal accounts are not supported for these workflows.'],
 ];
 
+function SectionLabel({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
+  return <span className={`of-label ${light ? 'of-label--light' : ''}`}><span className="of-label-dot" />{children}</span>;
+}
+
+function FeatureTile({ icon: Icon, eyebrow, title, body, className = '' }: { icon: typeof Bot; eyebrow: string; title: string; body: string; className?: string }) {
+  return <article className={`of-feature-tile ${className}`}><div className="of-icon-box"><Icon size={20} strokeWidth={1.8} /></div><p className="of-kicker">{eyebrow}</p><h3>{title}</h3><p className="of-muted">{body}</p><ArrowUpRight className="of-tile-arrow" size={19} /></article>;
+}
+
 export default function HomePage() {
-  return (
-    <div className="landing-page min-h-screen bg-white">
-      <AnnouncementBar />
-      <Navbar />
-      <DiwaliKeyframes />
-      <CampaignTracker event="LandingView" />
-
-      {/* ── Diwali Hero (above existing hero) ─────────────────────── */}
-      <div className="pt-[68px]">
-        <DiwaliHero />
-      </div>
-
-      {/* ── Original Hero ─────────────────────────────────────────── */}
-      <section className="hero-section">
-        <div className="container">
-          <div className="mx-auto max-w-[860px] pb-10 pt-20 text-center sm:pt-28">
-
-            {/* Eyebrow */}
-            <span className="hero-eyebrow mb-6 inline-flex">
-              <Sparkles size={13} />
-              Creator economy growth engine
-            </span>
-
-            {/* Headline — Sora 800, tight */}
-            <h1 className="mx-auto max-w-[780px]">
-              Turn every comment into{' '}
-              <span className="text-brand">revenue.</span>
-              <span className="block mt-1 font-serif text-[0.88em] font-normal not-italic leading-[1.12] tracking-[-0.025em] text-[#111111]/80">
-                The smarter way to grow.
-              </span>
-            </h1>
-
-            <p className="mx-auto mt-7 max-w-[560px] text-[17px] leading-[1.75] text-[#6B7280]">
-              Automate Instagram replies, give AI your brand context, capture leads, and make every recommendation shoppable — from one workspace.
-            </p>
-
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href="/signup"
-                className="btn-primary gap-2.5 !px-7 !py-3.5 text-[15px]"
-              >
-                Start for Free
-                <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/features"
-                className="btn-outline !px-7 !py-3.5 text-[15px]"
-              >
-                See how it works
-              </Link>
-            </div>
-
-            {/* Social proof strip */}
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[13px] text-[#9ca3af]">
-              <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#8B6B87]" />
-                No credit card required
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#8B6B87]" />
-                Works with Business & Creator accounts
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#8B6B87]" />
-                Live in 5 minutes
-              </span>
-            </div>
-          </div>
-
-          {/* Product preview — directly below hero text, no excessive gap */}
-          <HeroMockup />
-        </div>
-      </section>
-
-      {/* ── Problem / Solution ────────────────────────────────────── */}
-      <ProblemSolution />
-
-      {/* Press / social proof strip */}
-      <section aria-label="Featured in" className="landing-compact-section border-y border-[#EEE7DF] bg-white py-8 sm:py-10">
-        <div className="container">
-          <p className="text-center text-[10px] font-semibold uppercase tracking-[0.24em] text-[#9A8D82]">Featured in</p>
-          <div className="mt-6 grid grid-cols-2 items-center gap-x-8 gap-y-5 text-center text-[#8C8178] sm:grid-cols-4 lg:grid-cols-8">
-            {['BW Businessworld', 'techgraph', 'Business Today', 'Business Standard', 'The Economic Times', 'ThePrint', 'Entrepreneur', 'Forbes'].map((publication) => (
-              <span key={publication} className="font-serif text-[14px] font-semibold leading-tight opacity-80 sm:text-[15px]">{publication}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Product Demonstration ─────────────────────────────────── */}
-      <ProductDemo />
-
-      {/* ── Built for callout ─────────────────────────────────────── */}
-      <section className="landing-compact-section container py-8">
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 rounded-2xl border border-[#E9E1D7] bg-[#F8F4EE] px-6 py-5 text-sm text-[#71655B]">
-          <span className="font-semibold text-[#111111]">Built for growth</span>
-          <span>Helpful conversations</span>
-          <span>Creator monetization</span>
-          <span>Made for teams</span>
-        </div>
-      </section>
-
-      {/* ── Two-column value proposition ─────────────────────────── */}
-      <section className="container py-20 sm:py-28">
-        <div className="mx-auto mb-14 max-w-2xl text-center">
-          <span className="badge badge-brand mb-5">
-            <Sparkles size={13} /> One platform, two growth engines
-          </span>
-          <h2>
-            Built for creators.{' '}
-            <span className="font-serif text-[0.9em]">Ready for business.</span>
-          </h2>
-          <p className="mt-5 text-lg text-[#6B7280]">Turn a comment into a useful reply, a product link, a qualified lead, or a sale — without losing the human context.</p>
-        </div>
-
-        <div className="grid gap-7 lg:grid-cols-2">
-          {/* Creator card */}
-          <div className="rounded-[28px] border border-[#F0D6C6] bg-[#FFEFE4] p-8">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4D8C8] text-[#C87552] shadow-md shadow-[#D88963]/20">
-              <Store size={22} />
-            </div>
-            <h3 className="text-[1.4rem]">For creators: make every comment shoppable</h3>
-            <p className="mt-3 text-[16px] leading-[1.75] text-[#6B7280]">
-              Someone comments &quot;LINK&quot; or asks where to buy. Orange Flow sends the product, storefront, affiliate, Amazon, Flipkart, or Shopify link directly in the DM and captures the person as a lead.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-[#8B6B87]">
-              <span className="rounded-full border border-[#E5E7EB] bg-white px-3 py-1.5">Comment trigger</span>
-              <ArrowRight size={13} />
-              <span className="rounded-full border border-[#E5E7EB] bg-white px-3 py-1.5">Product link</span>
-              <ArrowRight size={13} />
-              <span className="rounded-full border border-[#E5E7EB] bg-white px-3 py-1.5">Lead captured</span>
-            </div>
-          </div>
-
-          {/* Business card */}
-          <div className="rounded-[28px] border border-[#F0D6C6] bg-[#FFEFE4] p-8">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E6A27F] text-[#4A3026]">
-              <Bot size={22} />
-            </div>
-            <h3 className="text-[1.4rem]">For businesses: let AI understand intent</h3>
-            <p className="mt-3 text-[16px] leading-[1.75] text-[#6B7280]">
-              When someone comments or messages your brand page, AI analyzes the question and replies using the context you add — your products, prices, policies, FAQs, offers, and tone of voice.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-[#705567]">
-              <span className="rounded-full border border-[#E5E7EB] bg-white px-3 py-1.5">Customer question</span>
-              <ArrowRight size={13} className="text-[#8B6B87]" />
-              <span className="rounded-full border border-[#E5E7EB] bg-white px-3 py-1.5">AI + brand context</span>
-              <ArrowRight size={13} className="text-[#8B6B87]" />
-              <span className="rounded-full border border-[#E5E7EB] bg-white px-3 py-1.5">Helpful answer</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Feature grid ─────────────────────────────────────────── */}
-      <section className="growth-grid-section py-20 sm:py-28">
-        <div className="container">
-          <div className="mx-auto mb-14 max-w-2xl text-center">
-            <span className="badge mb-5 border-white/15 bg-white/10 text-[#F0DED2]"><Sparkles size={13} /> Built for growth</span>
-            <h2 className="!text-[#F7F1F5]">
-              Reach more people{' '}
-              <span className="font-serif text-[0.9em] text-[#E3C1AD]">with tools built for growth.</span>
-            </h2>
-            <p className="mt-5 text-lg text-[#F0DED2]">
-              Turn Instagram comments and DMs into conversations, qualified leads, and sales.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {features.slice(0, 3).map((feature) => (
-              <FeatureCard key={feature.title} {...feature} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Growth tools carousel ────────────────────────────────── */}
-      <section id="growth-tools" className="container scroll-mt-24 py-20 sm:py-28">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <span className="badge badge-brand mb-5">
-            <Sparkles size={13} /> Your creator growth toolkit
-          </span>
-          <h2>
-            More ways to grow.{' '}
-            <span className="font-serif text-[0.88em]">One connected journey.</span>
-          </h2>
-          <p className="mt-5 text-lg text-[#6B7280]">Choose a tool to explore how Instagram conversations, creator shops, affiliate links, and brand opportunities can work together.</p>
-        </div>
-        <GrowthLoop />
-      </section>
-
-      {/* ── Creator trust and story placeholders ──────────────────── */}
-      <section className="bg-[#F4EEE6] py-20 sm:py-24">
-        <div className="container">
-          <div className="mx-auto mb-12 max-w-2xl text-center">
-            <span className="badge mb-5 border-[#D8C8B7] bg-white/70 text-[#735A46]">Made for India&apos;s creator economy</span>
-            <h2>Trusted by creators{' '}<span className="font-serif text-[0.9em]">building what is next.</span></h2>
-            <p className="mt-5 text-lg text-[#6B625A]">Add creator reviews, WhatsApp conversations, and community wins here as Orange Flow grows with India&apos;s creator economy.</p>
-          </div>
-          <div className="grid gap-5 md:grid-cols-3">
-            {[
-              { title: 'Creator stories', body: 'A space for creator feedback and WhatsApp stories from the community.', label: 'Creator review' },
-              { title: 'Brand perspectives', body: 'A place to share how thoughtful creator partnerships help brands grow.', label: 'Brand review' },
-              { title: 'Community picks', body: 'Highlight the products, links, and workflows creators love to share.', label: 'Community favorite' },
-            ].map((story) => (
-              <div key={story.title} className="flex min-h-[220px] flex-col rounded-[24px] border border-[#F0D6C6] bg-[#FFEFE4] p-6 sm:p-7">
-                <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[#F0E7DC] px-3 py-1.5 text-xs font-semibold text-[#735A46]"><Sparkles size={12} /> {story.label}</span>
-                <h3 className="mt-6 text-xl text-[#332B25]">{story.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#71655B]">{story.body}</p>
-                <div className="mt-auto flex items-center gap-2 pt-5 text-xs font-semibold text-[#8A6C55]"><Check size={14} /> Real voices, shared with permission</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Steps ────────────────────────────────────────────────── */}
-      <section className="bg-[#F8F2EB] py-20 sm:py-28">
-        <div className="container">
-          <div className="mx-auto mb-14 max-w-2xl text-center">
-            <h2>
-              Live in{' '}
-              <span className="text-brand">5 minutes.</span>
-            </h2>
-            <p className="mt-5 text-lg text-[#6B7280]">Set the trigger, add your context, and let Orange Flow handle the conversation.</p>
-          </div>
-          <div className="grid gap-7 md:grid-cols-3">
-            {steps.map((step) => (
-              <div key={step.n} className="steps-card rounded-[24px] border border-[#F0D6C6] bg-[#FFEFE4] p-8 shadow-sm">
-                <div className="mb-4 inline-flex items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F6C4AA] text-[12px] font-bold text-[#6B2A16]">{step.n}</span>
-                </div>
-                <h3 className="text-[1.2rem]">{step.title}</h3>
-                <p className="mt-3 text-[16px] leading-[1.75] text-[#6B7280]">{step.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Pricing ──────────────────────────────────────────────── */}
-      <section className="container py-20 sm:py-28" id="pricing">
-        <div className="mx-auto mb-14 max-w-2xl text-center">
-          <h2>
-            Simple,{' '}
-            <span className="font-serif text-[0.9em]">honest pricing.</span>
-          </h2>
-          <p className="mt-5 text-lg text-[#6B7280]">Start free. Upgrade when you are ready. Cancel anytime.</p>
-        </div>
-        <div className="grid items-start gap-6 md:grid-cols-3">
-          {plans.map((plan) => (
-            <PricingCard key={plan.name} {...plan} />
-          ))}
-        </div>
-      </section>
-
-      {/* ── FAQ ──────────────────────────────────────────────────── */}
-      <section className="bg-[#FBF8F4] py-20 sm:py-28">
-        <div className="container max-w-3xl">
-          <h2 className="mb-10 text-center">
-            Questions?{' '}
-            <span className="font-serif text-[0.88em]">Answers.</span>
-          </h2>
-          <div className="divide-y divide-[#EEE7DF] rounded-[24px] border border-[#E9E1D7] bg-white px-6 shadow-[0_14px_40px_rgba(76,55,38,0.06)] sm:px-8">
-            {faqs.map((item) => (
-              <details key={item.q} className="group py-5">
-                <summary className="flex cursor-pointer items-center justify-between gap-4 text-left text-[16px] font-semibold text-[#111111]">
-                  {item.q}
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#E5E7EB] text-base font-normal text-[#6B7280] transition-transform group-open:rotate-45">+</span>
-                </summary>
-                <p className="mt-3 max-w-2xl pb-1 text-[15px] leading-relaxed text-[#6B7280]">{item.a}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Bottom CTA ───────────────────────────────────────────── */}
-      <section className="py-20 sm:py-28">
-        <div className="container">
-          <div className="gradient-navy mx-auto max-w-[1000px] rounded-[32px] px-8 py-16 text-center shadow-[0_24px_60px_rgba(112,85,103,0.22)]">
-            <h2 className="!text-[#6B2A16]" style={{ letterSpacing: '-0.045em' }}>
-              Make every{' '}
-              <span className="text-[#FF5A1F]">conversation</span>{' '}
-              count.
-            </h2>
-            <p className="mx-auto mt-5 max-w-md text-[16px] leading-relaxed text-[#8B4A32]">
-              Free to start. No credit card. Cancel anytime.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Link href="/signup" className="btn-primary !bg-[#FFB08F] !text-[#6B2A16] !px-8 !py-3.5 text-[15px] hover:!bg-[#FF5A1F] hover:!text-white active:!bg-[#B83B12]">
-                Start for Free <ArrowRight size={16} />
-              </Link>
-              <Link href="/pricing" className="btn-outline !border-[#C97D59] !text-[#6B2A16] hover:!bg-[#FFE7D9] !px-8 !py-3.5 text-[15px]">
-                See pricing
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-      <FloatingOfferBanner />
-    </div>
-  );
+  return <div className="of-landing">
+    <CampaignTracker event="LandingView" />
+    <section className="of-section container of-banner-showcase"><div className="of-centered-heading"><SectionLabel>EXPLORE THE WORKFLOWS</SectionLabel><h2>Every action has<br /><em>a next step.</em></h2><p>Tap a banner to jump straight into the workflow that fits your next move.</p></div><div className="of-banner-grid"><FeatureBanner eyebrow="Creator growth feature" title="Automate your" accent="DMs" description="Turn every message into a helpful conversation, even while you are creating." ctaLabel="Start automating" href="/signup" visualSrc="/banners/automate.png" theme="teal" /><FeatureBanner eyebrow="Follow-first automation" title="Turn DMs into" accent="followers" description="Ask for a follow before delivering your guide, link, or next step." ctaLabel="Build follow-first" href="/signup" visualSrc="/banners/follow-first.png" theme="blue" /><FeatureBanner eyebrow="Audience growth" title="Turn DMs into" accent="community" description="Create warmer conversations that become lasting connections." ctaLabel="Explore automations" href="/features" visualSrc="/banners/dms-to-followers.png" theme="purple" /><FeatureBanner eyebrow="Lead intelligence" title="Get qualified" accent="leads" description="See who is messaging you and move the right conversations forward." ctaLabel="Capture leads" href="/signup" visualSrc="/banners/qualified-leads.png" theme="red" /><FeatureBanner eyebrow="Creator storefront" title="Earn with your" accent="store" description="Share products, recommendations, and digital offers from one beautiful link." ctaLabel="Create your shop" href="/signup" visualSrc="/banners/earn-with-store.png" theme="gold" /></div></section>
+    <section className="of-hero"><Navbar variant="dark" /><div className="of-hero-orb of-hero-orb--one" /><div className="of-hero-orb of-hero-orb--two" /><div className="container of-hero-inner"><div className="of-hero-copy"><SectionLabel light>THE CREATOR GROWTH WORKSPACE</SectionLabel><h1>Your creativity.<br /><em>Your community.</em><br /><span>Your business.</span></h1><p>Turn the attention you have earned into conversations, customers, and a business that moves with you.</p><div className="of-hero-actions"><Link href="/signup" className="of-button of-button--orange">Start for free <ArrowUpRight size={17} /></Link><Link href="#product" className="of-button of-button--ghost">See how it works <MousePointer2 size={16} /></Link></div><div className="of-hero-note"><span className="of-live-dot" />No card required <span>·</span> Works with Creator &amp; Business accounts</div></div><HeroMockup /></div><div className="of-hero-bottom container"><span>MAKE EVERY MOMENT COUNT</span><span className="of-scroll-line" /><span>SCROLL TO EXPLORE</span></div></section>
+    <section className="of-marquee" aria-label="OrangeFlow capabilities"><div className="of-marquee-track"><span>CONVERSATIONS</span><b>✳</b><span>LEADS</span><b>✳</b><span>MONETIZATION</span><b>✳</b><span>COMMUNITY</span><b>✳</b><span>CONVERSATIONS</span><b>✳</b><span>LEADS</span></div></section>
+    <CreatorHorizontalScroll />
+    <section id="product" className="of-section of-intro-section container"><div className="of-intro-grid"><div><SectionLabel>WHY ORANGEFLOW</SectionLabel><h2>Attention is only<br /><em>the beginning.</em></h2></div><div className="of-intro-copy"><p className="of-lead">Your audience is already talking. OrangeFlow helps you respond with the right message, the right link, and the right next step — without losing the human part.</p><Link href="/features" className="of-text-link">Explore the platform <ArrowUpRight size={17} /></Link></div></div><div className="of-metric-row"><div><strong>01</strong><span>Capture intent</span></div><div><strong>02</strong><span>Start the conversation</span></div><div><strong>03</strong><span>Move people forward</span></div><div className="of-metric-line" /></div></section>
+    <section className="of-dark-section"><div className="container of-section"><div className="of-section-heading"><div><SectionLabel light>BUILT FOR THE WHOLE JOURNEY</SectionLabel><h2>From first comment<br /><em>to next chapter.</em></h2></div><p>One connected workspace for the moments that matter — from the first “LINK?” to the sale, sign-up, or reply that comes after.</p></div><div className="of-feature-grid"><FeatureTile icon={MessageCircle} eyebrow="01 / CONVERSATIONS" title="Reply while the moment is warm." body="Automate keyword-triggered Instagram replies and deliver the link, guide, or answer people came for." className="of-feature-tile--wide" /><FeatureTile icon={Bot} eyebrow="02 / CONTEXT" title="AI that sounds like you." body="Give your assistant your products, policies, FAQs, and tone. Keep the context in your hands." /><FeatureTile icon={Store} eyebrow="03 / MONETIZATION" title="Make every recommendation shoppable." body="Create a simple storefront for digital products, affiliate links, coaching, and lead magnets." /><FeatureTile icon={BarChart3} eyebrow="04 / SIGNAL" title="See what is actually moving." body="Track DMs, clicks, leads, and conversions without stitching together another spreadsheet." /></div></div></section>
+    <section className="of-section container of-story-section"><div className="of-story-copy"><SectionLabel>ONE CLEAR FLOW</SectionLabel><h2>Less chasing.<br /><em>More creating.</em></h2><p className="of-lead">Set the intention once. OrangeFlow takes care of the useful follow-through while you focus on the work only you can do.</p><Link href="/signup" className="of-button of-button--dark">Build your flow <ArrowUpRight size={17} /></Link></div><div className="of-flow-visual"><div className="of-flow-card of-flow-card--top"><span className="of-flow-number">01</span><div><b>A comment comes in</b><p>“LINK please ✨”</p></div><MessageCircle size={20} /></div><div className="of-flow-connector" /><div className="of-flow-card of-flow-card--mid"><span className="of-flow-number">02</span><div><b>Your reply goes out</b><p>Helpful, on-brand, and right on time.</p></div><Zap size={20} /></div><div className="of-flow-connector" /><div className="of-flow-card of-flow-card--bottom"><span className="of-flow-number">03</span><div><b>A lead is ready</b><p>Conversation saved to your workspace.</p></div><Users size={20} /></div><div className="of-flow-ring" /></div></section>
+    <section className="of-product-band"><div className="container of-product-grid"><div><SectionLabel light>YOUR COMMAND CENTRE</SectionLabel><h2>The work behind<br /><em>the work.</em></h2><p>See your automations, conversations, leads, and storefront in one calm, focused space.</p><Link href="/features" className="of-button of-button--orange">Explore features <ArrowUpRight size={17} /></Link></div><div className="of-analytics-card"><div className="of-card-top"><span>WEEKLY GROWTH</span><span className="of-positive">+18.4% ↗</span></div><div className="of-analytics-number">2,840 <small>people reached</small></div><svg className="of-chart" viewBox="0 0 520 160" role="img" aria-label="Illustrative upward growth chart"><defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#ff5a1f" stopOpacity=".35" /><stop offset="1" stopColor="#ff5a1f" stopOpacity="0" /></linearGradient></defs><path d="M0 138 C55 126 60 112 105 118 S165 82 208 98 S260 68 298 80 S345 52 382 62 S430 32 470 39 S500 19 520 20 V160 H0Z" fill="url(#chartFill)" /><path d="M0 138 C55 126 60 112 105 118 S165 82 208 98 S260 68 298 80 S345 52 382 62 S430 32 470 39 S500 19 520 20" fill="none" stroke="#ff7845" strokeWidth="3" /></svg><div className="of-chart-labels"><span>MON</span><span>WED</span><span>FRI</span><span>SUN</span></div><div className="of-analytics-foot"><span><i className="of-legend-dot of-legend-dot--orange" />Leads <b>486</b></span><span><i className="of-legend-dot of-legend-dot--white" />DMs sent <b>1,204</b></span></div></div></div></section>
+    <section className="of-section container of-proof-section"><div className="of-proof-top"><div><SectionLabel>DESIGNED TO BE TRUSTED</SectionLabel><h2>Clear by default.<br /><em>Human at heart.</em></h2></div><p className="of-lead">Thoughtful delivery, safe pacing, and opt-out safeguards keep every conversation helpful. You stay in control of your brand and your audience.</p></div><div className="of-proof-grid"><div className="of-proof-card"><ShieldCheck size={22} /><h3>Reliable by design</h3><p>Built around helpful conversations, not noise.</p></div><div className="of-proof-card"><Camera size={22} /><h3>Made for Instagram</h3><p>Connect eligible Creator and Business accounts.</p></div><div className="of-proof-card"><Sparkles size={22} /><h3>Ready in minutes</h3><p>Start with a rule, a reply, and a useful next step.</p></div></div></section>
+    <section id="pricing" className="of-pricing-section"><div className="container of-section"><div className="of-centered-heading"><SectionLabel>PRICING THAT SCALES WITH YOU</SectionLabel><h2>Start small.<br /><em>Grow into it.</em></h2><p>Try the core workflow free, then choose the volume that fits your next season.</p></div><div className="of-pricing-grid">{plans.map((plan) => <article key={plan.name} className={`of-plan ${plan.featured ? 'of-plan--featured' : ''}`}>{plan.featured && <span className="of-plan-badge">MOST POPULAR</span>}<div className="of-plan-name">{plan.name}</div><p>{plan.body}</p><div className="of-plan-price">{plan.price}<small>{plan.suffix}</small></div><Link href={plan.href} className={`of-button ${plan.featured ? 'of-button--orange' : 'of-button--outline'}`}>{plan.name === 'Free' ? 'Start free' : 'Choose plan'} <ArrowUpRight size={16} /></Link><ul>{plan.features.map((feature) => <li key={feature}><Check size={15} />{feature}</li>)}</ul></article>)}</div></div></section>
+    <section className="of-section container of-faq-section"><div className="of-faq-heading"><SectionLabel>QUESTIONS, ANSWERED</SectionLabel><h2>Good to<br /><em>know.</em></h2><p>Still curious? <Link href="/contact">Talk to our team <ArrowUpRight size={15} /></Link></p></div><div className="of-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} /></summary><p>{answer}</p></details>)}</div></section>
+    <section className="of-final-cta"><div className="of-final-grid" /><div className="container"><SectionLabel light>THE NEXT MOVE IS YOURS</SectionLabel><h2>Make your attention<br /><em>go further.</em></h2><p>Build the system behind your best work.</p><div className="of-hero-actions"><Link href="/signup" className="of-button of-button--orange">Start for free <ArrowUpRight size={17} /></Link><Link href="/contact" className="of-button of-button--ghost">Talk to the team <ArrowUpRight size={16} /></Link></div></div></section>
+    <Footer />
+  </div>;
 }

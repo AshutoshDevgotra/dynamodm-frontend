@@ -47,30 +47,35 @@ const TEMPLATES = [
     id: 'freebie',
     label: '🎁 Free resource',
     icon: '🎁',
+    defaultButtonTitle: 'Get Freebie',
     text: "Hey! Thanks for commenting 🙌\n\nHere's the free resource you asked for 👇\n\nLet me know if you have any questions!",
   },
   {
     id: 'product',
     label: '🛍️ Product link',
     icon: '🛍️',
+    defaultButtonTitle: 'View Product',
     text: "Hi there! 👋 Thanks for your interest.\n\nHere's the direct link to the product you asked about ⬇️\n\nFeel free to DM me if you need help choosing!",
   },
   {
     id: 'webinar',
     label: '📅 Event / webinar',
     icon: '📅',
+    defaultButtonTitle: 'Register Now',
     text: "Hey! So excited you're interested 🎉\n\nHere's your link to register for the upcoming session 👇\n\nSee you there! 🙌",
   },
   {
     id: 'guide',
     label: '📖 Guide / PDF',
     icon: '📖',
+    defaultButtonTitle: 'Download Guide',
     text: "Hey! Here's the guide you asked for 📄\n\nI've attached it directly to this message — feel free to save it!\n\nLet me know if you found it helpful 💬",
   },
   {
     id: 'discount',
     label: '🎟️ Discount / offer',
     icon: '🎟️',
+    defaultButtonTitle: 'Claim Discount',
     text: "Hey! You're in luck 🎉\n\nHere's your exclusive discount code and link 👇\n\nDon't wait — this offer is time-limited! ⏳",
   },
 ];
@@ -321,7 +326,17 @@ export default function ResponseComposer({ value, onChange, token }: ResponseCom
                     key={tpl.id}
                     type="button"
                     onClick={() => {
-                      set({ responseMessage: tpl.text });
+                      const nextButtons = value.buttons.length > 0
+                        ? value.buttons
+                        : [{ title: tpl.defaultButtonTitle, url: '' }];
+                      set({
+                        responseMessage: tpl.text,
+                        buttons: nextButtons,
+                        buttonLabel: nextButtons[0]?.title || '',
+                        buttonUrl: nextButtons[0]?.url || '',
+                        ctaLink: nextButtons[0]?.url || value.ctaLink,
+                        primaryDmType: 'TEXT_BUTTON',
+                      });
                       setShowTemplates(false);
                     }}
                     className="flex items-center gap-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-3 py-2.5 text-left text-[12px] font-semibold text-[var(--text-primary)] transition hover:border-[var(--brand-from)] hover:bg-[var(--brand-subtle)]"
@@ -510,6 +525,7 @@ export default function ResponseComposer({ value, onChange, token }: ResponseCom
                     {i + 1}
                   </span>
                   <span className="flex-1 text-[12px] font-semibold text-[var(--text-muted)]">Button {i + 1}</span>
+                  <span className="text-[10px] text-[var(--text-muted)]">{btn.title.length}/20</span>
                   <button
                     type="button"
                     onClick={() => removeButton(i)}
@@ -537,6 +553,12 @@ export default function ResponseComposer({ value, onChange, token }: ResponseCom
                 </div>
                 {btn.title.length > 18 && (
                   <p className="px-3 pb-2 text-[11px] text-[var(--warning)]">Button labels work best under 20 characters.</p>
+                )}
+                {btn.title.trim() && !btn.url.trim() && (
+                  <p className="px-3 pb-2 text-[11px] font-medium text-[var(--brand-from)]">⚠️ Add a destination URL (e.g. https://your-link.com) so this button will be delivered with your automation.</p>
+                )}
+                {!btn.title.trim() && btn.url.trim() && (
+                  <p className="px-3 pb-2 text-[11px] font-medium text-[var(--brand-from)]">⚠️ Add a button label (e.g. &quot;View Guide&quot;) to accompany this link.</p>
                 )}
               </div>
             ))}

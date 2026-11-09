@@ -49,11 +49,11 @@ export default function AboutPage() {
 
           <div className="mx-auto mt-14 grid max-w-5xl gap-5 md:grid-cols-3">
             {values.map((value) => (
-              <div key={value.title} className="rounded-[24px] border border-[#E5E7EB] bg-white p-7 shadow-sm">
+              <div key={value.title} className="about-value-card rounded-[24px] border border-[#E5E7EB] bg-white p-7 shadow-sm">
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-subtle)] text-[#8B6B87]">
                   <value.icon size={22} />
                 </div>
-                <h2 className="text-xl font-semibold text-[#111111]">{value.title}</h2>
+                <h2 className="about-value-title text-xl font-semibold text-[#111111]">{value.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-[#6B7280]">{value.body}</p>
               </div>
             ))}

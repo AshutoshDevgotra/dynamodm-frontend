@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Download, Search, Filter, ExternalLink } from 'lucide-react';
+import FeatureBanner from '../../components/creator/FeatureBanner';
 
 interface Lead {
   _id: string;
@@ -47,10 +48,20 @@ export default function LeadsPage() {
     URL.revokeObjectURL(url);
   };
 
-  const sourceColors: Record<string, string> = { comment: '#8b5cf6', mention: '#06b6d4', story_mention: '#10b981', manual: '#f59e0b' };
+  const sourceColors: Record<string, string> = { comment: 'var(--brand-from)', mention: '#06b6d4', story_mention: '#10b981', manual: '#E58B6F' };
 
   return (
     <div>
+      <FeatureBanner
+        eyebrow="Lead intelligence"
+        title="Get qualified"
+        accent="leads"
+        description="See who is messaging you, understand intent, and move the right conversations forward."
+        ctaLabel="Manage your leads"
+        href="#leads-table"
+        visualSrc="/banners/qualified-leads.png"
+        theme="red"
+      />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>Leads</h1>
@@ -80,7 +91,7 @@ export default function LeadsPage() {
         </div>
       ) : (
         <>
-          <div className="card" style={{ overflow: 'hidden' }}>
+          <div id="leads-table" className="card" style={{ overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
@@ -98,7 +109,7 @@ export default function LeadsPage() {
                   >
                     <td style={{ padding: '14px 16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--gradient-brand-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#a78bfa' }}>
+                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--gradient-brand-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: 'var(--brand-from)' }}>
                           {(lead.username || lead.name || '?')[0].toUpperCase()}
                         </div>
                         <div>

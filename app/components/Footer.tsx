@@ -46,12 +46,12 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[#E9E1D7] bg-[#F8F4EE] text-[#332B25]">
+    <footer className="border-t border-[#EADBD1] bg-[#FAF8F4] text-[#211B18]">
       <div className="container pb-14 pt-16 sm:pb-16 sm:pt-20">
         <div className="grid grid-cols-1 gap-10 pt-3 sm:grid-cols-2 sm:pt-4 md:grid-cols-[1.8fr_1fr_1fr] md:gap-16">
           <div className="max-w-md">
             <Logo />
-            <p className="mt-4 max-w-sm text-sm leading-7 text-[#6F6258]">
+            <p className="mt-4 max-w-sm text-sm leading-7 text-[#81766E]">
               Orange Flow helps creators monetize attention and helps businesses turn customer conversations into qualified leads with AI.
             </p>
             <div className="mt-4 flex gap-2.5">
@@ -67,7 +67,7 @@ export default function Footer() {
                   href={href}
                   {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
                   aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#DCCFC1] text-[#78695D] transition hover:border-[#B98C6B] hover:bg-white hover:text-[#8D563A]"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E1D2C8] text-[#81766E] transition hover:border-[#F36F4C] hover:bg-white hover:text-[#F36F4C]"
                 >
                   <Icon size={15} />
                 </a>
@@ -87,11 +87,11 @@ export default function Footer() {
 
           {Object.entries(columns).map(([title, items]) => (
             <div key={title}>
-              <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-[#332B25]">{title}</h4>
+              <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-[#211B18]">{title}</h4>
               <ul className="flex list-none flex-col gap-2">
                 {items.map((item) => (
                   <li key={item.label}>
-                    <Link href={item.href} className="text-sm text-[#786B60] transition hover:text-[#A94D2D]">
+                    <Link href={item.href} className="text-sm text-[#81766E] transition hover:text-[#F36F4C]">
                       {item.label}
                     </Link>
                   </li>
@@ -101,7 +101,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-[#E4D9CD] pt-6 text-xs text-[#87796E] sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-[#EADBD1] pt-6 text-xs text-[#9A8B82] sm:flex-row sm:items-center">
           <p>{String.fromCharCode(169)} {year} OrangeFlow.in. All rights reserved.</p>
           <p>Made in India <span className="ml-1" aria-hidden="true">{String.fromCodePoint(0x1f1ee, 0x1f1f3)}</span></p>
         </div>

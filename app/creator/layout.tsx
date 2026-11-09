@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, Handshake, HelpCircle,
-  LayoutDashboard, LogOut, Megaphone, Menu, Settings, ShoppingBag, User, Users, X, Zap,
+  BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, GraduationCap, Handshake, HelpCircle,
+  LayoutDashboard, LogOut, Menu, Settings, ShoppingBag, User, Users, X, Zap,
 } from 'lucide-react';
 
 const navItems = [
@@ -15,8 +15,8 @@ const navItems = [
   { href: '/creator/instagram', label: 'Instagram profile', icon: Camera },
   { href: '/creator/collabs', label: 'Brand collabs', icon: Handshake },
   { href: '/creator/storefront', label: 'Creator shop', icon: ShoppingBag },
-  { href: '/creator/automations', label: 'AutoDM', icon: Zap },
-  { href: '/creator/campaigns', label: 'Campaigns', icon: Megaphone },
+  { href: '/creator/automations', label: 'Automations', icon: Zap },
+  { href: '/creator/academy', label: 'Orange Academy', icon: GraduationCap },
   { href: '/creator/leads', label: 'Leads', icon: Users },
   { href: '/creator/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/creator/payments', label: 'Payments', icon: CreditCard },
@@ -140,7 +140,7 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
   if (!user) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-9 w-9 animate-spin rounded-full border-[3px] border-orange-200 border-t-[var(--brand-from)]" />
+        <div className="h-9 w-9 animate-spin rounded-full border-[3px] border-[#F4C7B8] border-t-[#F36F4C]" />
       </div>
     );
   }
@@ -162,8 +162,8 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
           <div className="creator-brand-mark">
             <Image src="/favicon.ico" alt="OrangeFlow" width={26} height={26} className="h-6 w-6 object-contain" />
           </div>
-          <span className="font-logo text-[16px] font-bold tracking-[-0.03em] text-[#111111]">
-            OrangeFlow<span className="text-[#FF5A1F]">.</span>
+          <span className="font-logo text-[16px] font-bold tracking-[-0.03em] text-[#211b18]">
+            OrangeFlow<span className="text-[#F36F4C]">.</span>
           </span>
           <button
             type="button"

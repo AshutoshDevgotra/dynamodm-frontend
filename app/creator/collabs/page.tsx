@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { ArrowRight, BriefcaseBusiness, Camera, CheckCircle2, Heart, MapPin, Sparkles, Users } from 'lucide-react';
+import FeatureBanner from '../../components/creator/FeatureBanner';
 
 const opportunities = [
-  { brand: 'Glow Theory', category: 'Beauty & wellness', budget: '₹25,000 – ₹45,000', fit: '98% fit', color: 'from-[#C5AFC3] via-[#A98FA8] to-[#EDE3EC]' },
-  { brand: 'Roamly', category: 'Travel & lifestyle', budget: '₹15,000 – ₹30,000', fit: '94% fit', color: 'from-[#4A3742] via-[#705567] to-[#C5AFC3]' },
-  { brand: 'Nourish Co.', category: 'Food & nutrition', budget: '₹20,000 – ₹35,000', fit: '91% fit', color: 'from-[#8B6B87] via-[#C8B1C7] to-[#F4ECF4]' },
+  { brand: 'Glow Theory', category: 'Beauty & wellness', budget: '₹25,000 – ₹45,000', fit: '98% fit', color: 'from-[#FFAD91] via-[#F36F4C] to-[#D9573A]' },
+  { brand: 'Roamly', category: 'Travel & lifestyle', budget: '₹15,000 – ₹30,000', fit: '94% fit', color: 'from-[#18110D] via-[#2A140B] to-[#4A2416]' },
+  { brand: 'Nourish Co.', category: 'Food & nutrition', budget: '₹20,000 – ₹35,000', fit: '91% fit', color: 'from-[#EA580C] via-[#C2410C] to-[#9A3412]' },
 ];
 
 const metrics: Array<{ label: string; value: string; detail: string; icon: React.ElementType }> = [
@@ -18,12 +19,22 @@ const metrics: Array<{ label: string; value: string; detail: string; icon: React
 export default function CreatorCollabsPage() {
   return (
     <div className="mx-auto max-w-6xl pb-12">
+      <FeatureBanner
+        eyebrow="Audience growth"
+        title="Follow first."
+        accent="Grow faster."
+        description="Build a warmer audience by turning genuine conversations into lasting connections."
+        ctaLabel="Explore automations"
+        href="/creator/automations"
+        visualSrc="/banners/dms-to-followers.png"
+        theme="purple"
+      />
       <section className="creator-collabs-hero">
         <div className="relative z-10 max-w-2xl">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"><Sparkles size={14} /> Curated by House of Orange</div>
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Turn your influence into your next opportunity.</h1>
           <p className="mt-4 max-w-xl text-base leading-7 text-white/80">We match your content, audience, and style with brands that value your voice. Your profile helps us bring the right briefs to you.</p>
-          <div className="mt-7 flex flex-wrap gap-3"><Link href="/creator/instagram" className="btn-primary !bg-white !text-orange-700"><Camera size={17} /> Connect Instagram</Link><Link href="/creator/profile" className="btn-secondary !border-white/30 !bg-white/10 !text-white">Complete your profile <ArrowRight size={16} /></Link></div>
+          <div className="mt-7 flex flex-wrap gap-3"><Link href="/creator/instagram" className="btn-primary !bg-white !text-[#F36F4C]"><Camera size={17} /> Connect Instagram</Link><Link href="/creator/profile" className="btn-secondary !border-white/30 !bg-white/10 !text-white">Complete your profile <ArrowRight size={16} /></Link></div>
         </div>
         <div className="creator-collabs-orb"><BriefcaseBusiness size={74} /></div>
       </section>

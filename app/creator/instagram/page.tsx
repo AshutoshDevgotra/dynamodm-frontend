@@ -112,7 +112,7 @@ export default function InstagramPage() {
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', padding: 80 }}>
-        <div style={{ width: 36, height: 36, border: '3px solid rgba(139,92,246,0.3)', borderTopColor: '#8b5cf6', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <div style={{ width: 36, height: 36, border: '3px solid rgba(255,90,31,0.2)', borderTopColor: 'var(--brand-from)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
         <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       </div>
     );
@@ -193,9 +193,9 @@ export default function InstagramPage() {
               Connect your Instagram Creator or Business account to build your creator profile, discover brand opportunities, and power helpful automations.
             </p>
 
-            <div style={{ textAlign: 'left', maxWidth: 460, margin: '0 auto 22px', padding: 16, border: '1px solid rgba(139,92,246,0.28)', borderRadius: 14, background: 'rgba(139,92,246,0.08)' }}>
+            <div style={{ textAlign: 'left', maxWidth: 460, margin: '0 auto 22px', padding: 16, border: '1px solid rgba(255,90,31,0.25)', borderRadius: 14, background: 'rgba(255,90,31,0.06)' }}>
               <div style={{ fontSize: 13, fontWeight: 750, marginBottom: 10 }}>Review permissions before Instagram login</div>
-              {[{ icon: UserRound, label: 'View profile and access media', required: true }, { icon: MessageCircle, label: 'Access and manage comments', required: false }, { icon: MessageCircle, label: 'Access and manage messages', required: false }, { icon: BarChart3, label: 'Access and manage insights', required: false }].map(({ icon: Icon, label, required }) => <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 12, color: 'var(--text-secondary)', padding: '6px 0' }}><Icon size={14} color="#a78bfa" />{label}{required && <span style={{ color: '#fb7185', fontSize: 11 }}>(required)</span>}</div>)}
+              {[{ icon: UserRound, label: 'View profile and access media', required: true }, { icon: MessageCircle, label: 'Access and manage comments', required: false }, { icon: MessageCircle, label: 'Access and manage messages', required: false }, { icon: BarChart3, label: 'Access and manage insights', required: false }].map(({ icon: Icon, label, required }) => <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 12, color: 'var(--text-secondary)', padding: '6px 0' }}><Icon size={14} color="var(--brand-from)" />{label}{required && <span style={{ color: '#fb7185', fontSize: 11 }}>(required)</span>}</div>)}
               <div style={{ color: 'var(--text-muted)', fontSize: 11, lineHeight: 1.5, marginTop: 6 }}>Instagram will show the final consent screen next. Nothing is connected until you approve it.</div>
             </div>
 
@@ -206,7 +206,7 @@ export default function InstagramPage() {
 
             <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 16 }}>
               We never post on your behalf without permission. Read our{' '}
-              <Link href="/privacy" style={{ color: '#a78bfa' }}>privacy policy</Link>.
+              <Link href="/privacy" style={{ color: 'var(--brand-from)', fontWeight: 600 }}>privacy policy</Link>.
             </p>
           </div>
         </motion.div>

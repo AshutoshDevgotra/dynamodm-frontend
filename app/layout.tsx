@@ -1,17 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { Sora, Inter, Playfair_Display } from 'next/font/google';
+import { Inter, Playfair_Display, Syne } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import MetaPixel from '../components/MetaPixel';
 import WhatsAppButton from './components/WhatsAppButton';
-
-/* ── Display / heading font — Sora ExtraBold ── */
-const soraFont = Sora({
-  subsets: ['latin'],
-  weight: ['400', '600', '700', '800'],
-  variable: '--font-display',
-  display: 'swap',
-});
 
 /* ── Body font — Inter ── */
 const interFont = Inter({
@@ -27,6 +19,21 @@ const playfairFont = Playfair_Display({
   weight: ['400', '700'],
   style: ['italic'],
   variable: '--font-serif',
+  display: 'swap',
+});
+
+/* ── Display / heading font — Inter ── */
+const displayFont = Inter({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const syneFont = Syne({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-syne',
   display: 'swap',
 });
 
@@ -65,11 +72,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`overflow-x-hidden ${soraFont.variable} ${interFont.variable} ${playfairFont.variable}`}
+      className={`overflow-x-hidden ${displayFont.variable} ${interFont.variable} ${playfairFont.variable} ${syneFont.variable}`}
     >
       <body
         suppressHydrationWarning
-        className="font-sans antialiased bg-white text-[var(--text-primary)] min-h-screen w-full overflow-x-hidden"
+        className="font-sans antialiased bg-[var(--bg-base)] text-[var(--text-primary)] min-h-screen w-full overflow-x-hidden"
       >
         <Providers>
           {children}

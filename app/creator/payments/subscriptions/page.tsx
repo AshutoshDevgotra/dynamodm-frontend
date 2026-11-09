@@ -25,7 +25,7 @@ const PLANS = [
     description: 'For creators getting started',
     features: ['3 Automations', '500 Leads', '1,000 DMs/month', '7-day analytics'],
     icon: Zap,
-    color: '#f97316',
+    color: '#F36F4C',
     badge: 'Best value',
   },
   {
@@ -36,7 +36,7 @@ const PLANS = [
     description: 'For creators scaling their DM automations',
     features: ['10 Automations', '5,000 Leads', '10,000 DMs/month', '30-day analytics'],
     icon: Zap,
-    color: '#8b5cf6',
+    color: '#F36F4C',
   },
   {
     id: 'premium',
@@ -46,7 +46,7 @@ const PLANS = [
     description: 'For power creators who want everything',
     features: ['Unlimited Automations', 'Unlimited Leads', 'Unlimited DMs', '1-year analytics', 'Priority Support', 'Custom Branding'],
     icon: Crown,
-    color: '#f59e0b',
+    color: '#E58B6F',
     badge: 'Most Popular',
   },
 ];
@@ -163,7 +163,7 @@ export default function SubscriptionsPage() {
           ...(CAMPAIGN.active ? { campaign: CAMPAIGN.campaignId } : {}),
           utm_source: utmSource,
         },
-        theme: { color: CAMPAIGN.active ? '#FF7800' : '#8b5cf6' },
+        theme: { color: '#F36F4C' },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
           // Verify payment on backend
           try {
@@ -256,7 +256,7 @@ export default function SubscriptionsPage() {
               style={{ padding: 28, position: 'relative', border: isActive ? `2px solid ${plan.color}` : undefined }}
             >
               {plan.badge && (
-                <div style={{ position: 'absolute', top: -12, left: 24, background: '#f59e0b', color: '#000', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 999 }}>
+                <div style={{ position: 'absolute', top: -12, left: 24, background: '#F36F4C', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 999 }}>
                   {plan.badge}
                 </div>
               )}

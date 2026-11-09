@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Plus, Zap, ToggleLeft, ToggleRight, Edit, Trash2, MessageCircle, Target, Clock, Link2, Users, Sparkles } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
+import FeatureBanner from '../../components/creator/FeatureBanner';
 
 interface Automation {
   _id: string;
@@ -73,6 +74,17 @@ export default function AutomationsPage() {
           </button>
         </Link>
       </div>
+
+      <FeatureBanner
+        eyebrow="Follow-first automation"
+        title="Turn DMs into"
+        accent="followers"
+        description="Ask for a follow before delivering your guide, link, or next step."
+        ctaLabel="Build follow-first"
+        href="/creator/automations/new"
+        visualSrc="/banners/follow-first.png"
+        theme="blue"
+      />
 
       <div className="creator-card creator-card--padded" style={{ marginBottom: 24, background: 'linear-gradient(120deg, rgba(34,197,94,0.12), rgba(139,92,246,0.10))' }}>
         <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>

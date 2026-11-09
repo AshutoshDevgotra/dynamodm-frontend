@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const steps = [
   {
-    id: 1, title: 'Welcome to OrangeFlow.in!', icon: Zap, color: '#f97316',
+    id: 1, title: 'Welcome to OrangeFlow.in!', icon: Zap, color: '#F36F4C',
     desc: 'You\'re about to set up the most powerful Instagram automation tool for creators.',
     action: null,
   },
@@ -17,7 +17,7 @@ const steps = [
     action: { label: 'Connect Instagram', href: '/creator/instagram' },
   },
   {
-    id: 3, title: 'Create Your First Automation', icon: Zap, color: '#f97316',
+    id: 3, title: 'Create Your First Automation', icon: Zap, color: '#F36F4C',
     desc: 'Set a keyword and write the DM response your followers will receive.',
     action: { label: 'Create Automation', href: '/creator/automations/new' },
   },
@@ -49,7 +49,7 @@ export default function OnboardingPage() {
               <step.icon size={32} color={step.color} />
             </div>
 
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#a78bfa', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--brand-from)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Step {step.id} of {steps.length}
             </div>
             <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 14 }}>{step.title}</h1>
@@ -82,7 +82,7 @@ export default function OnboardingPage() {
         {/* Step dots */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 24 }}>
           {steps.map((s, i) => (
-            <button key={s.id} onClick={() => setCurrentStep(i)} style={{ width: 8, height: 8, borderRadius: '50%', border: 'none', cursor: 'pointer', background: i === currentStep ? '#8b5cf6' : 'var(--border-default)', transition: 'background 0.3s' }} />
+            <button key={s.id} onClick={() => setCurrentStep(i)} style={{ width: 8, height: 8, borderRadius: '50%', border: 'none', cursor: 'pointer', background: i === currentStep ? 'var(--brand-from)' : 'var(--border-default)', transition: 'background 0.3s' }} />
           ))}
         </div>
       </div>

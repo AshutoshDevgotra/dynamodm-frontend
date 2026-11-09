@@ -8,13 +8,15 @@ interface FeatureCardProps {
 
 export default function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
   return (
-    <div className="growth-feature-card rounded-[20px] p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.22)] sm:p-7">
-      <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#F0DED2] text-[#B9826E]">
-        <Icon size={20} />
+    <div className="growth-feature-card group rounded-[22px] p-6 sm:p-7 transition-all duration-200">
+      <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-500/15 text-[#FFA066] border border-orange-500/25 transition-transform duration-200 group-hover:scale-105">
+        <Icon size={22} />
       </div>
-      <h3 className="mb-2.5 text-[1.1rem] text-[#171717]">{title}</h3>
-      <p className="text-[15px] leading-[1.7] text-[#4E4E4E]">{description}</p>
-      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#B9826E]">Explore this tool <span aria-hidden="true">→</span></span>
+      <h3 className="mb-2.5 text-[1.2rem] font-semibold text-white">{title}</h3>
+      <p className="text-[15px] leading-[1.7] text-neutral-300">{description}</p>
+      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#FFA066] transition-colors group-hover:text-[#FF782D]">
+        Explore this tool <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+      </span>
     </div>
   );
 }

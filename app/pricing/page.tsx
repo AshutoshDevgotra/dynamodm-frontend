@@ -100,28 +100,28 @@ export default function PricingPage() {
       <Navbar />
       <PricingViewContent />
       <CampaignTracker event="PricingView" />
-      <main className="pt-[68px] pb-16">
+      <main className="pricing-page pt-[68px] pb-16">
         <div className="container">
           {/* ── Festive Pricing Hero ── */}
           {CAMPAIGN.active && (
             <div
               className="mx-auto mb-10 mt-10 max-w-3xl overflow-hidden rounded-[28px] px-8 py-10 text-center"
               style={{
-                background: 'linear-gradient(160deg, #0D0500 0%, #1A0800 100%)',
-                border: '1px solid rgba(255,168,0,0.30)',
+                background: 'linear-gradient(160deg, #6D3427 0%, #3C211B 100%)',
+                border: '1px solid rgba(243,111,76,0.45)',
               }}
             >
               <span
                 className="mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-bold uppercase tracking-widest"
-                style={{ borderColor: 'rgba(255,168,0,0.35)', background: 'rgba(255,120,0,0.12)', color: '#FFA800' }}
+                style={{ borderColor: 'rgba(255,173,145,0.45)', background: 'rgba(243,111,76,0.16)', color: '#FFAD91' }}
               >
                 🪔 Diwali Extended Offer
               </span>
-              <h1 className="mt-3 text-white" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
+              <h1 className="mt-3 !text-white" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', color: '#FFFFFF' }}>
                 Celebrate smarter automation{' '}
                 <span
                   style={{
-                    background: 'linear-gradient(90deg, #FF7800, #FFD700)',
+                    background: 'linear-gradient(90deg, #FFAD91, #F36F4C)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -136,11 +136,11 @@ export default function PricingPage() {
               {proCampaign && (
                 <div
                   className="mx-auto mt-6 inline-flex items-center gap-3 rounded-2xl px-6 py-3"
-                  style={{ background: 'rgba(255,120,0,0.12)', border: '1px solid rgba(255,168,0,0.25)' }}
+                  style={{ background: 'rgba(243,111,76,0.16)', border: '1px solid rgba(255,173,145,0.30)' }}
                 >
                   <span className="text-[22px] font-black text-white">₹{proCampaign.offerPriceInr}</span>
                   <span className="text-[14px] line-through" style={{ color: 'rgba(255,255,255,0.35)' }}>₹{proCampaign.regularPriceInr}</span>
-                  <span className="text-[13px]" style={{ color: '#FFA800' }}>Pro · Save ₹{proCampaign.savingsPerMonthInr}/month</span>
+                  <span className="text-[13px]" style={{ color: '#FFAD91' }}>Pro · Save ₹{proCampaign.savingsPerMonthInr}/month</span>
                 </div>
               )}
             </div>
@@ -208,7 +208,7 @@ export default function PricingPage() {
           {CAMPAIGN.active && proCampaign && (
             <div
               className="mx-auto mb-10 max-w-2xl rounded-[20px] px-6 py-5"
-              style={{ background: 'rgba(255,120,0,0.06)', border: '1px solid rgba(255,120,0,0.15)' }}
+              style={{ background: 'rgba(243,111,76,0.07)', border: '1px solid rgba(243,111,76,0.18)' }}
             >
               <p className="text-center text-[13px] leading-relaxed text-[#6B7280]">
                 <strong className="text-[#111111]">Introductory pricing terms: </strong>
@@ -241,10 +241,10 @@ export default function PricingPage() {
                   <tr className="border-b border-[#E5E7EB] text-xs uppercase tracking-wider text-[#6B7280]">
                     <th className="px-6 py-4 font-medium">Feature</th>
                     {['Free', 'Starter', 'Pro', 'Premium'].map((p) => (
-                      <th key={p} className={`px-6 py-4 text-center font-semibold ${p === 'Pro' ? 'text-[#FF7800]' : 'text-[#111111]'}`}>
+                      <th key={p} className={`px-6 py-4 text-center font-semibold ${p === 'Pro' ? 'text-[#F36F4C]' : 'text-[#211B18]'}`}>
                         {p}
                         {p === 'Pro' && CAMPAIGN.active && proCampaign && (
-                          <span className="ml-1.5 rounded-full bg-[#FF7800] px-1.5 py-0.5 text-[9px] font-black text-white">40% OFF</span>
+                          <span className="ml-1.5 rounded-full bg-[#F36F4C] px-1.5 py-0.5 text-[9px] font-black text-white">40% OFF</span>
                         )}
                       </th>
                     ))}
@@ -275,8 +275,8 @@ export default function PricingPage() {
               href="/creator/payments/subscriptions?plan=pro&campaign=diwali-extended-2026"
               className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-[15px] font-bold transition"
               style={{
-                background: CAMPAIGN.active ? 'linear-gradient(135deg, #FF7800, #FFA800)' : undefined,
-                color: CAMPAIGN.active ? '#0D0500' : undefined,
+                background: CAMPAIGN.active ? 'linear-gradient(135deg, #FFAD91, #F36F4C)' : undefined,
+                color: CAMPAIGN.active ? '#FFFFFF' : undefined,
               }}
             >
               {CAMPAIGN.active && proCampaign

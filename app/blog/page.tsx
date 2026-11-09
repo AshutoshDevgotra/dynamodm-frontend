@@ -28,7 +28,7 @@ export default async function BlogPage({
         <section className="container py-16 sm:py-24">
           <div className="mx-auto max-w-3xl text-center">
             <span className="badge badge-brand mb-5">Orange Flow journal</span>
-            <h1 className="text-[#111111]">
+            <h1 className="blog-index-title text-[#211B18]">
               Ideas to help you
               <span className="block font-serif text-[0.88em]">grow through conversations</span>
             </h1>

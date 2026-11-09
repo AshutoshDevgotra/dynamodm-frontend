@@ -75,8 +75,8 @@ export default function AnalyticsPage() {
       <div className="creator-stat-grid">
         {[
           { icon: MessageSquare, label: 'DMs Sent', value: summary?.dmsSent?.toLocaleString() || '0', color: 'var(--brand-from)', sub: `${summary?.successRate || 0}% success` },
-          { icon: Users, label: 'New Leads', value: summary?.leadsNew?.toLocaleString() || '0', color: 'var(--brand-mid)', sub: `${summary?.leadsTotal?.toLocaleString() || '0'} total` },
-          { icon: TrendingUp, label: 'Link Clicks', value: summary?.linkClicks?.toLocaleString() || '0', color: '#f59e0b', sub: 'Affiliate & Storefront' },
+          { icon: Users, label: 'New Leads', value: summary?.leadsNew?.toLocaleString() || '0', color: '#F36F4C', sub: `${summary?.leadsTotal?.toLocaleString() || '0'} total` },
+          { icon: TrendingUp, label: 'Link Clicks', value: summary?.linkClicks?.toLocaleString() || '0', color: '#F36F4C', sub: 'Affiliate & Storefront' },
           { icon: Target, label: 'Active Rules', value: summary?.automationsActive || '0', color: '#10b981', sub: 'Running automations' },
         ].map((stat, i) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>

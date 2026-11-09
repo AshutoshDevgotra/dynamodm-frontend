@@ -14,27 +14,27 @@ const stats = [
 
 export default function ForBrandsPage() {
   return (
-    <div className="brands-page min-h-screen">
+    <div className="brands-page min-h-screen bg-[#FAF8F4] text-[#211B18]">
       <Navbar />
 
       {/* Hero */}
       <section className="brands-hero-section px-4 pt-[68px] pb-8 sm:px-6">
-        <div className="premium-hero mx-auto max-w-[1160px] overflow-hidden rounded-[36px] px-6 py-20 text-center text-white sm:px-12">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm text-white/80 ring-1 ring-white/15">
-            <Sparkles size={14} className="text-[#FFB08F]" /> AI customer conversations for brands
+        <div className="premium-hero mx-auto max-w-[1160px] overflow-hidden rounded-[36px] border border-[#EADBD1] bg-[#FAF8F4] px-6 py-20 text-center sm:px-12">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#FFF1EC] px-4 py-1.5 text-sm text-[#A94D36] ring-1 ring-[#F4C7B8]">
+            <Sparkles size={14} className="text-[#F36F4C]" /> AI customer conversations for brands
           </div>
-          <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">
+          <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-[#211B18] sm:text-6xl">
             Turn comments into
             <span className="mt-2 block font-serif text-5xl italic font-normal sm:text-6xl">customers.</span>
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-base text-white/70 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-xl text-base text-[#81766E] sm:text-lg">
             Give every campaign a smart conversion layer. When someone comments a trigger word or messages your page, Orange Flow understands what they need and replies with the right product, link, or next step.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link href="/signup?role=brand" className="btn-primary">
               Start building your flow <ArrowRight size={16} />
             </Link>
-            <Link href="#features" className="btn-outline !text-white !border-white/30 hover:!bg-white/10">
+            <Link href="#features" className="btn-outline">
               See how it works
             </Link>
           </div>
@@ -45,8 +45,8 @@ export default function ForBrandsPage() {
       <section className="brands-stats container grid grid-cols-2 gap-6 py-14 md:grid-cols-4">
         {stats.map((stat) => (
           <div key={stat.label} className="text-center">
-            <div className="text-3xl font-semibold tracking-tight text-[#111111]">{stat.value}</div>
-            <div className="mt-1 text-sm text-[#6B7280]">{stat.label}</div>
+            <div className="text-3xl font-semibold tracking-tight text-[#211B18]">{stat.value}</div>
+            <div className="mt-1 text-sm text-[#81766E]">{stat.label}</div>
           </div>
         ))}
       </section>
@@ -58,24 +58,24 @@ export default function ForBrandsPage() {
           { icon: Sparkles, title: 'Context-aware AI', body: 'Add your brand, catalog, offers, policies, and FAQs. AI uses that context to understand intent and give a useful answer.' },
           { icon: Shield, title: 'Lead capture that works', body: 'Keep the conversation moving, collect high-intent leads, and give your sales team the context they need.' },
         ].map(({ icon: Icon, title, body }) => (
-          <div key={title} className="brands-feature-card rounded-[24px] border border-[#F0D6C6] bg-[#F1DDD0] p-8 shadow-sm">
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-subtle)] text-[#FF5A1F]">
+          <div key={title} className="brands-feature-card rounded-[24px] border border-[#EADBD1] bg-[#FAF8F4] p-8 shadow-sm transition-all duration-200 hover:shadow-md hover:border-[#F36F4C]">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFF1EC] text-[#F36F4C]">
               <Icon size={22} />
             </div>
-            <h3 className="text-xl font-semibold text-[#111111]">{title}</h3>
-            <p className="mt-3 text-[#6B7280]">{body}</p>
+            <h3 className="text-xl font-semibold text-[#211B18]">{title}</h3>
+            <p className="mt-3 text-[#81766E]">{body}</p>
           </div>
         ))}
       </section>
 
       {/* Bottom CTA */}
       <section className="brands-cta-section px-4 pb-16 sm:px-6">
-        <div className="mx-auto max-w-[1160px] rounded-[32px] bg-[#6B2A16] px-8 py-16 text-center shadow-[0_24px_60px_rgba(107,42,22,0.25)]">
-          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+        <div className="mx-auto max-w-[1160px] rounded-[32px] border border-[#EADBD1] bg-[#FAF8F4] px-8 py-16 text-center shadow-[0_18px_45px_rgba(83,47,31,0.07)]">
+          <h2 className="text-3xl font-semibold tracking-tight text-[#211B18] sm:text-5xl">
             Ready to scale
             <span className="font-serif italic font-normal"> every conversation?</span>
           </h2>
-          <Link href="/signup?role=brand" className="btn-primary mt-8 inline-flex !bg-[#FFB08F] !text-[#6B2A16] hover:!bg-[#FF5A1F] hover:!text-white active:!bg-[#B83B12]">
+          <Link href="/signup?role=brand" className="btn-primary mt-8 inline-flex">
             Create business account <ArrowRight size={16} />
           </Link>
         </div>

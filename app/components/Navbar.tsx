@@ -16,7 +16,7 @@ const navLinks = [
   { href: '/about', label: 'About' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -32,6 +32,8 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [pathname]);
 
+  const dark = variant === 'dark';
+
   return (
     <>
       <header
@@ -42,14 +44,14 @@ export default function Navbar() {
         }`}
       >
         <div className="container flex h-[68px] items-center justify-between gap-4">
-          <Logo />
+          <Logo light={dark} />
 
           {/* Desktop nav pill */}
           <nav
             className={`hidden items-center rounded-full p-1 md:flex transition-colors duration-300 ${
               scrolled
                 ? 'bg-[#F5F7FA] shadow-none'
-                : 'bg-white/90 shadow-[0_4px_20px_rgba(17,37,84,0.10)] ring-1 ring-black/5'
+                : dark ? 'bg-white/10 shadow-none ring-1 ring-white/15 backdrop-blur-sm' : 'bg-white/90 shadow-[0_4px_20px_rgba(17,37,84,0.10)] ring-1 ring-black/5'
             }`}
           >
             {navLinks.map((link) => {
@@ -60,8 +62,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors ${
                     active
-                      ? 'bg-[#FF5A1F] text-white shadow-sm'
-                      : 'text-[#111111] hover:text-[#8B6B87]'
+                      ? `${dark ? 'bg-[#F36F4C]' : 'bg-[#F36F4C]'} text-white shadow-sm`
+                      : dark ? 'text-white/75 hover:text-white' : 'text-[#211B18] hover:text-[#F36F4C]'
                   }`}
                 >
                   {link.label}
@@ -74,23 +76,23 @@ export default function Navbar() {
           <div className="hidden items-center gap-2 md:flex">
             <Link
               href="/login"
-              className="px-3 py-2 text-[13px] font-semibold text-[#111111] hover:text-[#8B6B87] transition-colors"
+              className={`px-3 py-2 text-[13px] font-semibold transition-colors ${dark ? 'text-white/80 hover:text-white' : 'text-[#211B18] hover:text-[#F36F4C]'}`}
             >
               Sign in
             </Link>
             <Link
               href="/signup"
-              className="btn-primary !bg-[#FF5A1F] !text-white !py-2 !px-5 text-[13px] shadow-md hover:shadow-lg transition"
+              className="btn-primary !bg-[#F36F4C] !text-white !py-2 !px-5 text-[13px] shadow-md hover:shadow-lg transition"
             >
               Start for Free
             </Link>
           </div>
 
           {/* Mobile hamburger */}
-          <button
+            <button
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white shadow-sm text-[#111111] md:hidden active:scale-95 transition"
+            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm md:hidden active:scale-95 transition ${dark ? 'border-white/20 bg-white/10 text-white' : 'border-[#E5E7EB] bg-white text-[#111111]'}`}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -130,8 +132,8 @@ export default function Navbar() {
                       onClick={() => setMobileOpen(false)}
                       className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${
                         active
-                        ? 'bg-[#FF5A1F] text-white'
-                          : 'text-[#111111] hover:bg-[#F5F7FA]'
+                        ? 'bg-[#F36F4C] text-white'
+                          : 'text-[#211B18] hover:bg-[#FFF1EC]'
                       }`}
                     >
                       {link.label}

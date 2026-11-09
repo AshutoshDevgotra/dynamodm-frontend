@@ -31,14 +31,14 @@ export default function PricingCard({
 }: PricingCardProps) {
   return (
     <div
-      className={`relative flex flex-col rounded-[24px] p-8 ${
+      className={`relative flex flex-col rounded-[28px] p-8 transition-all duration-300 ${
         highlighted
-          ? 'bg-[#FFEFE4] border border-[#F0D6C6] shadow-[0_8px_30px_rgba(216,137,99,0.15)]'
-          : 'border border-[#F0D6C6] bg-[#FFEFE4] shadow-sm'
+          ? 'bg-white border-2 border-[#FF5A1F] shadow-[0_16px_40px_rgba(255,90,31,0.14)] ring-4 ring-[#FF5A1F]/10 z-10 md:-translate-y-2'
+          : 'bg-white border border-neutral-200/90 shadow-sm hover:shadow-md hover:border-orange-500/25'
       }`}
     >
       {badge && (
-        <div className="absolute -top-3 left-6 rounded-full bg-[#FFB08F] px-3 py-1 text-[11px] font-semibold text-[#6B2A16] shadow-sm shadow-[#D94A16]/20">
+        <div className="absolute -top-3 left-6 rounded-full bg-gradient-to-r from-[#FF782D] to-[#FF5A1F] px-3.5 py-1 text-[11px] font-bold text-white shadow-md shadow-orange-500/25 uppercase tracking-wider">
           {badge}
         </div>
       )}
@@ -72,10 +72,10 @@ export default function PricingCard({
             currency: 'INR',
           });
         }}
-        className={`flex w-full items-center justify-center rounded-full py-3 text-sm font-semibold transition-colors ${
+        className={`flex w-full items-center justify-center rounded-full py-3 text-sm font-semibold transition-all duration-200 ${
           highlighted
-          ? 'bg-[#FFB08F] text-[#6B2A16] hover:bg-[#FF5A1F] hover:text-white active:bg-[#B83B12]'
-            : 'border border-[#E5E7EB] bg-white text-[#111111] hover:bg-[#F8F1ED] hover:border-[#B99AAA]'
+            ? 'btn-primary text-white shadow-md shadow-orange-500/25 hover:shadow-lg hover:shadow-orange-500/35'
+            : 'border border-neutral-200 bg-neutral-50/80 text-neutral-800 hover:bg-neutral-100 hover:border-neutral-300 active:bg-neutral-200'
         }`}
       >
         {cta}

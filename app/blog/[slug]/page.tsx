@@ -105,7 +105,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#A94D2D]">
               <span>{post.category}</span><span className="text-[#D8C8BC]">•</span><time dateTime={post.date}>{formatDate(post.date)}</time><span className="text-[#D8C8BC]">•</span><span className="inline-flex items-center gap-1.5 text-[#8D7C70]"><Clock size={13} /> {getReadingTime(post.content)} min read</span>
             </div>
-            <h1 className="mt-5 max-w-4xl text-[#111111]">{post.title}</h1>
+            <h1 className="blog-post-title mt-5 max-w-4xl text-[#211B18]">{post.title}</h1>
             <p className="mt-6 max-w-3xl text-xl leading-9 text-[#6B7280]">{post.description}</p>
             <p className="mt-5 text-sm font-medium text-[#8D7C70]">By {post.author}</p>
           </div>

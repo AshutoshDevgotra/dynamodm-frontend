@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Zap, Users, MessageSquare, TrendingUp, ArrowRight, AlertCircle, Activity, CheckCircle, Plus, Crown, ShieldCheck } from 'lucide-react';
+import { Zap, Users, MessageSquare, TrendingUp, ArrowRight, AlertCircle, Activity, BarChart3, CheckCircle, Plus, Crown, ShieldCheck } from 'lucide-react';
 import { toast } from '../components/ui/Toaster';
 import { track } from '../../lib/fbq';
+import FeatureBanner from '../components/creator/FeatureBanner';
 
 declare global {
   interface Window { Razorpay: any; }
@@ -103,7 +104,7 @@ export default function CreatorDashboard() {
         description: `${planName} — Monthly Subscription`,
         image: 'https://orangeflow.in/favicon.ico',
         prefill: { name: user.name || '', email: user.email || '' },
-        theme: { color: '#f97316' },
+        theme: { color: '#F36F4C' },
         handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
           const verifyRes = await fetch('/api/payments/verify', {
             method: 'POST',
@@ -127,8 +128,8 @@ export default function CreatorDashboard() {
   };
 
   const quickActions = [
-    { label: 'Create an AutoDM', href: '/creator/automations/new', icon: Zap, color: 'var(--brand-from)' },
-    { label: 'Find brand collabs', href: '/creator/collabs', icon: Users, color: '#FF8A5C' },
+    { label: 'Create an automation', href: '/creator/automations/new', icon: Zap, color: 'var(--brand-from)' },
+    { label: 'Find brand collabs', href: '/creator/collabs', icon: Users, color: '#FFAD91' },
     { label: 'Add to creator shop', href: '/creator/storefront', icon: Plus, color: 'var(--brand-mid)' },
     { label: 'See audience insights', href: '/creator/analytics', icon: TrendingUp, color: 'var(--success)' },
   ];
@@ -180,20 +181,39 @@ export default function CreatorDashboard() {
         </motion.div>
       )}
 
+      <FeatureBanner
+        eyebrow="Creator growth feature"
+        title="Automate your"
+        accent="DMs"
+        description="Turn every message into a helpful conversation, even while you are creating."
+        ctaLabel="Create an automation"
+        href="/creator/automations/new"
+        visualSrc="/banners/automate.png"
+        theme="teal"
+      />
+
       {/* Stats Grid */}
       <div className="creator-stat-grid">
-        <StatCard title="DMs Sent" value={stats?.dmsSent?.toLocaleString() || '0'} sub="Last 30 days" icon={MessageSquare} color="#FF5A1F" delay={0} />
-        <StatCard title="Total Leads" value={stats?.leadsTotal?.toLocaleString() || '0'} sub={`+${stats?.leadsNew || 0} this month`} icon={Users} color="#FF8A5C" delay={0.1} />
+        <StatCard title="DMs Sent" value={stats?.dmsSent?.toLocaleString() || '0'} sub="Last 30 days" icon={MessageSquare} color="#F36F4C" delay={0} />
+        <StatCard title="Total Leads" value={stats?.leadsTotal?.toLocaleString() || '0'} sub={`+${stats?.leadsNew || 0} this month`} icon={Users} color="#FFAD91" delay={0.1} />
         <StatCard title="Comments" value={stats?.commentsReceived?.toLocaleString() || '0'} sub="Received & processed" icon={Activity} color="#10b981" delay={0.2} />
-        <StatCard title="Success Rate" value={`${stats?.successRate || 0}%`} sub={`${stats?.automationsActive || 0} active rules`} icon={CheckCircle} color="#f59e0b" delay={0.3} />
+        <StatCard title="Success Rate" value={`${stats?.successRate || 0}%`} sub={`${stats?.automationsActive || 0} active rules`} icon={CheckCircle} color="#E58B6F" delay={0.3} />
       </div>
+
+      <motion.section className="creator-insights-band" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}>
+        <div className="creator-insights-heading"><div><span className="creator-eyebrow"><Activity size={13} /> Performance snapshot</span><h2>Momentum this month</h2><p>Keep an eye on the signals that turn attention into action.</p></div><Link href="/creator/analytics" className="creator-insights-link">Open analytics <ArrowRight size={14} /></Link></div>
+        <div className="creator-insights-grid">
+          <div className="creator-insights-chart"><div className="creator-chart-label"><span>Conversations started</span><strong>+24.8%</strong></div><svg viewBox="0 0 620 150" role="img" aria-label="Conversation growth trend"><defs><linearGradient id="dashboardChartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#F36F4C" stopOpacity=".28" /><stop offset="1" stopColor="#F36F4C" stopOpacity="0" /></linearGradient></defs><path d="M0 126 C52 120 64 102 112 108 S170 78 216 92 S270 60 314 72 S370 81 410 52 S468 44 508 54 S558 26 620 17 V150 H0Z" fill="url(#dashboardChartFill)" /><path d="M0 126 C52 120 64 102 112 108 S170 78 216 92 S270 60 314 72 S370 81 410 52 S468 44 508 54 S558 26 620 17" fill="none" stroke="#F36F4C" strokeWidth="3" strokeLinecap="round" /></svg><div className="creator-chart-days"><span>W1</span><span>W2</span><span>W3</span><span>W4</span></div></div>
+          <div className="creator-insights-breakdown"><div className="creator-chart-label"><span>Where growth came from</span><BarChart3 size={16} /></div>{[['Keyword automations', '48%', '#F36F4C'], ['Creator shop clicks', '31%', '#FFAD91'], ['Brand collabs', '21%', '#8E6B5E']].map(([label, value, color]) => <div className="creator-breakdown-row" key={label}><div><span>{label}</span><b>{value}</b></div><div className="creator-breakdown-track"><i style={{ width: value, background: color }} /></div></div>)}</div>
+        </div>
+      </motion.section>
 
       <motion.div className="mt-6 rounded-[var(--radius-xl)] bg-[#0b1220] p-6 text-white shadow-[var(--shadow-lg)] sm:p-8" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
-          <div><div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-orange-300"><Crown size={14} /> Grow with Orange Flow</div><h2 className="text-2xl font-semibold">{currentPlan === 'free' ? 'Unlock more growth' : `You are on the ${currentPlan} plan`}</h2><p className="mt-2 max-w-xl text-sm leading-6 text-zinc-400">Unlock more automations, leads, DMs, and analytics as your audience grows. Upgrade whenever you are ready.</p></div>
+          <div><div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#FFAD91]"><Crown size={14} /> Grow with Orange Flow</div><h2 className="creator-plan-heading text-2xl font-semibold text-white">{currentPlan === 'free' ? 'Unlock more growth' : `You are on the ${currentPlan} plan`}</h2><p className="mt-2 max-w-xl text-sm leading-6 text-zinc-400">Unlock more automations, leads, DMs, and analytics as your audience grows. Upgrade whenever you are ready.</p></div>
           <div className="flex shrink-0 items-center gap-2 text-xs text-zinc-400"><ShieldCheck size={16} className="text-emerald-400" /> Upgrade in a few clicks</div>
         </div>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">{([{ id: 'starter', name: 'Starter', price: '₹99/mo', detail: '3 automations · 1,000 DMs', accent: '#93c5fd', background: 'linear-gradient(145deg, rgba(30,64,175,.62), rgba(15,23,42,.84))' }, { id: 'pro', name: 'Pro', price: '₹499/mo', detail: '10 automations · 10,000 DMs', accent: '#d8b4fe', background: 'linear-gradient(145deg, rgba(107,33,168,.68), rgba(30,16,55,.86))' }, { id: 'premium', name: 'Premium', price: '₹999/mo', detail: 'Unlimited automations & DMs', accent: '#fdba74', background: 'linear-gradient(145deg, rgba(194,65,12,.72), rgba(67,24,12,.88))' }] as const).map((plan) => { const active = currentPlan === plan.id; return <button key={plan.id} type="button" disabled={active || Boolean(checkoutPlan) || !razorpayReady} onClick={() => handleUpgrade(plan.id)} className="group relative min-h-[116px] overflow-hidden rounded-2xl border p-5 text-left shadow-lg transition duration-200 hover:-translate-y-1 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-80" style={{ background: plan.background, borderColor: active ? plan.accent : 'rgba(255,255,255,.2)', boxShadow: active ? `0 0 0 1px ${plan.accent}, 0 12px 30px rgba(0,0,0,.24)` : undefined }}><div className="absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-25" style={{ background: plan.accent }} /><div className="relative flex items-center justify-between"><span className="text-base font-bold text-white">{plan.name}</span><span className="text-sm font-bold" style={{ color: plan.accent }}>{active ? 'Active' : checkoutPlan === plan.id ? 'Opening…' : plan.price}</span></div><p className="relative mt-3 text-xs text-zinc-200">{active ? 'Your current subscription' : plan.detail}</p><div className="relative mt-4 text-[11px] font-semibold uppercase tracking-wider" style={{ color: plan.accent }}>{active ? 'Current plan' : 'Upgrade plan'}</div></button>; })}</div>
+        <div className="mt-6 grid gap-4 md:grid-cols-3">{([{ id: 'starter', name: 'Starter', price: '₹99/mo', detail: '3 automations · 1,000 DMs', accent: '#FFAD91', background: 'linear-gradient(145deg, rgba(126,55,38,.78), rgba(47,28,24,.92))' }, { id: 'pro', name: 'Pro', price: '₹499/mo', detail: '10 automations · 10,000 DMs', accent: '#F36F4C', background: 'linear-gradient(145deg, rgba(164,65,43,.82), rgba(55,28,22,.94))' }, { id: 'premium', name: 'Premium', price: '₹999/mo', detail: 'Unlimited automations & DMs', accent: '#FFD0B8', background: 'linear-gradient(145deg, rgba(190,91,58,.82), rgba(74,32,22,.94))' }] as const).map((plan) => { const active = currentPlan === plan.id; return <button key={plan.id} type="button" disabled={active || Boolean(checkoutPlan) || !razorpayReady} onClick={() => handleUpgrade(plan.id)} className="group relative min-h-[116px] overflow-hidden rounded-2xl border p-5 text-left shadow-lg transition duration-200 hover:-translate-y-1 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-80" style={{ background: plan.background, borderColor: active ? plan.accent : 'rgba(255,255,255,.2)', boxShadow: active ? `0 0 0 1px ${plan.accent}, 0 12px 30px rgba(0,0,0,.24)` : undefined }}><div className="absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-25" style={{ background: plan.accent }} /><div className="relative flex items-center justify-between"><span className="text-base font-bold text-white">{plan.name}</span><span className="text-sm font-bold" style={{ color: plan.accent }}>{active ? 'Active' : checkoutPlan === plan.id ? 'Opening…' : plan.price}</span></div><p className="relative mt-3 text-xs text-zinc-200">{active ? 'Your current subscription' : plan.detail}</p><div className="relative mt-4 text-[11px] font-semibold uppercase tracking-wider" style={{ color: plan.accent }}>{active ? 'Current plan' : 'Upgrade plan'}</div></button>; })}</div>
       </motion.div>
 
       {/* Quick Actions + Recent Activity */}
