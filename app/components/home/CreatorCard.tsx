@@ -9,7 +9,7 @@ export default function CreatorCard({ creator, className = '' }: { creator: Crea
       </div>
       <div className="creator-reel-card__body">
         <h3>{creator.name}</h3>
-        <div className="creator-reel-card__details"><span>{creator.handle}</span><span>{creator.followers} followers</span></div>
+        <div className="creator-reel-card__details"><span>{creator.handle}</span></div>
       </div>
     </article>
   );
