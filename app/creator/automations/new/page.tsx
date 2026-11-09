@@ -7,6 +7,7 @@ import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Camera, 
 import { toast } from '../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../components/ui/InstagramPostSelector';
 import { trackCustom } from '../../../../lib/fbq';
+import ResponseComposer, { type ResponseComposerValue } from '../components/ResponseComposer';
 
 const matchTypes = [
   { value: 'contains', label: 'Contains', desc: 'Comment includes the keyword anywhere' },
@@ -15,6 +16,18 @@ const matchTypes = [
   { value: 'regex', label: 'Regex', desc: 'Advanced — use regex pattern' },
 ];
 
+const defaultComposer: ResponseComposerValue = {
+  responseMessage: '',
+  ctaLink: '',
+  buttons: [],
+  attachmentUrl: '',
+  attachment: null,
+  primaryDmType: 'TEXT',
+  buttonLabel: '',
+  buttonUrl: '',
+  trackButtonClicks: true,
+};
+
 export default function NewAutomationPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -22,14 +35,13 @@ export default function NewAutomationPage() {
   const [checkingInstagram, setCheckingInstagram] = useState(true);
   const [instagramConnected, setInstagramConnected] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [composer, setComposer] = useState<ResponseComposerValue>(defaultComposer);
   const [form, setForm] = useState<{
     name: string;
     keyword: string;
     triggerType: string;
     targetPosts: string[];
     matchType: string;
-    responseMessage: string;
-    ctaLink: string;
     sendPublicReply: boolean;
     publicReplyMessage: string;
     requireFollow: boolean;
@@ -39,18 +51,12 @@ export default function NewAutomationPage() {
     excludedKeywords: string;
     delaySeconds: number;
     preDms: { type: 'FOLLOW' | 'EMAIL'; message: string }[];
-    primaryDmType: 'TEXT' | 'TEXT_BUTTON';
-    buttonLabel: string;
-    buttonUrl: string;
-    trackButtonClicks: boolean;
   }>({
     name: '',
     keyword: '',
     triggerType: 'comment',
     targetPosts: [],
     matchType: 'contains',
-    responseMessage: '',
-    ctaLink: '',
     sendPublicReply: false,
     publicReplyMessage: 'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩',
     requireFollow: true,
@@ -60,13 +66,9 @@ export default function NewAutomationPage() {
     excludedKeywords: '',
     delaySeconds: 0,
     preDms: [],
-    primaryDmType: 'TEXT_BUTTON',
-    buttonLabel: 'Get the resource',
-    buttonUrl: '',
-    trackButtonClicks: true,
   });
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? '' : '';
 
   useEffect(() => {
     fetch('/api/instagram/status', { headers: { Authorization: `Bearer ${token}` } })
@@ -77,8 +79,8 @@ export default function NewAutomationPage() {
   }, [token]);
 
   const handleSave = async () => {
-    if (!form.responseMessage) {
-      toast('Please fill all required fields', 'error');
+    if (!composer.responseMessage) {
+      toast('Please add a response message', 'error');
       return;
     }
     if (form.triggerType === 'comment' && form.targetPosts.length === 0) {
@@ -94,7 +96,18 @@ export default function NewAutomationPage() {
       const res = await fetch('/api/automations', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, publicReplyMessages: form.publicReplyMessage.split(/\r?\n/).map((message) => message.trim()).filter(Boolean) }),
+        body: JSON.stringify({
+          ...form,
+          responseMessage: composer.responseMessage,
+          ctaLink: composer.ctaLink,
+          buttons: composer.buttons,
+          attachmentUrl: composer.attachmentUrl,
+          primaryDmType: composer.primaryDmType,
+          buttonLabel: composer.buttonLabel,
+          buttonUrl: composer.buttonUrl,
+          trackButtonClicks: composer.trackButtonClicks,
+          publicReplyMessages: form.publicReplyMessage.split(/\r?\n/).map((m) => m.trim()).filter(Boolean),
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -231,33 +244,18 @@ export default function NewAutomationPage() {
         {step === 2 && (
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>DM Response</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>What message should be sent when the keyword is detected?</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Craft the message sent when the trigger fires. Add emojis, a PDF, or up to 3 buttons.</p>
 
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Response Message * <span style={{ color: 'var(--text-muted)' }}>({form.responseMessage.length}/1000)</span></label>
-              <textarea className="input-field" rows={5} placeholder="Hey! Thanks for commenting. Here's your free guide 👇&#10;&#10;[link will be added below]"
-                value={form.responseMessage} maxLength={1000}
-                onChange={(e) => setForm({ ...form, responseMessage: e.target.value })}
-                style={{ resize: 'vertical', lineHeight: 1.6 }} />
-            </div>
+            <ResponseComposer
+              value={composer}
+              onChange={setComposer}
+              token={token}
+            />
 
-            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Optional time delay</label><p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Default is immediate. You can delay the first DM by up to 60 seconds.</p><input className="input-field" type="number" min={0} max={60} value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: Math.min(60, Math.max(0, Number(e.target.value) || 0)) })} /></div>
-            <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Primary DM type</label><select className="input-field" style={{ marginTop: 8 }} value={form.primaryDmType} onChange={(e) => setForm({ ...form, primaryDmType: e.target.value as 'TEXT' | 'TEXT_BUTTON' })}><option value="TEXT_BUTTON">Text + Button</option><option value="TEXT">Text only</option></select>{form.primaryDmType === 'TEXT_BUTTON' && <div style={{ display: 'grid', gap: 8, marginTop: 8 }}><input className="input-field" placeholder="Button label" value={form.buttonLabel} onChange={(e) => setForm({ ...form, buttonLabel: e.target.value })} /><input className="input-field" placeholder="Button URL" value={form.buttonUrl || form.ctaLink} onChange={(e) => setForm({ ...form, buttonUrl: e.target.value, ctaLink: e.target.value })} /><label style={{ fontSize: 12 }}><input type="checkbox" checked={form.trackButtonClicks} onChange={(e) => setForm({ ...form, trackButtonClicks: e.target.checked })} /> Track button clicks</label></div>}</div>
-
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>CTA Link (optional)</label>
-              <input className="input-field" placeholder="https://your-link.com/free-guide" value={form.ctaLink}
-                onChange={(e) => setForm({ ...form, ctaLink: e.target.value })} type="url" />
-              <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>This link will be appended to your message automatically.</p>
-            </div>
-
-            {/* Live Preview */}
-            <div style={{ padding: '16px 20px', background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: 12 }}>
-              <div style={{ fontSize: 11, color: '#a78bfa', fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>DM Preview</div>
-              <div style={{ fontSize: 14, lineHeight: 1.7, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>
-                {form.responseMessage || 'Your message will appear here...'}
-                {form.ctaLink && `\n\n${form.ctaLink}`}
-              </div>
+            <div style={{ marginTop: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}>
+              <label style={{ fontSize: 13, fontWeight: 650 }}>Optional time delay</label>
+              <p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Default is immediate. You can delay the first DM by up to 60 seconds.</p>
+              <input className="input-field" type="number" min={0} max={60} value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: Math.min(60, Math.max(0, Number(e.target.value) || 0)) })} />
             </div>
           </motion.div>
         )}
@@ -327,7 +325,7 @@ export default function NewAutomationPage() {
           {step < 3 ? (
             <button onClick={() => {
               if (step === 1 && (form.triggerType !== 'comment' && !form.keyword)) { toast('The trigger keyword is required for this trigger', 'error'); return; }
-              if (step === 2 && !form.responseMessage) { toast('Response message is required', 'error'); return; }
+              if (step === 2 && !composer.responseMessage) { toast('Response message is required', 'error'); return; }
               setStep(step + 1);
             }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
               Next <ArrowRight size={16} />
@@ -363,7 +361,7 @@ export default function NewAutomationPage() {
 
               <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}><div style={{ fontSize: 13, fontWeight: 750, marginBottom: 8 }}>Public comment reply · Replies rotate: 1 of {Math.max(1, form.publicReplyMessage.split(/\r?\n/).filter((value) => value.trim()).length)}</div>{form.publicReplyMessage.split(/\r?\n/).filter((value) => value.trim()).map((reply, index) => <div key={`${reply}-${index}`} style={{ color: 'var(--text-secondary)', fontSize: 13, padding: '6px 0' }}><strong>{index + 1}.</strong> {reply}</div>)}</div>
 
-              <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}><div style={{ fontSize: 13, fontWeight: 750, marginBottom: 8 }}>Message to your audience</div><div style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.65, whiteSpace: 'pre-wrap', background: 'var(--bg-subtle)', padding: 14, borderRadius: 10 }}>{form.responseMessage || 'Your primary DM will appear here.'}{form.ctaLink && `\n\n${form.ctaLink}`}</div>{form.primaryDmType === 'TEXT_BUTTON' && <div style={{ marginTop: 8, color: 'var(--brand-from)', fontSize: 12 }}>Button: {form.buttonLabel || 'Get the resource'}{form.trackButtonClicks ? ' · Click tracking on' : ''}</div>}</div>
+              <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}><div style={{ fontSize: 13, fontWeight: 750, marginBottom: 8 }}>Message to your audience</div><div style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.65, whiteSpace: 'pre-wrap', background: 'var(--bg-subtle)', padding: 14, borderRadius: 10 }}>{composer.responseMessage || 'Your primary DM will appear here.'}{composer.ctaLink && `\n\n${composer.ctaLink}`}</div>{composer.buttons.filter(b => b.title && b.url).map((b, i) => <div key={i} style={{ marginTop: 6, color: 'var(--brand-from)', fontSize: 12 }}>Button {i + 1}: {b.title} → {b.url}</div>)}{composer.attachment && <div style={{ marginTop: 6, fontSize: 12, color: 'var(--text-muted)' }}>📎 {composer.attachment.name}</div>}</div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '16px 24px', borderTop: '1px solid var(--border-subtle)' }}><button type="button" className="btn-secondary" onClick={() => setReviewOpen(false)}>Back</button><button type="button" className="btn-primary" disabled={saving} onClick={handleSave}>{saving ? 'Launching...' : 'Confirm & launch'}</button></div>
