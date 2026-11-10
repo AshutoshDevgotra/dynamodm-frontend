@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Camera, Users } from 'lucide-react';
+import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Camera, Users, Mail } from 'lucide-react';
 import { toast } from '../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../components/ui/InstagramPostSelector';
 import { trackCustom } from '../../../../lib/fbq';
@@ -34,6 +34,8 @@ export default function NewAutomationPage() {
   const [saving, setSaving] = useState(false);
   const [checkingInstagram, setCheckingInstagram] = useState(true);
   const [instagramConnected, setInstagramConnected] = useState(false);
+  const [instagramAccounts, setInstagramAccounts] = useState<{ _id: string; igUsername?: string }[]>([]);
+  const [selectedAccountId, setSelectedAccountId] = useState('');
   const [reviewOpen, setReviewOpen] = useState(false);
   const [composer, setComposer] = useState<ResponseComposerValue>(defaultComposer);
   const [form, setForm] = useState<{
@@ -73,7 +75,7 @@ export default function NewAutomationPage() {
   useEffect(() => {
     fetch('/api/instagram/status', { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => res.json())
-      .then((data) => setInstagramConnected(Boolean(data.success && data.data?.isConnected)))
+      .then((data) => { const accounts = Array.isArray(data.data?.accounts) ? data.data.accounts : []; setInstagramAccounts(accounts); setSelectedAccountId(accounts[0]?._id || ''); setInstagramConnected(Boolean(data.success && data.data?.isConnected)); })
       .catch(() => setInstagramConnected(false))
       .finally(() => setCheckingInstagram(false));
   }, [token]);
@@ -105,6 +107,7 @@ export default function NewAutomationPage() {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
+          instagramAccountId: selectedAccountId,
           responseMessage: composer.responseMessage,
           ctaLink: composer.ctaLink,
           buttons: composer.buttons,
@@ -186,6 +189,8 @@ export default function NewAutomationPage() {
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Automation identity</label>
               <div className="input-field" style={{ color: 'var(--text-muted)', background: 'var(--bg-subtle)' }}>Generated automatically from your Instagram account</div>
             </div>
+
+            {instagramAccounts.length > 1 && <div style={{ marginBottom: 20 }}><label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Instagram account for this automation</label><select className="input-field" value={selectedAccountId} onChange={(event) => setSelectedAccountId(event.target.value)}>{instagramAccounts.map((account) => <option key={account._id} value={account._id}>@{account.igUsername || 'Instagram account'}</option>)}</select><p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>This automation will run only for the selected account.</p></div>}
 
             <div style={{ marginBottom: 24 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Trigger Type *</label>
@@ -272,6 +277,11 @@ export default function NewAutomationPage() {
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Growth & safety settings</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Turn comments into followers first, then deliver the resource only after the follow is confirmed.</p>
+            <div style={{ padding: 16, marginBottom: 24, background: 'rgba(236,72,153,0.07)', border: '1px solid rgba(236,72,153,0.24)', borderRadius: 12 }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Mail size={18} color="#ec4899" /><div style={{ flex: 1 }}><div style={{ fontWeight: 700, fontSize: 13 }}>Ask for their email</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Send a clear email request before the primary resource DM. Captured emails appear in Leads.</div></div></div>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 14 }}><input type="checkbox" checked={form.preDms.some((item) => item.type === 'EMAIL')} onChange={(event) => setForm({ ...form, preDms: event.target.checked ? [{ type: 'EMAIL', message: 'Reply with your email address and I will send you updates.' }] : form.preDms.filter((item) => item.type !== 'EMAIL') })} /><span style={{ fontSize: 13, fontWeight: 650 }}>Collect email before sending the main DM</span></div>
+              {form.preDms.some((item) => item.type === 'EMAIL') && <textarea className="input-field" rows={2} style={{ marginTop: 10 }} value={form.preDms.find((item) => item.type === 'EMAIL')?.message || ''} onChange={(event) => setForm({ ...form, preDms: form.preDms.map((item) => item.type === 'EMAIL' ? { ...item, message: event.target.value } : item) })} placeholder="Reply with your email address and I will send you updates." />}
+            </div>
             <div style={{ padding: 16, marginBottom: 24, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: 12 }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Users size={18} color="#4ade80" /><div><div style={{ fontWeight: 700, fontSize: 13 }}>Follow-to-unlock</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Followers receive the link/PDF. Everyone else gets a friendly prompt to follow first, creating a path from comment to follower.</div></div></div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 14 }}>

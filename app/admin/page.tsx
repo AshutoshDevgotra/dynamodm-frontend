@@ -4,11 +4,20 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Users, CreditCard, TrendingUp, Zap, Shield, BarChart3, LayoutDashboard, LogOut } from 'lucide-react';
+import { Users, CreditCard, TrendingUp, Zap, Shield, BarChart3, LayoutDashboard, LogOut, Receipt, Mail, CalendarDays } from 'lucide-react';
 
 interface Metrics {
   totalUsers: number; totalCreators: number; activeSubscriptions: number;
   totalRevenue: number; totalDMs: number; totalLeads: number;
+}
+
+interface BillingUser { name?: string; email?: string; role?: string; status?: string; isActive?: boolean; createdAt?: string; }
+interface PaymentRecord { _id?: string; userId?: BillingUser; plan?: string; amount?: number; currency?: string; status?: string; method?: string; createdAt?: string; }
+interface BillingOverview {
+  capturedPayments: { totalPaise: number; count: number };
+  subscriptions: { _id: string; count: number }[];
+  planBreakdown: { _id: string; count: number }[];
+  recentPayments: PaymentRecord[];
 }
 
 const adminNav = [
@@ -22,15 +31,23 @@ const adminNav = [
 export default function AdminPage() {
   const router = useRouter();
   const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [billing, setBilling] = useState<BillingOverview | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || '{}') as { role?: string };
-    if (!token || user.role?.toUpperCase() !== 'ADMIN') { router.push('/login'); return; }
+    const user = JSON.parse(localStorage.getItem('user') || '{}') as { role?: string; email?: string };
+    if (!token || user.role?.toUpperCase() !== 'ADMIN' || user.email?.toLowerCase() !== 'ashutoshdevgotra@gmail.com') { router.push('/login'); return; }
 
-    fetch('/api/admin/metrics', { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.json()).then(d => { if (d.success) setMetrics(d.data); }).finally(() => setLoading(false));
+    const headers = { Authorization: `Bearer ${token}` };
+    Promise.all([
+      fetch('/api/admin/metrics', { headers }).then(r => r.json()),
+      fetch('/api/admin/billing-overview', { headers }).then(r => r.json()),
+    ]).then(([metricsResponse, billingResponse]) => {
+      if (metricsResponse.success) setMetrics(metricsResponse.data);
+      if (billingResponse.success) setBilling(billingResponse.data);
+      if (metricsResponse.message === 'Admin dashboard access is restricted.' || billingResponse.message === 'Admin dashboard access is restricted.') router.push('/login');
+    }).finally(() => setLoading(false));
   }, [router]);
 
   const stats = metrics ? [
@@ -91,6 +108,42 @@ export default function AdminPage() {
           </div>
         )}
 
+        {billing && (
+          <section id="billing" style={{ marginTop: 32 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: 16 }}>
+              <div>
+                <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>Billing & purchasers</h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Captured payments and the customer details stored with each purchase.</p>
+              </div>
+              <Receipt size={22} color="#10b981" />
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 16 }}>
+              <div className="card" style={{ padding: 18 }}><div style={{ fontSize: 26, fontWeight: 900 }}>₹{(billing.capturedPayments.totalPaise / 100).toLocaleString('en-IN')}</div><div style={{ color: 'var(--text-muted)', fontSize: 13 }}>Captured revenue</div></div>
+              <div className="card" style={{ padding: 18 }}><div style={{ fontSize: 26, fontWeight: 900 }}>{billing.capturedPayments.count.toLocaleString()}</div><div style={{ color: 'var(--text-muted)', fontSize: 13 }}>Payments received</div></div>
+              <div className="card" style={{ padding: 18 }}><div style={{ fontSize: 26, fontWeight: 900 }}>{billing.subscriptions.reduce((total, item) => total + item.count, 0).toLocaleString()}</div><div style={{ color: 'var(--text-muted)', fontSize: 13 }}>Subscriptions recorded</div></div>
+            </div>
+            <div className="card" style={{ padding: 20, overflowX: 'auto' }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 18 }}>
+                {billing.planBreakdown.map((plan) => <span key={plan._id} style={{ padding: '7px 11px', borderRadius: 999, background: '#10b98118', color: '#047857', fontSize: 12, fontWeight: 700 }}>{plan._id || 'Unknown'}: {plan.count}</span>)}
+              </div>
+              {billing.recentPayments.length === 0 ? <div style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)' }}>No payments have been recorded yet.</div> : (
+                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}>
+                  <thead><tr style={{ textAlign: 'left', color: 'var(--text-muted)', fontSize: 12 }}><th style={{ padding: '10px 8px' }}>Customer</th><th style={{ padding: '10px 8px' }}>Plan</th><th style={{ padding: '10px 8px' }}>Amount</th><th style={{ padding: '10px 8px' }}>Status</th><th style={{ padding: '10px 8px' }}>Payment method</th><th style={{ padding: '10px 8px' }}>Date</th></tr></thead>
+                  <tbody>{billing.recentPayments.map((payment) => <tr key={payment._id || `${payment.createdAt}-${payment.userId?.email}`} style={{ borderTop: '1px solid var(--border-subtle)', fontSize: 13 }}>
+                    <td style={{ padding: '14px 8px' }}><div style={{ fontWeight: 700 }}>{payment.userId?.name || 'Unnamed user'}</div><div style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 5 }}><Mail size={12} />{payment.userId?.email || 'Email unavailable'}</div><div style={{ color: 'var(--text-muted)', fontSize: 11, marginTop: 3 }}>{payment.userId?.role || 'USER'} · {payment.userId?.isActive === false ? 'Inactive' : 'Active'}</div></td>
+                    <td style={{ padding: '14px 8px', fontWeight: 700 }}>{payment.plan || '—'}</td>
+                    <td style={{ padding: '14px 8px', fontWeight: 700 }}>₹{((payment.amount || 0) / 100).toLocaleString('en-IN')}</td>
+                    <td style={{ padding: '14px 8px' }}><span style={{ color: payment.status === 'captured' ? '#047857' : '#b45309', fontWeight: 700 }}>{payment.status || '—'}</span></td>
+                    <td style={{ padding: '14px 8px', color: 'var(--text-secondary)' }}>{payment.method || '—'}</td>
+                    <td style={{ padding: '14px 8px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}><CalendarDays size={12} style={{ verticalAlign: 'middle', marginRight: 5 }} />{payment.createdAt ? new Date(payment.createdAt).toLocaleDateString('en-IN') : '—'}</td>
+                  </tr>)}</tbody>
+                </table>
+              )}
+              <div style={{ marginTop: 16, color: 'var(--text-muted)', fontSize: 12 }}>Only details stored in the account are shown. Mobile number is not currently stored in the user profile, so it is not displayed.</div>
+            </div>
+          </section>
+        )}
+
         {/* Quick Links */}
         <div style={{ marginTop: 28 }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>Management</h2>
@@ -99,7 +152,7 @@ export default function AdminPage() {
               { label: 'Manage All Users', href: '/admin/users', desc: 'View, search, suspend, and activate user accounts' },
               { label: 'Manage Creators', href: '/admin/creators', desc: 'View creator accounts and Instagram connections' },
               { label: 'Subscriptions', href: '/admin/subscriptions', desc: 'View all plan subscriptions and statuses' },
-              { label: 'Revenue Analytics', href: '/admin/revenue', desc: 'Monthly revenue breakdown and payment history' },
+              { label: 'Billing & purchasers', href: '#billing', desc: 'Captured payments, plans, and purchaser accounts' },
             ].map((item) => (
               <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
                 <div className="card" style={{ padding: 20 }}>

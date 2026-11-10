@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { ArrowRight, BriefcaseBusiness, Camera, CheckCircle2, Heart, MapPin, Sparkles, Users } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Heart, MapPin, Users } from 'lucide-react';
 import FeatureBanner from '../../components/creator/FeatureBanner';
 
 const opportunities = [
@@ -29,16 +28,6 @@ export default function CreatorCollabsPage() {
         visualSrc="/banners/dms-to-followers.png"
         theme="purple"
       />
-      <section className="creator-collabs-hero">
-        <div className="relative z-10 max-w-2xl">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"><Sparkles size={14} /> Curated by House of Orange</div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Turn your influence into your next opportunity.</h1>
-          <p className="mt-4 max-w-xl text-base leading-7 text-white/80">We match your content, audience, and style with brands that value your voice. Your profile helps us bring the right briefs to you.</p>
-          <div className="mt-7 flex flex-wrap gap-3"><Link href="/creator/instagram" className="btn-primary !bg-white !text-[#F36F4C]"><Camera size={17} /> Connect Instagram</Link><Link href="/creator/profile" className="btn-secondary !border-white/30 !bg-white/10 !text-white">Complete your profile <ArrowRight size={16} /></Link></div>
-        </div>
-        <div className="creator-collabs-orb"><BriefcaseBusiness size={74} /></div>
-      </section>
-
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
         {metrics.map(({ label, value, detail, icon: Icon }) => <div className="creator-card creator-card--padded" key={label}><div className="flex items-center justify-between"><span className="text-sm font-semibold text-[var(--text-secondary)]">{label}</span><Icon size={18} className="text-[var(--brand-from)]" /></div><div className="mt-3 text-3xl font-extrabold">{value}</div><p className="mt-1 text-xs text-[var(--text-muted)]">{detail}</p></div>)}
       </div>

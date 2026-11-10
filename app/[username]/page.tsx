@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Camera, ExternalLink, ShoppingBag, Package } from 'lucide-react';
+import FollowCapture from '../components/FollowCapture';
 
 export const metadata: Metadata = { title: 'Creator Profile | OrangeFlow.in' };
 
@@ -24,6 +25,7 @@ interface CreatorProfile {
   avatar?: string;
   followersCount?: number;
   products?: Product[];
+  follow?: { enabled?: boolean; emailOnly?: boolean; thankYouTitle?: string; thankYouDescription?: string };
 }
 
 async function getCreatorProfile(username: string): Promise<CreatorProfile | null> {
@@ -79,6 +81,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
               {profile.followersCount != null && <><span>·</span><span className="font-semibold">{profile.followersCount.toLocaleString()}</span><span>followers</span></>}
             </div>
             {profile.bio && <p className="mt-4 text-base leading-relaxed text-zinc-700">{profile.bio}</p>}
+            {profile.follow?.enabled !== false && <FollowCapture username={profile.username || username} follow={profile.follow} />}
           </div>
         </div>
 

@@ -8,6 +8,7 @@ import { toast } from '../../components/ui/Toaster';
 import { trackCustom } from '../../../lib/fbq';
 
 interface IGAccount {
+  _id?: string;
   username?: string;
   igUsername?: string;
   name?: string;
@@ -22,6 +23,7 @@ interface IGAccount {
 
 export default function InstagramPage() {
   const [account, setAccount] = useState<IGAccount | null>(null);
+  const [accounts, setAccounts] = useState<IGAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [connecting, setConnecting] = useState(false);
 
@@ -34,6 +36,7 @@ export default function InstagramPage() {
       const d = await res.json();
       if (d.success && d.data) {
         setAccount(d.data.account);
+        setAccounts(Array.isArray(d.data.accounts) ? d.data.accounts : (d.data.account ? [d.data.account] : []));
       }
     } catch {
       // Ignored
@@ -174,6 +177,13 @@ export default function InstagramPage() {
           <div className="card" style={{ padding: 24 }}>
             <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Your creator profile is ready</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7 }}>Use your profile insights to discover better-fit brand opportunities, build trust with brands, and activate automations when you are ready.</p>
+          </div>
+          <div className="card" style={{ padding: 24, marginTop: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', marginBottom: 14 }}>
+              <div><h2 style={{ fontSize: 16, fontWeight: 700 }}>Connected Instagram accounts</h2><p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Use one Creator subscription for up to 5 accounts.</p></div>
+              <button onClick={handleConnect} disabled={connecting} className="btn-secondary" style={{ fontSize: 13 }}>{connecting ? 'Opening…' : 'Add account'}</button>
+            </div>
+            <div style={{ display: 'grid', gap: 10 }}>{accounts.map((item) => <div key={item._id || item.igUsername} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 10, borderRadius: 12, background: item.isConnected ? 'rgba(34,197,94,.08)' : 'var(--bg-subtle)' }}><div style={{ width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', color: '#fff', display: 'grid', placeItems: 'center', fontWeight: 700 }}>{(item.igUsername || '?')[0].toUpperCase()}</div><div><div style={{ fontSize: 13, fontWeight: 700 }}>@{item.igUsername}</div><div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{item.isConnected ? 'Connected and ready for automations' : 'Disconnected'}</div></div></div>)}</div>
           </div>
         </motion.div>
       ) : (

@@ -42,7 +42,7 @@ export default function CampaignPricingCard({
       style={
         isFeatured
           ? {
-                  background: 'linear-gradient(160deg, #6D3427 0%, #3C211B 100%)',
+                  background: 'linear-gradient(145deg, #C45100 0%, #FF7800 55%, #FFA800 100%)',
                   border: '1px solid rgba(243,111,76,0.55)',
                   boxShadow: '0 0 0 0 rgba(243,111,76,0.3)',
               animation: 'diwali-card-glow 2.5s ease-in-out infinite',
@@ -179,9 +179,9 @@ export default function CampaignPricingCard({
         style={
           isFeatured
             ? {
-                background: 'linear-gradient(135deg, #FFAD91 0%, #F36F4C 100%)',
+                background: 'linear-gradient(135deg, #FFC857 0%, #F59E0B 52%, #D97706 100%)',
                 color: '#FFFFFF',
-                boxShadow: '0 4px 18px rgba(243,111,76,0.35)',
+                boxShadow: '0 6px 22px rgba(217,119,6,0.38)',
               }
             : {
                 background: '#FFFFFF',
