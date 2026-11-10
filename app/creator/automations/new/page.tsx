@@ -7,7 +7,7 @@ import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Camera, 
 import { toast } from '../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../components/ui/InstagramPostSelector';
 import { trackCustom } from '../../../../lib/fbq';
-import ResponseComposer, { type ResponseComposerValue } from '../components/ResponseComposer';
+import ResponseComposer, { PhonePreview, type ResponseComposerValue } from '../components/ResponseComposer';
 import KeywordChips from '../components/KeywordChips';
 
 const defaultComposer: ResponseComposerValue = {
@@ -84,6 +84,11 @@ export default function NewAutomationPage() {
     }
     if (form.sendPublicReply && !form.publicReplyMessage.trim()) {
       toast('Add a public reply message or turn off the optional public reply', 'error');
+      return;
+    }
+    const emailPrompt = form.preDms.find((item) => item.type === 'EMAIL');
+    if (emailPrompt && !emailPrompt.message.trim()) {
+      toast('Add the email request message or turn off email collection', 'error');
       return;
     }
     setSaving(true);
@@ -238,10 +243,10 @@ export default function NewAutomationPage() {
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Growth & safety settings</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Turn comments into followers first, then deliver the resource only after the follow is confirmed.</p>
-            <div style={{ padding: 16, marginBottom: 24, background: 'rgba(236,72,153,0.07)', border: '1px solid rgba(236,72,153,0.24)', borderRadius: 12 }}>
+              <div style={{ padding: 18, marginBottom: 24, background: 'rgba(236,72,153,0.07)', border: '1px solid rgba(236,72,153,0.24)', borderRadius: 16 }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Mail size={18} color="#ec4899" /><div style={{ flex: 1 }}><div style={{ fontWeight: 700, fontSize: 13 }}>Ask for their email</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Send a clear email request before the primary resource DM. Captured emails appear in Leads.</div></div></div>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 14 }}><input type="checkbox" checked={form.preDms.some((item) => item.type === 'EMAIL')} onChange={(event) => setForm({ ...form, preDms: event.target.checked ? [{ type: 'EMAIL', message: 'Reply with your email address and I will send you updates.' }] : form.preDms.filter((item) => item.type !== 'EMAIL') })} /><span style={{ fontSize: 13, fontWeight: 650 }}>Collect email before sending the main DM</span></div>
-              {form.preDms.some((item) => item.type === 'EMAIL') && <textarea className="input-field" rows={2} style={{ marginTop: 10 }} value={form.preDms.find((item) => item.type === 'EMAIL')?.message || ''} onChange={(event) => setForm({ ...form, preDms: form.preDms.map((item) => item.type === 'EMAIL' ? { ...item, message: event.target.value } : item) })} placeholder="Reply with your email address and I will send you updates." />}
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 16 }}><input type="checkbox" checked={form.preDms.some((item) => item.type === 'EMAIL')} onChange={(event) => setForm({ ...form, preDms: event.target.checked ? [{ type: 'EMAIL', message: 'Reply with a valid email address, like user@gmail.com, and I will send you updates.' }] : form.preDms.filter((item) => item.type !== 'EMAIL') })} /><span style={{ fontSize: 13, fontWeight: 650 }}>Collect email before sending the main DM</span></div>
+              {form.preDms.some((item) => item.type === 'EMAIL') && <><textarea className="input-field" rows={3} style={{ marginTop: 12 }} value={form.preDms.find((item) => item.type === 'EMAIL')?.message || ''} onChange={(event) => setForm({ ...form, preDms: form.preDms.map((item) => item.type === 'EMAIL' ? { ...item, message: event.target.value } : item) })} placeholder="Reply with a valid email address, like user@gmail.com, and I will send you updates." /><p style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, margin: '8px 0 0' }}>Example shown to your audience: <strong style={{ color: 'var(--text-secondary)' }}>user@gmail.com</strong>. Valid replies are saved to Leads.</p></>}
             </div>
             <div style={{ padding: 16, marginBottom: 24, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: 12 }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Users size={18} color="#4ade80" /><div><div style={{ fontWeight: 700, fontSize: 13 }}>Follow-to-unlock</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Followers receive the link/PDF. Everyone else gets a friendly prompt to follow first, creating a path from comment to follower.</div></div></div>
@@ -318,13 +323,13 @@ export default function NewAutomationPage() {
 
       {reviewOpen && (
         <div role="dialog" aria-modal="true" aria-labelledby="launch-title" style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'rgba(0,0,0,0.68)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <div style={{ width: 'min(620px, 100%)', maxHeight: '92vh', overflowY: 'auto', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 18, boxShadow: '0 24px 80px rgba(0,0,0,0.45)' }}>
+          <div style={{ width: 'min(900px, 100%)', maxHeight: '92vh', overflowY: 'auto', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 22, boxShadow: '0 24px 80px rgba(0,0,0,0.45)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '20px 24px', borderBottom: '1px solid var(--border-subtle)' }}>
               <div><h2 id="launch-title" style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>Launch AutoDM</h2><p style={{ color: 'var(--text-muted)', fontSize: 13 }}>Awesome! Let&apos;s review once before we launch.</p></div>
               <button type="button" onClick={() => setReviewOpen(false)} aria-label="Close review" style={{ background: 'none', border: 0, color: 'var(--text-muted)', fontSize: 24, cursor: 'pointer', lineHeight: 1 }}>×</button>
             </div>
 
-            <div style={{ padding: 24, display: 'grid', gap: 18 }}>
+            <div style={{ padding: 24, display: 'grid', gap: 20 }}>
               <div style={{ display: 'flex', gap: 14, alignItems: 'center', padding: 14, background: 'var(--bg-subtle)', borderRadius: 12 }}><div style={{ width: 54, height: 54, borderRadius: 10, background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', display: 'grid', placeItems: 'center', color: '#fff', fontWeight: 800 }}>IG</div><div><div style={{ fontSize: 13, fontWeight: 750 }}>Instagram trigger</div><div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 4 }}>{form.targetPosts.length ? `${form.targetPosts.length} selected post${form.targetPosts.length > 1 ? 's' : ''}` : form.triggerType === 'dm' ? 'Direct messages' : 'No target selected'}</div></div></div>
 
               <div style={{ display: 'grid', gap: 10 }}>
@@ -337,10 +342,10 @@ export default function NewAutomationPage() {
 
               <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}><div style={{ fontSize: 13, fontWeight: 750, marginBottom: 8 }}>Public comment reply · Replies rotate: 1 of {Math.max(1, form.publicReplyMessage.split(/\r?\n/).filter((value) => value.trim()).length)}</div>{form.publicReplyMessage.split(/\r?\n/).filter((value) => value.trim()).map((reply, index) => <div key={`${reply}-${index}`} style={{ color: 'var(--text-secondary)', fontSize: 13, padding: '6px 0' }}><strong>{index + 1}.</strong> {reply}</div>)}</div>
 
-              <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}><div style={{ fontSize: 13, fontWeight: 750, marginBottom: 8 }}>Message to your audience</div><div style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.65, whiteSpace: 'pre-wrap', background: 'var(--bg-subtle)', padding: 14, borderRadius: 10 }}>{composer.responseMessage || 'Your primary DM will appear here.'}{composer.ctaLink && `\n\n${composer.ctaLink}`}</div>{composer.buttons.filter(b => b.title && b.url).map((b, i) => <div key={i} style={{ marginTop: 6, color: 'var(--brand-from)', fontSize: 12 }}>Button {i + 1}: {b.title} → {b.url}</div>)}{composer.attachment && <div style={{ marginTop: 6, fontSize: 12, color: 'var(--text-muted)' }}>📎 {composer.attachment.name}</div>}</div>
+              <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}><div style={{ fontSize: 13, fontWeight: 750, marginBottom: 10 }}>Mobile message preview</div><div className="automation-review-preview-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 260px', gap: 22, alignItems: 'start' }}><div style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.65 }}><p style={{ margin: '0 0 10px', color: 'var(--text-muted)', fontSize: 12 }}>This is the sequence your audience will see in Instagram Direct.</p>{form.preDms.map((item) => <div key={item.type} style={{ marginBottom: 8, padding: '10px 12px', borderRadius: 12, background: 'var(--bg-subtle)' }}><strong style={{ color: 'var(--text-primary)', fontSize: 12 }}>{item.type === 'EMAIL' ? 'Email request' : 'Pre-DM step'}</strong><div style={{ marginTop: 3, whiteSpace: 'pre-wrap' }}>{item.message}</div></div>)}<div style={{ padding: 12, borderRadius: 12, background: 'var(--brand-subtle)', whiteSpace: 'pre-wrap' }}>{composer.responseMessage || 'Your primary DM will appear here.'}{composer.ctaLink && `\n\n${composer.ctaLink}`}</div>{composer.buttons.filter(b => b.title && b.url).map((b, i) => <div key={i} style={{ marginTop: 6, color: 'var(--brand-from)', fontSize: 12 }}>Button {i + 1}: {b.title} → {b.url}</div>)}{composer.attachment && <div style={{ marginTop: 6, fontSize: 12, color: 'var(--text-muted)' }}>📎 {composer.attachment.name}</div>}</div><PhonePreview value={composer} preMessages={form.preDms.map((item) => item.message)} /></div></div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '16px 24px', borderTop: '1px solid var(--border-subtle)' }}><button type="button" className="btn-secondary" onClick={() => setReviewOpen(false)}>Back</button><button type="button" className="btn-primary" disabled={saving} onClick={handleSave}>{saving ? 'Launching...' : 'Confirm & launch'}</button></div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '18px 24px', borderTop: '1px solid var(--border-subtle)', position: 'sticky', bottom: 0, background: 'var(--bg-card)' }}><button type="button" className="btn-secondary" onClick={() => setReviewOpen(false)}>Back</button><button type="button" className="btn-primary" disabled={saving} onClick={handleSave}>{saving ? 'Launching...' : 'Confirm & launch'}</button></div>
           </div>
         </div>
       )}

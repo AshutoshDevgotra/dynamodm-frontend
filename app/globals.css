@@ -1167,6 +1167,12 @@ button, a { touch-action: manipulation; }
   .of-landing .container { padding-inline: 18px; }
 }
 
+.automation-review-preview-grid > * { min-width: 0; }
+@media (max-width: 700px) {
+  .automation-review-preview-grid { grid-template-columns: 1fr !important; }
+  .automation-review-preview-grid > div:last-child { order: -1; }
+}
+
 /* OrangeFlow premium landing page */
 .of-landing { --ink:#211b18; --paper:#faf8f4; --orange:#f36f4c; --orange-soft:#ffad91; --muted:#77736d; background:var(--paper); color:var(--ink); overflow:hidden; }
 .of-landing h1,.of-landing h2,.of-landing h3 { font-family:var(--font-display); }

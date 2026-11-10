@@ -103,7 +103,7 @@ function fileIcon(mimeType: string) {
 
 /* ─── Phone mockup preview ──────────────────────────────────────── */
 
-function PhonePreview({ value }: { value: ResponseComposerValue }) {
+export function PhonePreview({ value, preMessages = [] }: { value: ResponseComposerValue; preMessages?: string[] }) {
   const hasContent = value.responseMessage.trim() || value.buttons.length > 0 || value.attachment;
   const activeButtons = value.buttons.filter((b) => b.title.trim() && b.url.trim());
 
@@ -144,6 +144,12 @@ function PhonePreview({ value }: { value: ResponseComposerValue }) {
           ) : (
             <>
               {/* Text bubble */}
+              {preMessages.filter(Boolean).map((message, index) => (
+                <div key={`${message}-${index}`} className="max-w-[90%] self-start rounded-[14px] rounded-bl-[4px] px-3 py-2 text-[10px] leading-[1.55] text-white/90" style={{ background: '#2C2C2E', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                  {message}
+                </div>
+              ))}
+
               {value.responseMessage.trim() && (
                 <div
                   className="max-w-[90%] self-end rounded-[14px] rounded-br-[4px] px-3 py-2 text-[11px] leading-[1.6] text-white"

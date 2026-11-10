@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Users } from 'lucide-react';
+import { Zap, MessageCircle, Link2, ArrowLeft, ArrowRight, CheckCircle, Users, Mail } from 'lucide-react';
 import { toast } from '../../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../../components/ui/InstagramPostSelector';
 import ResponseComposer, { type ResponseComposerValue } from '../../components/ResponseComposer';
@@ -37,6 +37,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     requireFollow: boolean;
     followRequiredMessage: string;
     delaySeconds: number;
+    preDms: { type: 'FOLLOW' | 'EMAIL'; message: string }[];
   }>({
     name: '',
     keyword: '',
@@ -47,6 +48,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
     requireFollow: true,
     followRequiredMessage: 'Follow us.',
     delaySeconds: 0,
+    preDms: [],
   });
 
   useEffect(() => {
@@ -81,6 +83,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             requireFollow: rule.requireFollow ?? false,
             followRequiredMessage: 'Follow us.',
             delaySeconds: Math.min(60, Math.max(0, Number(rule.delaySeconds) || 0)),
+            preDms: Array.isArray(rule.preDms) ? rule.preDms : [],
           });
 
           // Populate composer from stored primaryDm and attachment
@@ -121,6 +124,11 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
         toast('Add a public reply message or turn off the optional public reply', 'error');
         return;
       }
+    const emailPrompt = form.preDms.find((item) => item.type === 'EMAIL');
+    if (emailPrompt && !emailPrompt.message.trim()) {
+      toast('Add the email request message or turn off email collection', 'error');
+      return;
+    }
     if (!form.keyword || !composer.responseMessage) {
       toast('Please fill all required fields', 'error');
       return;
@@ -283,6 +291,11 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Growth & safety settings</h2>
             <div style={{ marginBottom: 20, padding: 16, border: '1px solid var(--border-subtle)', borderRadius: 12 }}><label style={{ fontSize: 13, fontWeight: 650 }}>Optional time delay</label><p style={{ color: 'var(--text-muted)', fontSize: 12, margin: '5px 0 10px' }}>Default is immediate. Maximum delay is 60 seconds.</p><input className="input-field" type="number" min={0} max={60} value={form.delaySeconds} onChange={(e) => setForm({ ...form, delaySeconds: Math.min(60, Math.max(0, Number(e.target.value) || 0)) })} /></div>
             <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 24 }}>Turn comments into followers first, then deliver the resource only after the follow is confirmed.</p>
+            <div style={{ padding: 18, marginBottom: 24, background: 'rgba(236,72,153,0.07)', border: '1px solid rgba(236,72,153,0.24)', borderRadius: 16 }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Mail size={18} color="#ec4899" /><div style={{ flex: 1 }}><div style={{ fontWeight: 700, fontSize: 13 }}>Ask for their email</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Ask for a valid address such as user@gmail.com. Captured replies are saved to Leads.</div></div></div>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 16 }}><input type="checkbox" checked={form.preDms.some((item) => item.type === 'EMAIL')} onChange={(event) => setForm({ ...form, preDms: event.target.checked ? [{ type: 'EMAIL', message: 'Reply with a valid email address, like user@gmail.com, and I will send you updates.' }] : form.preDms.filter((item) => item.type !== 'EMAIL') })} /><span style={{ fontSize: 13, fontWeight: 650 }}>Collect email before sending the main DM</span></div>
+              {form.preDms.some((item) => item.type === 'EMAIL') && <><textarea className="input-field" rows={3} style={{ marginTop: 12 }} value={form.preDms.find((item) => item.type === 'EMAIL')?.message || ''} onChange={(event) => setForm({ ...form, preDms: form.preDms.map((item) => item.type === 'EMAIL' ? { ...item, message: event.target.value } : item) })} placeholder="Reply with a valid email address, like user@gmail.com, and I will send you updates." /><p style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, margin: '8px 0 0' }}>Valid replies are saved to Leads.</p></>}
+            </div>
             <div style={{ padding: 16, marginBottom: 24, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: 12 }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}><Users size={18} color="#4ade80" /><div><div style={{ fontWeight: 700, fontSize: 13 }}>Follow-to-unlock</div><div style={{ color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, marginTop: 4 }}>Followers receive the link/PDF. Everyone else gets a friendly prompt to follow first.</div></div></div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 14 }}>
