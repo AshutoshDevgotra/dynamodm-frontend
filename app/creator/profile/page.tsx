@@ -10,6 +10,7 @@ export default function ProfilePage() {
   const [form, setForm] = useState({ name: '', avatar: '' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
   const [user, setUser] = useState<{ email: string } | null>(null);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
@@ -58,8 +59,8 @@ export default function ProfilePage() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="card" style={{ padding: 28 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 32, flexWrap: 'wrap' }}>
-            <div style={{ width: 80, height: 80, borderRadius: '50%', background: form.avatar ? 'transparent' : 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: 'white', overflow: 'hidden', border: '2px solid rgba(249,115,22,0.3)', flexShrink: 0 }}>
-              {form.avatar ? <img src={form.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : form.name?.[0]?.toUpperCase() || <User size={32} />}
+            <div style={{ width: 80, height: 80, borderRadius: '50%', background: form.avatar && !avatarError ? 'transparent' : 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 700, color: 'white', overflow: 'hidden', border: '2px solid rgba(249,115,22,0.3)', flexShrink: 0 }}>
+              {form.avatar && !avatarError ? <img src={form.avatar} alt="" onError={() => setAvatarError(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : form.name?.[0]?.toUpperCase() || <User size={32} />}
             </div>
             <div>
               <h2 style={{ fontSize: 20, fontWeight: 700 }}>{form.name || 'Your Name'}</h2>
@@ -74,7 +75,7 @@ export default function ProfilePage() {
             </div>
             <div style={{ marginBottom: 28 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Avatar URL</label>
-              <input className="input-field" value={form.avatar} onChange={(e) => setForm({ ...form, avatar: e.target.value })} placeholder="https://..." type="url" />
+              <input className="input-field" value={form.avatar} onChange={(e) => { setAvatarError(false); setForm({ ...form, avatar: e.target.value }); }} placeholder="https://..." type="url" />
             </div>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <button type="submit" disabled={saving} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>

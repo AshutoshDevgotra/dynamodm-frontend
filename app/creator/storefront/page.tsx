@@ -32,6 +32,11 @@ export default function StorefrontDashboard() {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState('');
   const [storefrontUrl, setStorefrontUrl] = useState('');
+  const [storefrontUsername, setStorefrontUsername] = useState('');
+  const [usernameInput, setUsernameInput] = useState('');
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
+  const [usernameMessage, setUsernameMessage] = useState('');
+  const [savingUsername, setSavingUsername] = useState(false);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -65,11 +70,44 @@ export default function StorefrontDashboard() {
       .then((data) => {
         if (data.success && data.data?.account?.igUsername) {
           const baseUrl = window.location.origin;
-          setStorefrontUrl(`${baseUrl}/${data.data.account.igUsername}`);
+          const username = data.data.account.storefrontUsername || data.data.account.igUsername;
+          setStorefrontUsername(username);
+          setUsernameInput(username);
+          setStorefrontUrl(`${baseUrl}/${username}`);
         }
       })
       .catch(() => undefined);
   }, []);
+
+  useEffect(() => {
+    const username = usernameInput.trim().toLowerCase();
+    if (!username || username === storefrontUsername.toLowerCase()) { setUsernameAvailable(username ? true : null); setUsernameMessage(''); return; }
+    setUsernameAvailable(null);
+    const timer = window.setTimeout(async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch(`/api/creators/me/storefront-username/check?username=${encodeURIComponent(username)}`, { headers: { Authorization: `Bearer ${token}` } });
+        const data = await response.json();
+        setUsernameAvailable(Boolean(data.success && data.data?.available));
+        setUsernameMessage(data.data?.reason || (data.data?.available ? 'This username is available.' : 'This username is already taken.'));
+      } catch { setUsernameAvailable(false); setUsernameMessage('Unable to check availability right now.'); }
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [usernameInput, storefrontUsername]);
+
+  const saveStorefrontUsername = async () => {
+    const username = usernameInput.trim().toLowerCase();
+    if (!usernameAvailable || !username) return;
+    setSavingUsername(true); setError('');
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/creators/me/storefront-username', { method: 'PUT', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ username }) });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.message || 'Unable to save username.');
+      setStorefrontUsername(data.data.username); setUsernameInput(data.data.username); setStorefrontUrl(`${window.location.origin}/${data.data.username}`); setUsernameAvailable(true); setUsernameMessage('Username saved successfully.');
+    } catch (caught) { setUsernameAvailable(false); setUsernameMessage(caught instanceof Error ? caught.message : 'Unable to save username.'); }
+    finally { setSavingUsername(false); }
+  };
 
   const copyStorefrontLink = async () => {
     if (!storefrontUrl) return;
@@ -164,6 +202,11 @@ export default function StorefrontDashboard() {
           </div>
           {storefrontUrl ? (
             <>
+              <div className="mb-4 rounded-2xl border border-orange-100 bg-orange-50/60 p-4">
+                <div className="mb-2 flex items-center justify-between gap-3"><div><h3 className="text-sm font-bold">Storefront username</h3><p className="mt-1 text-xs text-zinc-500">This name becomes part of your public link.</p></div><span className={`text-xs font-bold ${usernameAvailable === true ? 'text-emerald-600' : usernameAvailable === false ? 'text-rose-600' : 'text-zinc-400'}`}>{usernameAvailable === true ? 'Available' : usernameAvailable === false ? 'Unavailable' : 'Checking…'}</span></div>
+                <div className="flex flex-col gap-2 sm:flex-row"><div className="flex flex-1 items-center rounded-xl border border-black/10 bg-white px-3"><span className="text-sm text-zinc-400">/</span><input className="w-full border-0 bg-transparent px-2 py-3 text-sm outline-none" value={usernameInput} onChange={(event) => setUsernameInput(event.target.value.replace(/[^a-zA-Z0-9._-]/g, '').toLowerCase())} placeholder="your-name" /></div><button type="button" disabled={savingUsername || usernameAvailable !== true || usernameInput.toLowerCase() === storefrontUsername.toLowerCase()} onClick={saveStorefrontUsername} className="btn-primary whitespace-nowrap">{savingUsername ? 'Saving…' : 'Save username'}</button></div>
+                {usernameMessage && <p className={`mt-2 text-xs ${usernameAvailable === false ? 'text-rose-600' : 'text-emerald-700'}`}>{usernameMessage}</p>}
+              </div>
               <div className="flex gap-2">
                 <input 
                   type="text" 
