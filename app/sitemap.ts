@@ -12,7 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: siteUrl, changeFrequency: 'weekly', priority: 1 },
     { url: `${siteUrl}/features`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${siteUrl}/pricing`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${siteUrl}/diwali-offer`, changeFrequency: 'daily', priority: 0.9 },
     { url: `${siteUrl}/for-brands`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${siteUrl}/about`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${siteUrl}/blog`, changeFrequency: 'weekly', priority: 0.8 },

@@ -231,7 +231,7 @@ export default function CreatorDashboard() {
                 { label: 'Connect Instagram account', href: '/creator/instagram', done: igConnected },
                 { label: 'Create first automation', href: '/creator/automations/new', done: (stats?.automationsActive || 0) > 0 },
                 { label: 'Share your public profile', href: '/creator/profile', done: false },
-                { label: 'Upgrade to Pro plan', href: '/creator/payments/subscriptions', done: false },
+                { label: 'Upgrade to Pro plan', href: '/creator/subscription', done: false },
               ].map((item) => (
                 <Link key={item.label} href={item.href} style={{ textDecoration: 'none' }}>
                   <div className="flex items-center gap-2.5 py-2">

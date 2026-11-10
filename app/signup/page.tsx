@@ -45,7 +45,7 @@ export default function SignupPage() {
       track('CompleteRegistration', { status: true, content_category: isBusiness ? 'brand' : 'creator' });
       toast('Account created. Let\'s get started.', 'success');
       const plan = new URLSearchParams(window.location.search).get('plan');
-      router.push(isBusiness ? '/brand/dashboard' : plan ? `/creator/payments/subscriptions?plan=${encodeURIComponent(plan)}` : '/creator/payments/subscriptions');
+      router.push(isBusiness ? '/brand/dashboard' : plan ? `/creator/subscription?plan=${encodeURIComponent(plan)}` : '/creator/subscription');
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Registration failed', 'error');
     } finally {

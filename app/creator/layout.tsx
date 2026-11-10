@@ -20,6 +20,7 @@ const navItems = [
   { href: '/creator/leads', label: 'Leads', icon: Users },
   { href: '/creator/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/creator/payments', label: 'Payments', icon: CreditCard },
+  { href: '/creator/subscription', label: 'Subscription', icon: Zap },
   { href: '/creator/profile', label: 'Profile', icon: User },
   { href: '/creator/settings', label: 'Settings', icon: Settings },
   { href: '/creator/support', label: 'Support', icon: HelpCircle },
@@ -109,9 +110,9 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         const hasPaidAccess = ['starter', 'pro', 'premium', 'enterprise'].includes(plan) && !['cancelled', 'expired', 'past_due'].includes(status);
         const hasFreeAccess = plan === '' || plan === 'free';
         const hasWorkspaceAccess = Boolean(authenticatedUser.subscription?.isUnlimited) || hasFreeAccess || hasPaidAccess;
-        const isBillingPage = pathname?.startsWith('/creator/payments/subscriptions');
+        const isBillingPage = pathname?.startsWith('/creator/subscription') || pathname?.startsWith('/creator/payments/subscriptions');
         if (authenticatedUser.role !== 'ADMIN' && !hasWorkspaceAccess && !isBillingPage) {
-          router.replace('/creator/payments/subscriptions?reason=trial_expired');
+          router.replace('/creator/subscription?reason=trial_expired');
           return;
         }
 
@@ -120,9 +121,9 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         if (urlToken) {
           const planParam = params.get('plan') || hashPlan;
           if (planParam) {
-            router.replace(`/creator/payments/subscriptions?plan=${planParam}`);
+            router.replace(`/creator/subscription?plan=${planParam}`);
           } else {
-            router.replace(hasWorkspaceAccess || authenticatedUser.role === 'ADMIN' ? '/creator' : '/creator/payments/subscriptions');
+            router.replace(hasWorkspaceAccess || authenticatedUser.role === 'ADMIN' ? '/creator' : '/creator/subscription');
           }
         }
       })

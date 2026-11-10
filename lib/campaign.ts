@@ -36,38 +36,10 @@ export interface CampaignConfig {
 export const CAMPAIGN: CampaignConfig = {
   campaignId: 'diwali-extended-2026',
   campaignName: 'Diwali Extended Offer',
-  active: true,
+  active: false,
   endDate: null, // Set to ISO string (e.g. "2026-11-30T23:59:59+05:30") to enable countdown
   couponPrefix: 'DIWALI26',
-  plans: [
-    {
-      planId: 'starter',
-      planName: 'Starter',
-      regularPriceInr: 99,
-      offerPriceInr: 79,
-      discountPercent: 20,
-      savingsPerMonthInr: 20,
-      introductoryCycles: 3,
-    },
-    {
-      planId: 'pro',
-      planName: 'Pro',
-      regularPriceInr: 499,
-      offerPriceInr: 299,
-      discountPercent: 40,
-      savingsPerMonthInr: 200,
-      introductoryCycles: 3,
-    },
-    {
-      planId: 'premium',
-      planName: 'Premium',
-      regularPriceInr: 999,
-      offerPriceInr: 699,
-      discountPercent: 30,
-      savingsPerMonthInr: 300,
-      introductoryCycles: 3,
-    },
-  ],
+  plans: [],
 };
 
 /** Returns the campaign plan pricing for a given planId, or null if not found */
