@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Users, CreditCard, TrendingUp, Zap, Shield, BarChart3, LayoutDashboard, LogOut, Receipt, Mail, CalendarDays } from 'lucide-react';
+import { Users, CreditCard, TrendingUp, Zap, Shield, BarChart3, LayoutDashboard, LogOut, Receipt, Mail, CalendarDays, GraduationCap, UserRound, Globe2 } from 'lucide-react';
 
 interface Metrics {
   totalUsers: number; totalCreators: number; activeSubscriptions: number;
@@ -88,6 +88,30 @@ export default function AdminPage() {
         <div style={{ marginBottom: 28 }}>
           <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 4 }}>Admin Dashboard</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Platform-wide metrics and management.</p>
+        </div>
+
+        <div className="card" style={{ padding: 20, marginBottom: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 5 }}>
+            <Shield size={18} color="#10b981" />
+            <h2 style={{ fontSize: 17, fontWeight: 800 }}>Open another workspace</h2>
+          </div>
+          <p style={{ color: 'var(--text-muted)', fontSize: 13, marginBottom: 14 }}>View the product from your own admin, creator, learner, or public-user perspective.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 10 }}>
+            {[
+              { href: '/admin', label: 'Admin', description: 'Manage platform', icon: Shield },
+              { href: '/creator', label: 'Creator', description: 'Creator workspace', icon: UserRound },
+              { href: '/learn', label: 'Learner / user', description: 'Student dashboard', icon: GraduationCap },
+              { href: '/', label: 'Public view', description: 'Visitor experience', icon: Globe2 },
+            ].map(({ href, label, description, icon: Icon }) => (
+              <Link key={href} href={href} style={{ textDecoration: 'none' }}>
+                <div style={{ minHeight: 76, padding: 12, borderRadius: 12, border: '1px solid var(--border-subtle)', background: href === '/admin' ? '#10b98112' : 'var(--bg-secondary)' }}>
+                  <Icon size={17} color={href === '/admin' ? '#047857' : 'var(--text-secondary)'} />
+                  <div style={{ marginTop: 7, fontSize: 13, fontWeight: 700 }}>{label}</div>
+                  <div style={{ marginTop: 2, fontSize: 11, color: 'var(--text-muted)' }}>{description}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
 
         {loading ? (
