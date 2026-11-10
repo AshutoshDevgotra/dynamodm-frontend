@@ -12,7 +12,8 @@ export default function KeywordChips({ keywords, onChange }: Props) {
   const [draft, setDraft] = useState('');
 
   const addKeyword = () => {
-    const keyword = draft.normalize('NFKC').replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+    // Keep internal spaces: "Orange Flow" is one phrase trigger, not two words.
+    const keyword = draft.normalize('NFKC').replace(/[\u200B-\u200D\uFEFF]/g, '').trim().replace(/\s+/g, ' ');
     if (!keyword) return;
     const exists = keywords.some((item) => item.toLocaleLowerCase() === keyword.toLocaleLowerCase());
     if (!exists) onChange([...keywords, keyword]);
@@ -20,7 +21,7 @@ export default function KeywordChips({ keywords, onChange }: Props) {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' || event.key === ',') {
+    if (event.key === 'Enter') {
       event.preventDefault();
       addKeyword();
     }
@@ -44,15 +45,15 @@ export default function KeywordChips({ keywords, onChange }: Props) {
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type a trigger word"
-          aria-label="New trigger word"
+          placeholder="Type a trigger phrase"
+          aria-label="New trigger phrase"
           style={{ flex: 1, fontWeight: 600 }}
         />
-        <button type="button" onClick={addKeyword} className="btn-secondary" aria-label="Add trigger word" title="Add trigger word" style={{ minWidth: 44, paddingInline: 12 }}>
+        <button type="button" onClick={addKeyword} className="btn-secondary" aria-label="Add this whole trigger phrase" title="Add this whole trigger phrase" style={{ minWidth: 44, paddingInline: 12 }}>
           <Plus size={17} />
         </button>
       </div>
-      <p style={{ color: 'var(--text-muted)', fontSize: 12, margin: 0 }}>Add one or more words. The trigger is case-insensitive.</p>
+      <p style={{ color: 'var(--text-muted)', fontSize: 12, margin: 0 }}>Click + to save the full phrase as one trigger. For example, “Orange Flow” stays together.</p>
     </div>
   );
 }
