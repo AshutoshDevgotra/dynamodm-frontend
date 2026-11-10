@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">OrangeFlow turn attention into growth</title>
+  <desc id="desc">One month free, then 99 rupees per month for OrangeFlow creator tools.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffaf6"/><stop offset=".58" stop-color="#fff0e9"/><stop offset="1" stop-color="#ffd0c0"/></linearGradient>
+    <linearGradient id="coral" x1="0" x2="1"><stop stop-color="#f36f4c"/><stop offset="1" stop-color="#d9573a"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="25"/></filter>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#bg)"/>
+  <circle cx="970" cy="140" r="270" fill="#f36f4c" opacity=".16" filter="url(#soft)"/>
+  <circle cx="75" cy="1180" r="260" fill="#ffad91" opacity=".2" filter="url(#soft)"/>
+
+  <text x="78" y="112" fill="#211b18" font-family="Arial, sans-serif" font-size="50" font-weight="900" letter-spacing="-2">OrangeFlow<tspan fill="#f36f4c">.</tspan></text>
+  <text x="78" y="155" fill="#a94d36" font-family="Arial, sans-serif" font-size="16" font-weight="800" letter-spacing="3">MADE FOR CREATOR MOMENTUM</text>
+
+  <text x="78" y="300" fill="#211b18" font-family="Arial, sans-serif" font-size="83" font-weight="900" letter-spacing="-5">TURN ATTENTION</text>
+  <text x="78" y="385" fill="#f36f4c" font-family="Arial, sans-serif" font-size="83" font-weight="900" letter-spacing="-5">INTO GROWTH.</text>
+  <text x="78" y="458" fill="#655950" font-family="Arial, sans-serif" font-size="26">Your Instagram tools, finally in one workspace.</text>
+
+  <g font-family="Arial, sans-serif">
+    <rect x="78" y="535" width="924" height="118" rx="28" fill="#fff" stroke="#eadbd1" stroke-width="2"/>
+    <circle cx="130" cy="594" r="27" fill="#fff1ec"/><text x="130" y="603" text-anchor="middle" fill="#f36f4c" font-size="25" font-weight="900">01</text>
+    <text x="185" y="580" fill="#211b18" font-size="25" font-weight="900">AutoDM conversations</text><text x="185" y="614" fill="#81766e" font-size="19">Reply faster and turn comments into action.</text>
+    <rect x="78" y="675" width="924" height="118" rx="28" fill="#fff" stroke="#eadbd1" stroke-width="2"/>
+    <circle cx="130" cy="734" r="27" fill="#fff1ec"/><text x="130" y="743" text-anchor="middle" fill="#f36f4c" font-size="25" font-weight="900">02</text>
+    <text x="185" y="720" fill="#211b18" font-size="25" font-weight="900">Leads, shop and collabs</text><text x="185" y="754" fill="#81766e" font-size="19">Capture demand and build your creator business.</text>
+    <rect x="78" y="815" width="924" height="118" rx="28" fill="#fff" stroke="#eadbd1" stroke-width="2"/>
+    <circle cx="130" cy="874" r="27" fill="#fff1ec"/><text x="130" y="883" text-anchor="middle" fill="#f36f4c" font-size="25" font-weight="900">03</text>
+    <text x="185" y="860" fill="#211b18" font-size="25" font-weight="900">One creator-friendly price</text><text x="185" y="894" fill="#81766e" font-size="19">Get 1 month free, then continue for ₹99/month.</text>
+  </g>
+
+  <rect x="78" y="1000" width="924" height="218" rx="34" fill="#211b18"/>
+  <text x="125" y="1070" fill="#ffad91" font-family="Arial, sans-serif" font-size="18" font-weight="800" letter-spacing="3">LAUNCH OFFER</text>
+  <text x="125" y="1150" fill="#fffaf6" font-family="Arial, sans-serif" font-size="62" font-weight="900" letter-spacing="-3">1 MONTH FREE</text>
+  <text x="760" y="1142" text-anchor="middle" fill="#f36f4c" font-family="Arial, sans-serif" font-size="62" font-weight="900">₹99</text>
+  <text x="760" y="1180" text-anchor="middle" fill="#d8c9c2" font-family="Arial, sans-serif" font-size="18">/ month after</text>
+  <rect x="250" y="1260" width="580" height="58" rx="29" fill="url(#coral)"/>
+  <text x="540" y="1298" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="22" font-weight="900">TRY ORANGEFLOW FREE  →</text>
+</svg>

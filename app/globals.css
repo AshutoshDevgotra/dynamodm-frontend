@@ -1107,6 +1107,66 @@ details summary { list-style: none; }
   body { font-size: 16px; }
 }
 
+/* Cross-site mobile guardrails. Keep page content inside the viewport while
+   allowing intentionally dense data sets to scroll inside their own wrapper. */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, video, canvas, svg { max-width: 100%; }
+button, a { touch-action: manipulation; }
+.creator-content > *, .creator-content section, .creator-content article,
+.creator-content form, .creator-content .creator-card { min-width: 0; }
+.creator-content .input-field,
+.creator-content select,
+.creator-content textarea { max-width: 100%; }
+
+@media (max-width: 768px) {
+  .creator-page-title { font-size: clamp(22px, 7vw, 28px); }
+  .creator-page-description { line-height: 1.55; }
+  .creator-page-header { margin-bottom: 20px; }
+  .creator-panel, .creator-card--padded, .creator-stat-card { padding: 16px; }
+  .creator-card { border-radius: 18px; }
+  .creator-alert, .creator-connection-strip { padding: 13px 14px; }
+  .creator-alert__inner { align-items: flex-start; flex-wrap: wrap; }
+  .creator-alert__action { width: 100%; text-align: center; }
+  .creator-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .creator-toolbar { width: 100%; margin-bottom: 20px; }
+  .creator-toolbar > *, .creator-page-header--actions > * { max-width: 100%; }
+  .creator-period-button { min-height: 40px; }
+  .creator-list__row { gap: 10px; }
+  .creator-list__actions { margin-left: 0; }
+  .creator-table-wrap { width: 100%; max-width: 100%; -webkit-overflow-scrolling: touch; }
+  .creator-table-wrap table { min-width: 600px; }
+  .creator-sidebar__brand { padding-inline: 14px; }
+  .creator-topbar { height: 60px; }
+  .creator-topbar__actions { gap: 8px; }
+}
+
+@media (max-width: 480px) {
+  .creator-content { padding: 18px 14px 42px; }
+  .creator-stat-grid { gap: 8px; }
+  .creator-stat-card { padding: 14px 12px; }
+  .creator-stat-card .creator-icon-tile { width: 36px; height: 36px; }
+  .creator-stat-card strong { font-size: 22px; }
+  .creator-dashboard-columns { gap: 12px; }
+  .creator-empty-state { padding: 42px 16px; }
+  .creator-list__stats { gap: 10px; font-size: 12px; }
+  .creator-content .btn-primary,
+  .creator-content .btn-secondary { min-height: 42px; }
+}
+
+/* Public and pricing pages: prevent long labels, card actions, and prose from
+   creating a viewport wider than a phone. */
+.pricing-page, .of-landing, main { min-width: 0; }
+.pricing-page table { border-collapse: collapse; }
+.pricing-page .overflow-x-auto { max-width: 100%; -webkit-overflow-scrolling: touch; }
+@media (max-width: 640px) {
+  .pricing-page h1 { font-size: clamp(2.4rem, 12vw, 3.6rem); }
+  .pricing-page article { padding: 22px; border-radius: 22px; }
+  .pricing-page article .text-5xl { font-size: 2.7rem; }
+  .pricing-page .mt-16 { margin-top: 2.75rem; }
+  .pricing-page .overflow-x-auto table { min-width: 660px; }
+  .of-landing .container { padding-inline: 18px; }
+}
+
 /* OrangeFlow premium landing page */
 .of-landing { --ink:#211b18; --paper:#faf8f4; --orange:#f36f4c; --orange-soft:#ffad91; --muted:#77736d; background:var(--paper); color:var(--ink); overflow:hidden; }
 .of-landing h1,.of-landing h2,.of-landing h3 { font-family:var(--font-display); }

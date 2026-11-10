@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">OrangeFlow one month free creator growth offer</title>
+  <desc id="desc">OrangeFlow creator tools with one month free, then 99 rupees per month.</desc>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="0%" r="90%"><stop offset="0" stop-color="#7d301f"/><stop offset=".55" stop-color="#20120f"/><stop offset="1" stop-color="#0b0908"/></radialGradient>
+    <linearGradient id="orange" x1="0" x2="1"><stop stop-color="#ffad91"/><stop offset=".45" stop-color="#f36f4c"/><stop offset="1" stop-color="#d9573a"/></linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffaf6"/><stop offset="1" stop-color="#ffd2c3"/></linearGradient>
+    <filter id="shadow"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#glow)"/>
+  <circle cx="70" cy="180" r="250" fill="#f36f4c" opacity=".12" filter="url(#shadow)"/>
+  <circle cx="1010" cy="1200" r="260" fill="#ffad91" opacity=".13" filter="url(#shadow)"/>
+
+  <text x="540" y="105" text-anchor="middle" fill="#fffaf6" font-family="Arial, sans-serif" font-size="48" font-weight="800" letter-spacing="-2">OrangeFlow<tspan fill="#f36f4c">.</tspan></text>
+  <text x="540" y="152" text-anchor="middle" fill="#ffad91" font-family="Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="4">THE CREATOR GROWTH TOOLKIT</text>
+
+  <text x="540" y="280" text-anchor="middle" fill="#fffaf6" font-family="Arial, sans-serif" font-size="76" font-weight="900" letter-spacing="-4">MORE GROWTH.</text>
+  <text x="540" y="355" text-anchor="middle" fill="#f36f4c" font-family="Arial, sans-serif" font-size="76" font-weight="900" letter-spacing="-4">ONE SIMPLE PRICE.</text>
+  <text x="540" y="414" text-anchor="middle" fill="#e5d8d2" font-family="Arial, sans-serif" font-size="25">AutoDMs, leads, storefronts, collaborations and more.</text>
+
+  <rect x="105" y="480" width="870" height="390" rx="42" fill="#fffaf6" opacity=".08" stroke="#f36f4c" stroke-width="2"/>
+  <text x="540" y="560" text-anchor="middle" fill="#ffad91" font-family="Arial, sans-serif" font-size="22" font-weight="800" letter-spacing="3">LAUNCH OFFER</text>
+  <text x="540" y="655" text-anchor="middle" fill="#fffaf6" font-family="Arial, sans-serif" font-size="82" font-weight="900" letter-spacing="-3">1 MONTH FREE</text>
+  <line x1="255" y1="704" x2="825" y2="704" stroke="#f36f4c" stroke-width="3"/>
+  <text x="540" y="808" text-anchor="middle" fill="#fffaf6" font-family="Arial, sans-serif" font-size="90" font-weight="900" letter-spacing="-4">₹99</text>
+  <text x="540" y="842" text-anchor="middle" fill="#e5d8d2" font-family="Arial, sans-serif" font-size="25" font-weight="600">per month after your free month</text>
+
+  <g font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#fffaf6">
+    <rect x="120" y="940" width="250" height="76" rx="38" fill="#f36f4c"/><text x="245" y="988" text-anchor="middle">AutoDM</text>
+    <rect x="415" y="940" width="250" height="76" rx="38" fill="#f36f4c"/><text x="540" y="988" text-anchor="middle">Lead capture</text>
+    <rect x="710" y="940" width="250" height="76" rx="38" fill="#f36f4c"/><text x="835" y="988" text-anchor="middle">Creator shop</text>
+  </g>
+  <text x="540" y="1085" text-anchor="middle" fill="#cdbdb6" font-family="Arial, sans-serif" font-size="21">Built for Indian creators who want more from every conversation.</text>
+  <rect x="220" y="1140" width="640" height="92" rx="46" fill="url(#orange)"/>
+  <text x="540" y="1198" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="28" font-weight="900">START YOUR FREE MONTH  →</text>
+  <text x="540" y="1285" text-anchor="middle" fill="#a99891" font-family="Arial, sans-serif" font-size="16">No long-term commitment. Cancel before renewal.</text>
+</svg>
