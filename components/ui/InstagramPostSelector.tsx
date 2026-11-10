@@ -8,6 +8,7 @@ interface InstagramPost {
   caption?: string;
   media_url: string;
   media_type: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
+  media_product_type?: string;
   thumbnail_url?: string;
   permalink: string;
   timestamp: string;
@@ -36,7 +37,8 @@ export function InstagramPostSelector({ selectedPostIds, onChange }: Props) {
         } else {
           setPosts([]);
         }
-      } catch (err) {
+      } catch {
+        setError('Unable to load Instagram posts right now.');
         setPosts([]);
       } finally {
         setLoading(false);
@@ -118,7 +120,7 @@ export function InstagramPostSelector({ selectedPostIds, onChange }: Props) {
                   </div>
                 </div>
               )}
-              <span className="instagram-post-tile__type">{post.media_type === 'VIDEO' ? 'Video' : 'Post'}</span>
+              <span className="instagram-post-tile__type">{post.media_product_type === 'REELS' || post.media_type === 'VIDEO' ? 'Reel' : 'Post'}</span>
             </button>
           );
         })}

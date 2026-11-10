@@ -13,7 +13,6 @@ interface Automation {
   keywords: string[];
   triggerType: string;
   targetPosts: string[];
-  matchType: string;
   responseMessage: string;
   isActive: boolean;
   delaySeconds: number;
@@ -59,7 +58,7 @@ export default function AutomationsPage() {
     }
   };
 
-  const matchTypeLabels: Record<string, string> = { exact: 'Exact', contains: 'Contains', starts_with: 'Starts With', regex: 'Regex' };
+  const triggerLabels: Record<string, string> = { comment: 'Post or Reel Comment', keyword: 'Post or Reel Comment', story_reply: 'Story Reply', live_comment: 'Live Comment', dm: 'Direct Message' };
 
   return (
     <div className="automation-index">
@@ -129,7 +128,7 @@ export default function AutomationsPage() {
                         <Target size={12} /> Keywords: <strong style={{ color: 'var(--brand-from)' }}>&quot;{auto.keywords?.join(', ')}&quot;</strong>
                       </span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--text-muted)' }}>
-                        <MessageCircle size={12} /> {auto.triggerType === 'dm' ? 'Direct Message' : 'Post Comment'} ({matchTypeLabels[auto.matchType]})
+                        <MessageCircle size={12} /> {triggerLabels[auto.triggerType] || auto.triggerType}
                       </span>
                       {auto.requireFollow && <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#4ade80' }}><Users size={12} /> Follow-to-unlock</span>}
                       {auto.targetPosts && auto.targetPosts.length > 0 && (

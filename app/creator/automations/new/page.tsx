@@ -8,13 +8,7 @@ import { toast } from '../../../components/ui/Toaster';
 import { InstagramPostSelector } from '../../../../components/ui/InstagramPostSelector';
 import { trackCustom } from '../../../../lib/fbq';
 import ResponseComposer, { type ResponseComposerValue } from '../components/ResponseComposer';
-
-const matchTypes = [
-  { value: 'contains', label: 'Contains', desc: 'Comment includes the keyword anywhere' },
-  { value: 'exact', label: 'Exact Match', desc: 'Comment must be exactly the keyword' },
-  { value: 'starts_with', label: 'Starts With', desc: 'Comment starts with the keyword' },
-  { value: 'regex', label: 'Regex', desc: 'Advanced — use regex pattern' },
-];
+import KeywordChips from '../components/KeywordChips';
 
 const defaultComposer: ResponseComposerValue = {
   responseMessage: '',
@@ -43,14 +37,10 @@ export default function NewAutomationPage() {
     keyword: string;
     triggerType: string;
     targetPosts: string[];
-    matchType: string;
     sendPublicReply: boolean;
     publicReplyMessage: string;
     requireFollow: boolean;
     followRequiredMessage: string;
-    aiFallback: boolean;
-    aiFallbackInstruction: string;
-    excludedKeywords: string;
     delaySeconds: number;
     preDms: { type: 'FOLLOW' | 'EMAIL'; message: string }[];
   }>({
@@ -58,14 +48,10 @@ export default function NewAutomationPage() {
     keyword: '',
     triggerType: 'comment',
     targetPosts: [],
-    matchType: 'contains',
     sendPublicReply: false,
     publicReplyMessage: 'Thanks for commenting! Check your DMs.\nAmazing — the resource is in your DMs!\nYou got it! Check your inbox 📩',
     requireFollow: false,
     followRequiredMessage: 'Follow us.',
-    aiFallback: false,
-    aiFallbackInstruction: '',
-    excludedKeywords: '',
     delaySeconds: 0,
     preDms: [],
   });
@@ -93,7 +79,7 @@ export default function NewAutomationPage() {
       return;
     }
     if (form.triggerType === 'comment' && form.targetPosts.length === 0) {
-      toast('Please select at least one Target Post', 'error');
+      toast('Select a target post or reel before continuing', 'error');
       return;
     }
     if (form.sendPublicReply && !form.publicReplyMessage.trim()) {
@@ -201,17 +187,17 @@ export default function NewAutomationPage() {
                 <div onClick={() => setForm({ ...form, triggerType: 'dm' })} style={{ padding: '12px', border: `2px solid ${form.triggerType === 'dm' ? 'var(--brand-from)' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === 'dm' ? 'var(--brand-subtle)' : 'transparent' }}>
                   <div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === 'dm' ? 'var(--brand-from)' : 'var(--text-primary)' }}>Direct Message</div>
                 </div>
-                {([{ value: 'story', label: 'Story reply' }, { value: 'live', label: 'Live comment' }, { value: 'keyword', label: 'Keyword anywhere' }] as const).map((option) => <div key={option.value} onClick={() => setForm({ ...form, triggerType: option.value })} style={{ padding: '12px', border: `2px solid ${form.triggerType === option.value ? 'var(--brand-from)' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === option.value ? 'var(--brand-subtle)' : 'transparent' }}><div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === option.value ? 'var(--brand-from)' : 'var(--text-primary)' }}>{option.label}</div></div>)}
+                {([{ value: 'story', label: 'Story reply' }, { value: 'live', label: 'Live comment' }] as const).map((option) => <div key={option.value} onClick={() => setForm({ ...form, triggerType: option.value })} style={{ padding: '12px', border: `2px solid ${form.triggerType === option.value ? 'var(--brand-from)' : 'var(--border-subtle)'}`, borderRadius: 10, cursor: 'pointer', background: form.triggerType === option.value ? 'var(--brand-subtle)' : 'transparent' }}><div style={{ fontWeight: 600, fontSize: 13, color: form.triggerType === option.value ? 'var(--brand-from)' : 'var(--text-primary)' }}>{option.label}</div></div>)}
               </div>
             </div>
 
             {form.triggerType === 'comment' && (
               <div style={{ marginBottom: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block' }}>Target Posts *</label>
+                  <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block' }}>Target post or reel *</label>
                   <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{form.targetPosts.length} selected</span>
                 </div>
-                <p style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 10 }}>Select one or more posts to run this automation on. It will only monitor these specific posts.</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 10 }}>Select at least one target post or reel. This automation cannot be activated without a target.</p>
                 
                 <InstagramPostSelector 
                   selectedPostIds={form.targetPosts} 
@@ -222,32 +208,7 @@ export default function NewAutomationPage() {
 
             <div style={{ marginBottom: 24 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Trigger Keyword {form.triggerType === 'comment' ? '(optional)' : '*'}</label>
-              <input className="input-field" placeholder='e.g. SIP, GUIDE, FREE' value={form.keyword}
-                onChange={(e) => setForm({ ...form, keyword: e.target.value })} style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 600, letterSpacing: '0.05em' }} />
-              <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>Leave blank for any comment. Exclusions and AI meaning-match can be configured below.</p>
-            </div>
-
-            <div style={{ display: 'grid', gap: 12, marginBottom: 20 }}>
-              <input className="input-field" placeholder="Excluded keywords (comma separated)" value={form.excludedKeywords} onChange={(e) => setForm({ ...form, excludedKeywords: e.target.value })} />
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 14, border: '1px solid #60a5fa', borderRadius: 12, background: 'rgba(96,165,250,0.08)', fontSize: 13, fontWeight: 650 }}><input type="checkbox" checked={form.aiFallback} onChange={(e) => setForm({ ...form, aiFallback: e.target.checked })} /> Reply without keywords using AI meaning-match</label>
-              {form.aiFallback && <textarea className="input-field" rows={2} placeholder="Describe which comments should count (for example: comments asking for the guide)" value={form.aiFallbackInstruction} onChange={(e) => setForm({ ...form, aiFallbackInstruction: e.target.value })} />}
-            </div>
-
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 10 }}>Match Type</label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                {matchTypes.map((m) => (
-                  <div key={m.value} onClick={() => setForm({ ...form, matchType: m.value })}
-                    style={{
-                      padding: '12px 14px', borderRadius: 10, cursor: 'pointer', transition: 'all 0.2s',
-                      border: `2px solid ${form.matchType === m.value ? 'var(--brand-from)' : 'var(--border-subtle)'}`,
-                      background: form.matchType === m.value ? 'var(--brand-subtle)' : 'transparent',
-                    }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 2, color: form.matchType === m.value ? 'var(--brand-from)' : 'var(--text-primary)' }}>{m.label}</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{m.desc}</div>
-                  </div>
-                ))}
-              </div>
+              <KeywordChips keywords={form.keyword.split(',').map((item) => item.trim()).filter(Boolean)} onChange={(keywords) => setForm({ ...form, keyword: keywords.join(', ') })} />
             </div>
           </motion.div>
         )}
@@ -318,9 +279,8 @@ export default function NewAutomationPage() {
               {[
                 { label: 'Name', value: form.name },
                 { label: 'Keyword', value: form.keyword },
-                { label: 'Trigger', value: form.triggerType === 'comment' ? 'Post Comment' : 'Direct Message' },
-                { label: 'Target', value: form.targetPosts.length > 0 ? `${form.targetPosts.length} Specific Posts` : 'All Posts' },
-                { label: 'Match', value: matchTypes.find(m => m.value === form.matchType)?.label },
+                { label: 'Trigger', value: form.triggerType === 'comment' ? 'Post or Reel Comment' : form.triggerType === 'story' ? 'Story Reply' : form.triggerType === 'live' ? 'Live Comment' : 'Direct Message' },
+                ...(form.triggerType === 'comment' ? [{ label: 'Target', value: `${form.targetPosts.length} selected post${form.targetPosts.length === 1 ? '' : 's'}` }] : []),
               ].map((item) => (
                 <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, padding: '4px 0', borderBottom: '1px solid var(--border-subtle)' }}>
                   <span style={{ color: 'var(--text-muted)' }}>{item.label}</span>
@@ -341,7 +301,8 @@ export default function NewAutomationPage() {
 
           {step < 3 ? (
             <button onClick={() => {
-              if (step === 1 && (form.triggerType !== 'comment' && !form.keyword)) { toast('The trigger keyword is required for this trigger', 'error'); return; }
+              if (step === 1 && !form.keyword.trim()) { toast('Add at least one trigger word with the + button', 'error'); return; }
+              if (step === 1 && form.triggerType === 'comment' && form.targetPosts.length === 0) { toast('Select a target post or reel before continuing', 'error'); return; }
               if (step === 2 && !composer.responseMessage) { toast('Response message is required', 'error'); return; }
               setStep(step + 1);
             }} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
@@ -364,13 +325,11 @@ export default function NewAutomationPage() {
             </div>
 
             <div style={{ padding: 24, display: 'grid', gap: 18 }}>
-              <div style={{ display: 'flex', gap: 14, alignItems: 'center', padding: 14, background: 'var(--bg-subtle)', borderRadius: 12 }}><div style={{ width: 54, height: 54, borderRadius: 10, background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', display: 'grid', placeItems: 'center', color: '#fff', fontWeight: 800 }}>IG</div><div><div style={{ fontSize: 13, fontWeight: 750 }}>Comments on this post</div><div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 4 }}>{form.targetPosts.length ? `${form.targetPosts.length} selected post${form.targetPosts.length > 1 ? 's' : ''}` : 'Any post or reel'}</div></div></div>
+              <div style={{ display: 'flex', gap: 14, alignItems: 'center', padding: 14, background: 'var(--bg-subtle)', borderRadius: 12 }}><div style={{ width: 54, height: 54, borderRadius: 10, background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', display: 'grid', placeItems: 'center', color: '#fff', fontWeight: 800 }}>IG</div><div><div style={{ fontSize: 13, fontWeight: 750 }}>Instagram trigger</div><div style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 4 }}>{form.targetPosts.length ? `${form.targetPosts.length} selected post${form.targetPosts.length > 1 ? 's' : ''}` : form.triggerType === 'dm' ? 'Direct messages' : 'No target selected'}</div></div></div>
 
               <div style={{ display: 'grid', gap: 10 }}>
-                <ReviewRow label="When someone..." value={form.triggerType === 'comment' ? 'comments on this specific post' : form.triggerType === 'story' ? 'replies to your story' : form.triggerType === 'live' ? 'comments on your live' : form.triggerType === 'dm' ? 'sends you a DM' : 'matches the trigger keyword'} />
+                <ReviewRow label="When someone..." value={form.triggerType === 'comment' ? 'comments on this post or reel' : form.triggerType === 'story' ? 'replies to the selected story content' : form.triggerType === 'live' ? 'comments during the selected live' : 'sends a direct message'} />
                 {form.keyword && <ReviewRow label="Comment condition" value={`includes “${form.keyword}”`} />}
-                {form.excludedKeywords && <ReviewRow label="Excluded keywords" value={form.excludedKeywords} />}
-                {form.aiFallback && <ReviewRow label="AI fallback" value={form.aiFallbackInstruction || 'Meaning-match enabled'} />}
                 <ReviewRow label="Then wait" value={`${form.delaySeconds || 0} seconds after the trigger`} />
                 {form.requireFollow && <ReviewRow label="Before the primary DM" value={form.followRequiredMessage} />}
                 {form.preDms.map((item) => <ReviewRow key={item.type} label={item.type === 'FOLLOW' ? 'Pre-DM follow request' : 'Pre-DM email request'} value={item.message} />)}
