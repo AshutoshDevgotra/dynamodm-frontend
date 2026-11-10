@@ -3,7 +3,10 @@ import type { NextConfig } from 'next';
 const resolveApiBaseUrl = () => {
   const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL?.trim().replace(/\/+$/, '');
   const productionApiUrl = 'https://api.v1.orangeflow.in/api';
-  const localApiUrl = 'http://localhost:5000/api';
+  // The current local backend instance runs on 5003. Keep this fallback in
+  // sync with the development server so subscription routes are proxied to
+  // the API that contains the latest payment handlers.
+  const localApiUrl = 'http://localhost:5003/api';
   const withApiPath = (url: string) => url.endsWith('/api') ? url : `${url}/api`;
 
   if (!configuredApiUrl) {
@@ -12,9 +15,9 @@ const resolveApiBaseUrl = () => {
       : localApiUrl;
   }
 
-  const isFrontendOrigin = /^(https?:\/\/)?(localhost|127\.0\.0\.1|0\.0\.0\.0)(?::3000)?(?:\/|$)/i.test(configuredApiUrl);
+  const isLocalDevelopmentUrl = /^(https?:\/\/)?(localhost|127\.0\.0\.1|0\.0\.0\.0)(?::\d+)?(?:\/|$)/i.test(configuredApiUrl);
 
-  return isFrontendOrigin
+  return isLocalDevelopmentUrl
     ? (process.env.NODE_ENV === 'production'
       ? productionApiUrl
       : localApiUrl)
