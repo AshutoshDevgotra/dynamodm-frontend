@@ -35,10 +35,10 @@ export default function AnnouncementBar() {
       <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
         <span className="flex items-center gap-1.5">
           <span aria-label="diya" role="img">🪔</span>
-          <span className="text-[#FFA800]">Diwali Extended Offer</span>
+          <span className="text-[#FFA800]">Creator Launch Offer</span>
         </span>
         <span className="hidden sm:inline text-white/60">·</span>
-        <span>Save up to 40% on OrangeFlow</span>
+        <span>1 month free, then ₹99/month</span>
         <Link
           href="/pricing"
           onClick={() => trackCampaignCTA('announcement_bar_claim', 'pro')}

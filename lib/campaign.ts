@@ -1,5 +1,5 @@
 /**
- * OrangeFlow Diwali Extended Offer — Centralized Campaign Configuration
+ * OrangeFlow Creator Launch Offer — Centralized Campaign Configuration
  *
  * All campaign logic (pricing, eligibility, display) must read from this file.
  * Never hardcode campaign prices in individual UI components.
@@ -34,12 +34,12 @@ export interface CampaignConfig {
 }
 
 export const CAMPAIGN: CampaignConfig = {
-  campaignId: 'diwali-extended-2026',
-  campaignName: 'Diwali Extended Offer',
+  campaignId: 'creator-launch-2026',
+  campaignName: 'Creator Launch Offer',
   active: false,
   endDate: null, // Set to ISO string (e.g. "2026-11-30T23:59:59+05:30") to enable countdown
-  couponPrefix: 'DIWALI26',
-  plans: [],
+  couponPrefix: 'CREATOR26',
+  plans: [{ planId: 'starter', planName: 'Creator', regularPriceInr: 99, offerPriceInr: 0, discountPercent: 100, savingsPerMonthInr: 99, introductoryCycles: 1 }],
 };
 
 /** Returns the campaign plan pricing for a given planId, or null if not found */
@@ -76,5 +76,5 @@ export function getCampaignCheckoutHref(
 
 /** Human-readable introductory terms for a plan */
 export function getIntroTerms(plan: CampaignPlanPricing): string {
-  return `Introductory price for your first ${plan.introductoryCycles} months. Regular price of ₹${plan.regularPriceInr}/month applies from the ${plan.introductoryCycles + 1}${plan.introductoryCycles === 3 ? 'rd' : 'th'} billing cycle.`;
+  return `Free for your first month. Regular price of ₹${plan.regularPriceInr}/month applies from the second billing cycle.`;
 }

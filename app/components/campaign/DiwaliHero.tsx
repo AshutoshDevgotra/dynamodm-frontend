@@ -7,7 +7,7 @@ import { DiwaliKeyframes, FireworksCanvas, FloatingParticles, StringLights, Diya
 import { trackCampaignCTA } from './CampaignTracker';
 
 export default function DiwaliHero() {
-  const proPlan = getCampaignPlan('pro');
+  const proPlan = getCampaignPlan('starter');
   if (!CAMPAIGN.active || !proPlan) return null;
 
   return (
@@ -15,7 +15,7 @@ export default function DiwaliHero() {
       <DiwaliKeyframes />
       <section
         className="relative isolate overflow-hidden py-16 sm:py-24"
-        aria-label="Diwali Extended Offer"
+        aria-label="Creator Launch Offer"
         style={{
           background: 'linear-gradient(160deg, #0D0500 0%, #1A0800 40%, #0A0200 100%)',
         }}
@@ -52,7 +52,7 @@ export default function DiwaliHero() {
               }}
             >
               <span aria-label="diya" role="img">🪔</span>
-              Diwali Extended Offer — Get Up to 40% OFF
+              Creator Launch Offer — 1 Month Free
               <span aria-label="diya" role="img">🪔</span>
             </span>
           </div>
@@ -90,7 +90,7 @@ export default function DiwaliHero() {
           {/* CTA row */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
-              href="/pricing#pro"
+              href="/pricing#creator"
               onClick={() => trackCampaignCTA('hero_unlock_40off', 'pro')}
               className="inline-flex items-center gap-2.5 rounded-full px-8 py-4 text-[15px] font-bold transition"
               style={{
@@ -100,7 +100,7 @@ export default function DiwaliHero() {
               }}
             >
               <Flame size={18} />
-              Unlock 40% OFF
+              Start Your Free Month
               <ArrowRight size={16} />
             </Link>
             <Link
@@ -125,12 +125,10 @@ export default function DiwaliHero() {
               <Diya className="shrink-0" />
               <div className="text-center sm:text-left">
                 <p className="text-[12px] font-bold uppercase tracking-widest" style={{ color: '#FFA800' }}>
-                  OrangeFlow Pro
+                  OrangeFlow Creator
                 </p>
                 <div className="mt-0.5 flex items-baseline gap-2">
-                  <span className="text-[15px] line-through" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                    ₹{proPlan.regularPriceInr}
-                  </span>
+                  <span className="text-[15px] line-through" style={{ color: 'rgba(255,255,255,0.35)' }}>₹{proPlan.regularPriceInr}</span>
                   <span className="text-[28px] font-black text-white">
                     ₹{proPlan.offerPriceInr}
                     <span className="text-[14px] font-semibold" style={{ color: 'rgba(255,255,255,0.6)' }}>/month</span>
@@ -139,12 +137,12 @@ export default function DiwaliHero() {
                     className="rounded-full px-2.5 py-1 text-[11px] font-black"
                     style={{ background: '#FF7800', color: '#0D0500' }}
                   >
-                    SAVE {proPlan.discountPercent}%
+                    1ST MONTH FREE
                   </span>
                 </div>
                 <p className="mt-1 text-[12px]" style={{ color: 'rgba(255,168,0,0.80)' }}>
                   <Zap size={10} className="mr-1 inline-block" />
-                  Save ₹{proPlan.savingsPerMonthInr} every month for your first {proPlan.introductoryCycles} months
+                  Free for your first month, then ₹{proPlan.regularPriceInr}/month
                 </p>
               </div>
             </div>

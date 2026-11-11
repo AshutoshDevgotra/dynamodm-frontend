@@ -6,12 +6,12 @@ const faqs = [
     a: 'OrangeFlow helps businesses and creators automate Instagram conversations using configured triggers and automated direct messages. When someone comments with a specific keyword, OrangeFlow automatically sends the configured DM and logs the person as a lead.',
   },
   {
-    q: 'What does the Diwali offer include?',
-    a: 'New eligible subscribers can access discounted subscription pricing for the first three monthly billing cycles. After that, the regular plan price applies automatically.',
+    q: 'What does the Creator offer include?',
+    a: 'New Creator subscribers get the full plan free for their first month. From the second billing cycle, the plan renews at ₹99/month.',
   },
   {
-    q: 'What happens after three months?',
-    a: 'The subscription renews at the regular plan price. This is disclosed clearly before you complete payment, and you must confirm your agreement to the recurring charge.',
+    q: 'What happens after the first month?',
+    a: 'The subscription renews at ₹99/month. This is disclosed before checkout, and you must confirm the recurring AutoPay charge.',
   },
   {
     q: 'Will my existing subscription be changed?',
@@ -36,7 +36,7 @@ const faqs = [
 ];
 
 export default function CampaignFAQ() {
-  const proPlan = getCampaignPlan('pro');
+  const proPlan = getCampaignPlan('starter');
 
   return (
     <section

@@ -79,9 +79,9 @@ export default function ProductDemo() {
             <div className="p-5 sm:p-7">
               <div className="mb-5 flex items-start justify-between">
                 <div>
-                  <h3 className="text-[15px] font-bold text-white">Diwali Campaign Rule</h3>
+                  <h3 className="text-[15px] font-bold text-white">Creator Launch Rule</h3>
                   <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.40)' }}>
-                    Keyword: DIWALI · Comment → DM
+                    Keyword: LINK · Comment → DM
                   </p>
                 </div>
                 <span
@@ -150,7 +150,7 @@ export default function ProductDemo() {
                     className="rounded-xl rounded-tr-sm px-3 py-2.5 text-[13px] text-white"
                     style={{ background: 'rgba(255,120,0,0.25)' }}
                   >
-                    Hey! 🪔 Here's your Diwali offer link — OrangeFlow Pro at ₹299/month.
+                    Hey! Here's your Creator offer link — free for your first month, then ₹99/month.
                     Get started at orangeflow.in/pricing 🎉
                   </div>
                   <div className="mt-2.5 flex items-center justify-between text-[10px]" style={{ color: 'rgba(255,255,255,0.40)' }}>
@@ -175,9 +175,9 @@ export default function ProductDemo() {
                 </p>
                 <div className="grid gap-2 text-[12px] sm:grid-cols-2">
                   {[
-                    ['Trigger', 'Comment contains "DIWALI"'],
+                    ['Trigger', 'Comment contains "LINK"'],
                     ['Reply type', 'Direct Message'],
-                    ['Message', 'Custom Diwali offer message'],
+                    ['Message', 'Custom Creator offer message'],
                     ['Lead capture', 'Enabled'],
                   ].map(([k, v]) => (
                     <div key={k} className="flex items-center gap-2">

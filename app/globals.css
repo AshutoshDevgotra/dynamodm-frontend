@@ -961,6 +961,14 @@ details summary { list-style: none; }
 .creator-card--padded { padding: 24px; }
 .creator-stat-card    { padding: 20px; }
 
+.creator-subscription-page { width: min(100%, 1100px); margin: 0 auto; padding-bottom: 48px; }
+.creator-subscription-header { margin-bottom: 28px; }
+.creator-subscription-header h1 { margin: 0 0 6px; font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; }
+.creator-subscription-header p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+.creator-subscription-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.creator-subscription-card { padding: 20px; }
+.creator-subscription-note { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; color: var(--text-muted); font-size: 13px; text-align: center; }
+
 .creator-icon-tile {
   display: flex;
   align-items: center;
@@ -1138,6 +1146,11 @@ button, a { touch-action: manipulation; }
   .creator-sidebar__brand { padding-inline: 14px; }
   .creator-topbar { height: 60px; }
   .creator-topbar__actions { gap: 8px; }
+  .creator-subscription-page { padding-bottom: 28px; }
+  .creator-subscription-grid { grid-template-columns: 1fr; gap: 12px; }
+  .creator-subscription-header { margin-bottom: 20px; }
+  .creator-subscription-header h1 { font-size: 28px; }
+  .creator-subscription-card { padding: 18px !important; }
 }
 
 @media (max-width: 480px) {
@@ -1151,6 +1164,9 @@ button, a { touch-action: manipulation; }
   .creator-list__stats { gap: 10px; font-size: 12px; }
   .creator-content .btn-primary,
   .creator-content .btn-secondary { min-height: 42px; }
+  .creator-subscription-card { padding: 16px !important; }
+  .creator-subscription-card ul { margin-bottom: 18px !important; }
+  .creator-subscription-note { align-items: flex-start; font-size: 12px; line-height: 1.4; }
 }
 
 /* Public and pricing pages: prevent long labels, card actions, and prose from
@@ -1160,9 +1176,9 @@ button, a { touch-action: manipulation; }
 .pricing-page .overflow-x-auto { max-width: 100%; -webkit-overflow-scrolling: touch; }
 @media (max-width: 640px) {
   .pricing-page h1 { font-size: clamp(2.4rem, 12vw, 3.6rem); }
-  .pricing-page article { padding: 22px; border-radius: 22px; }
+  .pricing-page article { padding: 18px; border-radius: 20px; }
   .pricing-page article .text-5xl { font-size: 2.7rem; }
-  .pricing-page .mt-16 { margin-top: 2.75rem; }
+  .pricing-page .mt-16 { margin-top: 2.25rem; }
   .pricing-page .overflow-x-auto table { min-width: 660px; }
   .of-landing .container { padding-inline: 18px; }
 }

@@ -72,10 +72,10 @@ export default function SubscriptionPage() {
     finally { setLoading(false); }
   };
 
-  return <div style={{ maxWidth: 1100 }}>
-    <div style={{ marginBottom: 32 }}><h1 style={{ fontSize: 32, fontWeight: 800, marginBottom: 6 }}>Choose your plan</h1><p style={{ color: 'var(--text-muted)', fontSize: 14 }}>See your current plan and choose the subscription that fits your growth.</p></div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 20 }}>
-      {PLANS.map((plan) => { const Icon = plan.icon; const isActive = currentPlan === plan.id; const isCreator = plan.id === 'starter'; return <motion.div key={plan.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="card" style={{ padding: 24, position: 'relative', border: isActive ? `2px solid ${plan.color}` : undefined }}>
+  return <div className="creator-subscription-page">
+    <div className="creator-subscription-header"><h1>Choose your plan</h1><p>See your current plan and choose the subscription that fits your growth.</p></div>
+    <div className="creator-subscription-grid">
+      {PLANS.map((plan) => { const Icon = plan.icon; const isActive = currentPlan === plan.id; const isCreator = plan.id === 'starter'; return <motion.div key={plan.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="card creator-subscription-card" style={{ position: 'relative', border: isActive ? `2px solid ${plan.color}` : undefined }}>
         {plan.badge && <div style={{ position: 'absolute', top: -12, left: 20, background: '#2E9B68', color: '#fff', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 999 }}>{plan.badge}</div>}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}><div style={{ width: 40, height: 40, borderRadius: 10, background: `${plan.color}20`, display: 'grid', placeItems: 'center' }}><Icon size={20} color={plan.color} /></div><div><div style={{ fontSize: 19, fontWeight: 700 }}>{plan.name}</div><div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{plan.description}</div></div></div>
         <div style={{ minHeight: 84, marginBottom: 12 }}><div style={{ fontSize: plan.id === 'pro' ? 30 : 34, fontWeight: 800 }}>{plan.price}</div>{plan.period && <div style={{ marginTop: 4, fontSize: 13, color: 'var(--text-muted)', fontWeight: isCreator ? 600 : 400 }}>{plan.period}</div>}{plan.mandateNote && <div style={{ marginTop: 7, fontSize: 12, color: '#2E9B68', fontWeight: 600 }}>{plan.mandateNote}</div>}</div>
@@ -83,6 +83,6 @@ export default function SubscriptionPage() {
         <button type="button" onClick={isCreator ? handleCheckout : () => router.push(plan.id === 'pro' ? '/contact' : '/creator')} disabled={!!loading || isActive || (isCreator && !razorpayReady)} className="btn-primary" style={{ width: '100%', background: isActive ? 'var(--bg-secondary)' : plan.color, color: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}>{loading && isCreator ? 'Opening checkout...' : isActive ? 'Active' : plan.id === 'free' ? 'Start for free' : plan.id === 'pro' ? "Let's talk" : 'Start with ₹1 authorization'}{!isActive && <ArrowRight size={16} />}</button>
       </motion.div>; })}
     </div>
-    <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-muted)' }}><ShieldCheck size={14} /> Secured by Razorpay · Billed monthly in INR</div>
+    <div className="creator-subscription-note"><ShieldCheck size={14} /> Secured by Razorpay · Billed monthly in INR</div>
   </div>;
 }

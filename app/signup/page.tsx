@@ -61,7 +61,7 @@ export default function SignupPage() {
         </div>
         <div className="rounded-[28px] border border-black/6 bg-white p-8 shadow-[0_16px_50px_rgba(15,23,42,0.06)]">
           <h1 className="text-center text-2xl font-semibold tracking-tight">{isBusiness ? 'Create your business workspace' : 'Create your account'}</h1>
-          <p className="mt-3 text-center text-sm font-semibold text-[var(--brand-from)]">Try OrangeFlow.in at ₹0 for 3 days — no card required.</p>
+          <p className="mt-3 text-center text-sm font-semibold text-[var(--brand-from)]">Creator is free for your first month, then ₹99/month.</p>
           <div className="mt-3 mb-6 flex flex-wrap justify-center gap-3 text-xs text-zinc-500">
             {['10 DMs free', 'Plans from ₹99', 'Setup in 5 minutes'].map((p) => (
               <span key={p} className="inline-flex items-center gap-1">

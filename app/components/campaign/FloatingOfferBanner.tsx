@@ -10,7 +10,7 @@ const DISMISSED_KEY = 'of_diwali_float_dismissed';
 
 export default function FloatingOfferBanner() {
   const [visible, setVisible] = useState(false);
-  const proPlan = getCampaignPlan('pro');
+  const proPlan = getCampaignPlan('starter');
 
   useEffect(() => {
     // Show after 8 seconds on first scroll, don't re-show if dismissed
@@ -31,7 +31,7 @@ export default function FloatingOfferBanner() {
   return (
     <div
       role="complementary"
-      aria-label="Diwali offer reminder"
+      aria-label="Creator launch offer reminder"
       className="fixed bottom-6 right-4 z-[65] max-w-[300px] rounded-[20px] p-5 shadow-[0_16px_50px_rgba(0,0,0,0.25)] transition-all sm:right-6"
       style={{
         background: 'linear-gradient(160deg, #1A0800 0%, #0D0500 100%)',
@@ -48,20 +48,20 @@ export default function FloatingOfferBanner() {
       </button>
 
       <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: '#FFA800' }}>
-        🪔 Diwali Extended Offer
+        Creator Launch Offer
       </p>
       <p className="mt-1.5 text-[15px] font-black text-white">
-        Pro at ₹{proPlan.offerPriceInr}{' '}
+        Creator at ₹{proPlan.offerPriceInr}{' '}
         <span className="text-[12px] font-normal line-through" style={{ color: 'rgba(255,255,255,0.35)' }}>
           ₹{proPlan.regularPriceInr}
         </span>
       </p>
       <p className="mt-1 text-[12px]" style={{ color: 'rgba(255,255,255,0.55)' }}>
-        First {proPlan.introductoryCycles} months · Save ₹{proPlan.savingsPerMonthInr}/mo
+        First month free · Then ₹{proPlan.regularPriceInr}/month
       </p>
 
       <Link
-        href="/pricing#pro"
+        href="/pricing#creator"
         onClick={() => trackCampaignCTA('floating_banner_get_pro', 'pro')}
         className="mt-4 flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-[13px] font-bold transition"
         style={{
@@ -70,7 +70,7 @@ export default function FloatingOfferBanner() {
           boxShadow: '0 4px 16px rgba(255,120,0,0.30)',
         }}
       >
-        <Zap size={13} /> Get Pro at ₹{proPlan.offerPriceInr}
+        <Zap size={13} /> Start free for one month
       </Link>
     </div>
   );
