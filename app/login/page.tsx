@@ -12,6 +12,8 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [verificationRequired, setVerificationRequired] = useState(false);
+  const [code, setCode] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +27,10 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) {
         if (res.status === 429) throw new Error('Too many login attempts. Please wait a few minutes and try again.');
+        if (res.status === 403 && data.message?.toLowerCase().includes('verify')) {
+          setVerificationRequired(true);
+          throw new Error('Check your email for a new verification code.');
+        }
         throw new Error(data.message);
       }
       localStorage.setItem('token', data.data.token);
@@ -39,6 +45,27 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const verifyEmail = async (e: React.FormEvent) => {
+    e.preventDefault(); setLoading(true);
+    try {
+      const res = await fetch('/api/auth/verify-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: form.email, code }) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+      localStorage.setItem('token', data.data.token); localStorage.setItem('user', JSON.stringify(data.data.user));
+      router.push('/creator');
+    } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Verification failed', 'error'); }
+    finally { setLoading(false); }
+  };
+
+  const resendCode = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/auth/resend-verification', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: form.email }) });
+      const data = await res.json(); if (!res.ok) throw new Error(data.message); toast(data.message, 'success');
+    } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Unable to resend code', 'error'); }
+    finally { setLoading(false); }
   };
 
   return (
@@ -69,7 +96,12 @@ export default function LoginPage() {
             <div className="h-px flex-1 bg-black/8" />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {verificationRequired ? <form onSubmit={verifyEmail} className="space-y-4">
+            <p className="text-center text-sm text-zinc-600">Enter the 6-digit code sent to <strong>{form.email}</strong>.</p>
+            <input aria-label="Email verification code" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} className="input-field text-center text-xl tracking-[0.4em]" required />
+            <button type="submit" className="btn-primary w-full" disabled={loading}>{loading ? 'Verifying...' : 'Verify email'}</button>
+            <button type="button" onClick={resendCode} className="w-full text-sm font-medium text-[var(--brand-from)]" disabled={loading}>Resend code</button>
+          </form> : <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-zinc-600">Email</label>
               <input
@@ -92,7 +124,7 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   placeholder="••••••••"
                   value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  onChange={(e) => setForm({ ...form, password: e.target.value.replace(/\s/g, '') })}
                   className="input-field pr-11"
                   required
                 />
@@ -112,7 +144,7 @@ export default function LoginPage() {
             <button type="submit" className="btn-primary w-full" disabled={loading}>
               {loading ? 'Signing in...' : <>Sign in <ArrowRight size={16} /></>}
             </button>
-          </form>
+          </form>}
 
           <p className="mt-5 text-center text-sm text-zinc-500">
             Don&apos;t have an account?{' '}

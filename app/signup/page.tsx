@@ -13,6 +13,8 @@ export default function SignupPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState('');
+  const [code, setCode] = useState('');
   const isBusiness = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '').get('role') === 'brand';
 
   const passwordStrength = (p: string) => {
@@ -31,6 +33,7 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password.length < 8) { toast('Password must be at least 8 characters.', 'error'); return; }
+    if (/\s/.test(form.password)) { toast('Password cannot contain spaces.', 'error'); return; }
     setLoading(true);
     try {
       const res = await fetch('/api/auth/register', {
@@ -40,17 +43,41 @@ export default function SignupPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      localStorage.setItem('token', data.data.token);
-      localStorage.setItem('user', JSON.stringify(data.data.user));
-      track('CompleteRegistration', { status: true, content_category: isBusiness ? 'brand' : 'creator' });
-      toast('Account created. Let\'s get started.', 'success');
-      const plan = new URLSearchParams(window.location.search).get('plan');
-      router.push(isBusiness ? '/brand/dashboard' : plan ? `/creator/subscription?plan=${encodeURIComponent(plan)}` : '/creator/subscription');
+      setVerificationEmail(data.data.email);
+      toast('Check your email for the verification code.', 'success');
     } catch (err: unknown) {
       toast(err instanceof Error ? err.message : 'Registration failed', 'error');
     } finally {
       setLoading(false);
     }
+  };
+
+  const verifyEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch('/api/auth/verify-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: verificationEmail, code }) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+      localStorage.setItem('token', data.data.token);
+      localStorage.setItem('user', JSON.stringify(data.data.user));
+      track('CompleteRegistration', { status: true, content_category: isBusiness ? 'brand' : 'creator' });
+      const plan = new URLSearchParams(window.location.search).get('plan');
+      router.push(isBusiness ? '/brand/dashboard' : plan ? `/creator/subscription?plan=${encodeURIComponent(plan)}` : '/creator/subscription');
+    } catch (err: unknown) {
+      toast(err instanceof Error ? err.message : 'Verification failed', 'error');
+    } finally { setLoading(false); }
+  };
+
+  const resendCode = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/auth/resend-verification', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: verificationEmail }) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+      toast(data.message, 'success');
+    } catch (err: unknown) { toast(err instanceof Error ? err.message : 'Unable to resend code', 'error'); }
+    finally { setLoading(false); }
   };
 
   return (
@@ -88,7 +115,12 @@ export default function SignupPage() {
             <div className="h-px flex-1 bg-black/8" />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {verificationEmail ? <form onSubmit={verifyEmail} className="space-y-4">
+            <p className="text-center text-sm text-zinc-600">Enter the 6-digit code sent to <strong>{verificationEmail}</strong>.</p>
+            <input aria-label="Email verification code" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} className="input-field text-center text-xl tracking-[0.4em]" required />
+            <button type="submit" className="btn-primary w-full" disabled={loading}>{loading ? 'Verifying...' : 'Verify email'}</button>
+            <button type="button" onClick={resendCode} className="w-full text-sm font-medium text-[var(--brand-from)]" disabled={loading}>Resend code</button>
+          </form> : <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-zinc-600">Full name</label>
               <input id="name" type="text" autoComplete="name" placeholder="Priya Sharma" value={form.name}
@@ -103,7 +135,7 @@ export default function SignupPage() {
               <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-zinc-600">Password</label>
               <div className="relative">
                 <input id="password" type={showPass ? 'text' : 'password'} autoComplete="new-password" placeholder="Min 8 characters" value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })} className="input-field pr-11" required />
+                  onChange={(e) => setForm({ ...form, password: e.target.value.replace(/\s/g, '') })} className="input-field pr-11" required />
                 <button type="button" onClick={() => setShowPass(!showPass)} className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400" aria-label={showPass ? 'Hide password' : 'Show password'}>
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -124,7 +156,7 @@ export default function SignupPage() {
             <button type="submit" className="btn-primary w-full" disabled={loading}>
               {loading ? 'Creating account...' : <>Create account <ArrowRight size={16} /></>}
             </button>
-          </form>
+          </form>}
 
           <p className="mt-4 text-center text-xs text-zinc-400">
             By creating an account, you agree to our{' '}

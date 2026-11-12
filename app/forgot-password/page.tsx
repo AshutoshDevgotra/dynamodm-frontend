@@ -55,6 +55,10 @@ export default function ForgotPasswordPage() {
       toast('Password must be at least 8 characters.', 'error');
       return;
     }
+    if (/\s/.test(password)) {
+      toast('Password cannot contain spaces.', 'error');
+      return;
+    }
     if (password !== confirmPassword) {
       toast('Passwords do not match.', 'error');
       return;
@@ -139,7 +143,7 @@ function PasswordField({ id, label, value, onChange, visible, onToggle }: { id: 
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-zinc-600">{label}</label>
       <div className="relative">
-        <input id={id} type={visible ? 'text' : 'password'} autoComplete="new-password" placeholder="Min 8 characters" value={value} onChange={(event) => onChange(event.target.value)} className="input-field pr-11" required />
+        <input id={id} type={visible ? 'text' : 'password'} autoComplete="new-password" placeholder="Min 8 characters" value={value} onChange={(event) => onChange(event.target.value.replace(/\s/g, ''))} className="input-field pr-11" required />
         <button type="button" onClick={onToggle} className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400" aria-label={visible ? `Hide ${label}` : `Show ${label}`}>
           {visible ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
