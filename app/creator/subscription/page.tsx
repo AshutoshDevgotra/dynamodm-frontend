@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Check, Crown, ShieldCheck, Zap, CheckCircle2 } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
 import { track } from '../../../lib/fbq';
+import { HouseOfOrangeBadge } from '../../components/ui/HouseOfOrangeBadge';
 
 declare global { interface Window { Razorpay: any; } }
 
@@ -21,6 +22,7 @@ export default function SubscriptionPage() {
   const [loading, setLoading] = useState(false);
   const [currentPlan, setCurrentPlan] = useState('free');
   const [razorpayReady, setRazorpayReady] = useState(false);
+  const [isHouseOfOrange, setIsHouseOfOrange] = useState(false);
 
   useEffect(() => {
     if (window.Razorpay) { setRazorpayReady(true); return; }
@@ -35,7 +37,12 @@ export default function SubscriptionPage() {
     if (!token) return;
     fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => response.json())
-      .then((data) => { if (data.success) setCurrentPlan(data.data.subscription?.plan || 'free'); })
+      .then((data) => { 
+        if (data.success) {
+          setCurrentPlan(data.data.subscription?.plan || 'free');
+          setIsHouseOfOrange(data.data.user?.isHouseOfOrange === true);
+        }
+      })
       .catch(() => {});
   }, []);
 
@@ -74,6 +81,14 @@ export default function SubscriptionPage() {
 
   return <div className="creator-subscription-page">
     <div className="creator-subscription-header"><h1>Choose your plan</h1><p>See your current plan and choose the subscription that fits your growth.</p></div>
+    
+    {/* House of Orange Member Card */}
+    {isHouseOfOrange && (
+      <div style={{ marginBottom: 24, maxWidth: 640, margin: '0 auto 24px' }}>
+        <HouseOfOrangeBadge variant="full" />
+      </div>
+    )}
+    
     <div className="creator-subscription-grid">
       {PLANS.map((plan) => { const Icon = plan.icon; const isActive = currentPlan === plan.id; const isCreator = plan.id === 'starter'; return <motion.div key={plan.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="card creator-subscription-card" style={{ position: 'relative', border: isActive ? `2px solid ${plan.color}` : undefined }}>
         {plan.badge && <div style={{ position: 'absolute', top: -12, left: 20, background: '#2E9B68', color: '#fff', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 999 }}>{plan.badge}</div>}

@@ -6,6 +6,7 @@ import { Check, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { PricingViewContent } from '../components/MetaPixelEvents';
+import { HouseOfOrangeBadge } from '../components/ui/HouseOfOrangeBadge';
 
 const plans = [
   { id: 'free', name: 'Starter', price: 'Free', period: 'Forever', eyebrow: 'For those wanting to grow', features: ['Link-in-bio Store', 'Unlimited AutoDMs on Reels & Posts', 'Collect up to 10 leads with Lead Magnets', 'Advanced AutoDM flows (ask to follow, email collection, and more)', 'Monetization apps'], href: '/signup', tone: 'light' },
@@ -17,6 +18,7 @@ const comparison = [['Link-in-bio store', 'Yes', 'Yes', 'Yes'], ['AutoDMs', 'Ree
 export default function PricingPage() {
   const [currentPlan, setCurrentPlan] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isHouseOfOrange, setIsHouseOfOrange] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -32,12 +34,21 @@ export default function PricingPage() {
       .then((data) => {
         if (data.success) {
           setCurrentPlan(data.data.subscription?.plan || 'free');
+          setIsHouseOfOrange(data.data.user?.isHouseOfOrange === true);
         }
       })
       .catch(() => {});
   }, []);
   return <><Navbar /><PricingViewContent /><main className="pricing-page min-h-screen bg-[#fbf8f5] px-4 pb-20 pt-28 text-[#211b18]"><div className="mx-auto max-w-6xl">
     <div className="mx-auto max-w-2xl text-center"><span className="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-bold uppercase tracking-[.16em] text-orange-700">Simple plans for creators</span><h1 className="mt-5 text-4xl font-black tracking-tight sm:text-6xl">Start free. Grow without limits.</h1><p className="mt-5 text-base leading-7 text-zinc-600">One workspace for your profile, automations, leads, and Instagram accounts.</p></div>
+    
+    {/* House of Orange Member Banner */}
+    {isHouseOfOrange && (
+      <div className="mt-10 mx-auto max-w-2xl">
+        <HouseOfOrangeBadge variant="full" />
+      </div>
+    )}
+    
     <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-3">{plans.map((plan) => {
       const isCurrentPlan = currentPlan === plan.id;
       const isPro = plan.id === 'pro';

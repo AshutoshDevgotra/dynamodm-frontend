@@ -9,6 +9,7 @@ import {
   BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, GraduationCap, Handshake, HelpCircle,
   LayoutDashboard, LogOut, Menu, Settings, ShoppingBag, User, Users, X, Zap,
 } from 'lucide-react';
+import { HouseOfOrangeBadge } from '../components/ui/HouseOfOrangeBadge';
 
 const navItems = [
   { href: '/creator', label: 'Home', icon: LayoutDashboard },
@@ -31,6 +32,7 @@ interface AuthUser {
   email: string;
   avatar?: string;
   role: string;
+  isHouseOfOrange?: boolean;
   subscription?: { plan?: string; status?: string; isUnlimited?: boolean };
 }
 
@@ -191,6 +193,11 @@ export default function CreatorLayout({ children }: { children: React.ReactNode 
         </nav>
 
         <div className="creator-sidebar__footer">
+          {user.isHouseOfOrange && (
+            <div style={{ padding: '0 12px 12px' }}>
+              <HouseOfOrangeBadge variant="pill" />
+            </div>
+          )}
           <div className="creator-user-summary">
             <InstagramAvatar className="creator-user-avatar" src={instagram?.isConnected ? instagram.profilePic : undefined} fallback={instagram?.igUsername || user.name || 'Creator'} />
             <div className="min-w-0">
