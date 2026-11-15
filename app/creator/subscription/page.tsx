@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowRight, Check, Crown, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, Check, Crown, ShieldCheck, Zap, CheckCircle2 } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
 import { track } from '../../../lib/fbq';
 
@@ -80,7 +80,7 @@ export default function SubscriptionPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}><div style={{ width: 40, height: 40, borderRadius: 10, background: `${plan.color}20`, display: 'grid', placeItems: 'center' }}><Icon size={20} color={plan.color} /></div><div><div style={{ fontSize: 19, fontWeight: 700 }}>{plan.name}</div><div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{plan.description}</div></div></div>
         <div style={{ minHeight: 84, marginBottom: 12 }}><div style={{ fontSize: plan.id === 'pro' ? 30 : 34, fontWeight: 800 }}>{plan.price}</div>{plan.period && <div style={{ marginTop: 4, fontSize: 13, color: 'var(--text-muted)', fontWeight: isCreator ? 600 : 400 }}>{plan.period}</div>}{plan.mandateNote && <div style={{ marginTop: 7, fontSize: 12, color: '#2E9B68', fontWeight: 600 }}>{plan.mandateNote}</div>}</div>
         <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>{plan.features.map((feature) => <li key={feature} style={{ display: 'flex', gap: 8, fontSize: 13, color: 'var(--text-secondary)' }}><Check size={15} color={plan.color} style={{ flex: '0 0 auto', marginTop: 2 }} />{feature}</li>)}</ul>
-        <button type="button" onClick={isCreator ? handleCheckout : () => router.push(plan.id === 'pro' ? '/contact' : '/creator')} disabled={!!loading || isActive || (isCreator && !razorpayReady)} className="btn-primary" style={{ width: '100%', background: isActive ? 'var(--bg-secondary)' : plan.color, color: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}>{loading && isCreator ? 'Opening checkout...' : isActive ? 'Active' : plan.id === 'free' ? 'Start for free' : plan.id === 'pro' ? "Let's talk" : 'Start with ₹1 authorization'}{!isActive && <ArrowRight size={16} />}</button>
+        <button type="button" onClick={isCreator ? handleCheckout : () => router.push(plan.id === 'pro' ? '/contact' : '/creator')} disabled={!!loading || isActive || (isCreator && !razorpayReady)} className="btn-primary" style={{ width: '100%', background: isActive ? '#10b981' : plan.color, color: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, cursor: isActive ? 'not-allowed' : 'pointer', opacity: isActive ? 0.9 : 1 }}>{loading && isCreator ? 'Opening checkout...' : isActive ? (plan.id === 'pro' ? 'Active Plan' : 'Subscribed to this plan') : plan.id === 'free' ? 'Start for free' : plan.id === 'pro' ? "Let's talk" : 'Start with ₹1 authorization'}{!isActive && !loading && <ArrowRight size={16} />}{isActive && <CheckCircle2 size={16} />}</button>
       </motion.div>; })}
     </div>
     <div className="creator-subscription-note"><ShieldCheck size={14} /> Secured by Razorpay · Billed monthly in INR</div>

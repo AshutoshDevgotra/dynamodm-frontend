@@ -1,11 +1,11 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Check, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Check, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { PricingViewContent } from '../components/MetaPixelEvents';
-
-export const metadata: Metadata = { title: 'Pricing | OrangeFlow', alternates: { canonical: 'https://orangeflow.in/pricing' }, description: 'Simple creator plans for Instagram automation, lead capture, and monetization.' };
 
 const plans = [
   { id: 'free', name: 'Starter', price: 'Free', period: 'Forever', eyebrow: 'For those wanting to grow', features: ['Link-in-bio Store', 'Unlimited AutoDMs on Reels & Posts', 'Collect up to 10 leads with Lead Magnets', 'Advanced AutoDM flows (ask to follow, email collection, and more)', 'Monetization apps'], href: '/signup', tone: 'light' },
@@ -15,9 +15,55 @@ const plans = [
 const comparison = [['Link-in-bio store', 'Yes', 'Yes', 'Yes'], ['AutoDMs', 'Reels & posts', 'Posts, stories & lives', 'Everything in Creator'], ['Lead magnets', '10 leads', 'Unlimited', 'Unlimited'], ['Instagram accounts', '1', 'Up to 5', 'Up to 5'], ['Email collection', 'Yes', 'Yes', 'Yes'], ['Scheduler / AI replies', '—', 'Yes', 'Yes'], ['Dedicated support', '—', '—', 'Yes']];
 
 export default function PricingPage() {
+  const [currentPlan, setCurrentPlan] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+    
+    setIsLoggedIn(true);
+    
+    fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setCurrentPlan(data.data.subscription?.plan || 'free');
+        }
+      })
+      .catch(() => {});
+  }, []);
   return <><Navbar /><PricingViewContent /><main className="pricing-page min-h-screen bg-[#fbf8f5] px-4 pb-20 pt-28 text-[#211b18]"><div className="mx-auto max-w-6xl">
     <div className="mx-auto max-w-2xl text-center"><span className="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-bold uppercase tracking-[.16em] text-orange-700">Simple plans for creators</span><h1 className="mt-5 text-4xl font-black tracking-tight sm:text-6xl">Start free. Grow without limits.</h1><p className="mt-5 text-base leading-7 text-zinc-600">One workspace for your profile, automations, leads, and Instagram accounts.</p></div>
-    <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-3">{plans.map((plan) => <article key={plan.id} className={`relative flex flex-col rounded-[24px] border p-6 shadow-sm ${plan.tone === 'brand' ? 'border-orange-300 bg-gradient-to-br from-[#ff8a65] via-[#f36f4c] to-[#e64d2e] text-white shadow-xl shadow-orange-200/80' : plan.tone === 'dark' ? 'border-zinc-800 bg-zinc-900 text-white' : 'border-orange-100 bg-white'}`}>{plan.badge && <span className="absolute right-4 top-4 rounded-full bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-orange-600 shadow-sm">{plan.badge}</span>}<p className={`text-xs font-bold uppercase tracking-[.16em] ${plan.tone === 'light' ? 'text-orange-600' : 'text-white/80'}`}>{plan.name}</p><p className={`mt-5 text-sm ${plan.tone === 'light' ? 'text-zinc-600' : 'text-white/80'}`}>{plan.eyebrow}</p><div className="mt-3 min-h-[84px]">{plan.id === 'starter' ? <><div><span className="text-5xl font-black tracking-tight">{plan.price}</span><p className="mt-1 text-sm font-semibold text-white/85">{plan.period}</p></div></> : <><span className="text-4xl font-black">{plan.price}</span>{plan.period && <span className={`ml-2 text-sm ${plan.tone === 'light' ? 'text-zinc-500' : 'text-white/65'}`}>{plan.period}</span>}</>}</div>{plan.id === 'starter' && <div className="mb-3 rounded-2xl border border-white/30 bg-white/20 p-3 shadow-inner"><p className="text-sm font-black leading-5">Limited-time launch offer</p><p className="mt-1 text-xs font-semibold leading-5 text-white/90">Get Creator free for your first month, then pay only ₹99 per month.</p><p className="mt-2 text-[11px] font-medium leading-4 text-white/75">An AutoPay mandate is required; billing starts after the first month.</p></div>}<ul className="mt-3 flex-1 space-y-2.5 border-t border-current/10 pt-4">{plan.features.map((feature) => <li key={feature} className={`flex gap-2 text-sm leading-6 ${plan.tone === 'light' ? 'text-zinc-700' : 'text-white/90'}`}><Check size={15} className="mt-1 shrink-0 text-orange-500" />{feature}</li>)}</ul><Link href={plan.href} className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold shadow-sm ${plan.tone === 'light' ? 'bg-zinc-900 text-white' : 'bg-white text-orange-700'}`}>{plan.id === 'starter' ? 'Start at ₹0' : plan.id === 'free' ? 'Start for free' : 'Talk to us'}<ArrowRight size={15} /></Link></article>)}</div>
+    <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-3">{plans.map((plan) => {
+      const isCurrentPlan = currentPlan === plan.id;
+      const isPro = plan.id === 'pro';
+      
+      return <article key={plan.id} className={`relative flex flex-col rounded-[24px] border p-6 shadow-sm ${plan.tone === 'brand' ? 'border-orange-300 bg-gradient-to-br from-[#ff8a65] via-[#f36f4c] to-[#e64d2e] text-white shadow-xl shadow-orange-200/80' : plan.tone === 'dark' ? 'border-zinc-800 bg-zinc-900 text-white' : 'border-orange-100 bg-white'} ${isCurrentPlan ? 'ring-2 ring-orange-500 ring-offset-2' : ''}`}>
+        {plan.badge && <span className="absolute right-4 top-4 rounded-full bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-orange-600 shadow-sm">{plan.badge}</span>}
+        {isCurrentPlan && <span className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-green-500 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"><CheckCircle2 size={11} />Current Plan</span>}
+        <p className={`text-xs font-bold uppercase tracking-[.16em] ${plan.tone === 'light' ? 'text-orange-600' : 'text-white/80'} ${isCurrentPlan ? 'mt-6' : ''}`}>{plan.name}</p>
+        <p className={`mt-5 text-sm ${plan.tone === 'light' ? 'text-zinc-600' : 'text-white/80'}`}>{plan.eyebrow}</p>
+        <div className="mt-3 min-h-[84px]">{plan.id === 'starter' ? <><div><span className="text-5xl font-black tracking-tight">{plan.price}</span><p className="mt-1 text-sm font-semibold text-white/85">{plan.period}</p></div></> : <><span className="text-4xl font-black">{plan.price}</span>{plan.period && <span className={`ml-2 text-sm ${plan.tone === 'light' ? 'text-zinc-500' : 'text-white/65'}`}>{plan.period}</span>}</>}</div>
+        {plan.id === 'starter' && <div className="mb-3 rounded-2xl border border-white/30 bg-white/20 p-3 shadow-inner"><p className="text-sm font-black leading-5">Limited-time launch offer</p><p className="mt-1 text-xs font-semibold leading-5 text-white/90">Get Creator free for your first month, then pay only ₹99 per month.</p><p className="mt-2 text-[11px] font-medium leading-4 text-white/75">An AutoPay mandate is required; billing starts after the first month.</p></div>}
+        <ul className="mt-3 flex-1 space-y-2.5 border-t border-current/10 pt-4">{plan.features.map((feature) => <li key={feature} className={`flex gap-2 text-sm leading-6 ${plan.tone === 'light' ? 'text-zinc-700' : 'text-white/90'}`}><Check size={15} className="mt-1 shrink-0 text-orange-500" />{feature}</li>)}</ul>
+        
+        {isCurrentPlan ? (
+          <div className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold shadow-sm ${plan.tone === 'light' ? 'bg-green-100 text-green-700' : 'bg-white/20 text-white border border-white/30'}`}>
+            <CheckCircle2 size={15} />
+            {isPro ? 'Active Plan' : 'Subscribed to this plan'}
+          </div>
+        ) : (
+          <Link href={isLoggedIn ? plan.href : '/login'} className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold shadow-sm ${plan.tone === 'light' ? 'bg-zinc-900 text-white hover:bg-zinc-800' : 'bg-white text-orange-700 hover:bg-orange-50'} transition-colors`}>
+            {plan.id === 'starter' ? 'Start at ₹0' : plan.id === 'free' ? 'Start for free' : 'Talk to us'}
+            <ArrowRight size={15} />
+          </Link>
+        )}
+      </article>;
+    })}</div>
     <div className="mx-auto mt-8 flex max-w-3xl items-start gap-3 rounded-2xl border border-orange-100 bg-white p-5 text-sm leading-6 text-zinc-600"><ShieldCheck className="mt-1 shrink-0 text-orange-500" size={19} /><span><strong className="text-zinc-900">Creator billing clarity:</strong> You see ₹0 for month one, approve the recurring AutoPay mandate during checkout, and are charged ₹99/month only after the introductory month. Cancel before renewal if you do not want the paid plan.</span></div>
     <div className="mt-16 overflow-hidden rounded-[26px] border border-orange-100 bg-white shadow-sm"><div className="border-b border-orange-100 px-6 py-5"><h2 className="text-xl font-bold">Compare plans</h2></div><div className="overflow-x-auto"><table className="w-full min-w-[720px] text-left text-sm"><thead><tr className="border-b border-orange-100 text-xs uppercase tracking-wider text-zinc-500"><th className="px-6 py-4">Feature</th><th className="px-6 py-4 text-center">Starter</th><th className="px-6 py-4 text-center text-orange-600">Creator</th><th className="px-6 py-4 text-center">Pro</th></tr></thead><tbody>{comparison.map(([feature, starter, creator, pro]) => <tr key={feature} className="border-b border-orange-50 last:border-0"><td className="px-6 py-4 font-medium text-zinc-600">{feature}</td>{[starter, creator, pro].map((value, index) => <td key={`${feature}-${index}`} className="px-6 py-4 text-center font-semibold text-zinc-900">{value}</td>)}</tr>)}</tbody></table></div></div>
   </div></main><Footer /></>;
