@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Check, Crown, ShieldCheck, Zap, CheckCircle2 } from 'lucide-react';
 import { toast } from '../../components/ui/Toaster';
 import { track } from '../../../lib/fbq';
-import { HouseOfOrangeBadge } from '../../components/ui/HouseOfOrangeBadge';
+import { HouseOfOrangeBadge } from '../../../components/ui/HouseOfOrangeBadge';
 
 declare global { interface Window { Razorpay: any; } }
 

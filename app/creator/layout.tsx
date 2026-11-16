@@ -9,7 +9,7 @@ import {
   BarChart3, Bell, Camera, ChevronLeft, ChevronRight, CreditCard, GraduationCap, Handshake, HelpCircle,
   LayoutDashboard, LogOut, Menu, Settings, ShoppingBag, User, Users, X, Zap,
 } from 'lucide-react';
-import { HouseOfOrangeBadge } from '../components/ui/HouseOfOrangeBadge';
+import { HouseOfOrangeBadge } from '../../components/ui/HouseOfOrangeBadge';
 
 const navItems = [
   { href: '/creator', label: 'Home', icon: LayoutDashboard },

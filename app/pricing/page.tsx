@@ -6,7 +6,7 @@ import { Check, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { PricingViewContent } from '../components/MetaPixelEvents';
-import { HouseOfOrangeBadge } from '../components/ui/HouseOfOrangeBadge';
+import { HouseOfOrangeBadge } from '../../components/ui/HouseOfOrangeBadge';
 
 const plans = [
   { id: 'free', name: 'Starter', price: 'Free', period: 'Forever', eyebrow: 'For those wanting to grow', features: ['Link-in-bio Store', 'Unlimited AutoDMs on Reels & Posts', 'Collect up to 10 leads with Lead Magnets', 'Advanced AutoDM flows (ask to follow, email collection, and more)', 'Monetization apps'], href: '/signup', tone: 'light' },
