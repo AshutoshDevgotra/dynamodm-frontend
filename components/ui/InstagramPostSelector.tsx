@@ -33,10 +33,20 @@ export function InstagramPostSelector({ selectedPostIds, onChange, instagramAcco
         const url = instagramAccountId 
           ? `/api/instagram/posts?instagramAccountId=${instagramAccountId}`
           : '/api/instagram/posts';
+        
+        console.log('[InstagramPostSelector] Fetching posts:', { url, instagramAccountId });
+        
         const res = await fetch(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
+        
+        console.log('[InstagramPostSelector] Received posts:', { 
+          count: data.data?.posts?.length, 
+          instagramAccountId,
+          posts: data.data?.posts?.map((p: any) => ({ id: p.id, caption: p.caption?.substring(0, 30) }))
+        });
+        
         if (data.success && Array.isArray(data.data?.posts)) {
           setPosts(data.data.posts);
         } else {
