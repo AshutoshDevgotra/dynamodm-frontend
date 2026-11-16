@@ -58,13 +58,31 @@ export default function NewAutomationPage() {
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? '' : '';
 
-  useEffect(() => {
+  const fetchInstagramStatus = () => {
     fetch('/api/instagram/status', { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => res.json())
-      .then((data) => { const accounts = Array.isArray(data.data?.accounts) ? data.data.accounts : []; setInstagramAccounts(accounts); setSelectedAccountId(accounts[0]?._id || ''); setInstagramConnected(Boolean(data.success && data.data?.isConnected)); })
+      .then((data) => { 
+        const accounts = Array.isArray(data.data?.accounts) ? data.data.accounts : []; 
+        setInstagramAccounts(accounts); 
+        setSelectedAccountId(accounts[0]?._id || ''); 
+        setInstagramConnected(Boolean(data.success && data.data?.isConnected)); 
+      })
       .catch(() => setInstagramConnected(false))
       .finally(() => setCheckingInstagram(false));
-  }, [token]);
+  };
+
+  useEffect(() => {
+    fetchInstagramStatus();
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Refetch Instagram accounts when window regains focus (after reconnecting)
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchInstagramStatus();
+    };
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSave = async () => {
     if (!composer.responseMessage) {

@@ -66,6 +66,16 @@ export default function AutomationsPage() {
   }, // eslint-disable-next-line react-hooks/exhaustive-deps
   []);
 
+  // Refetch accounts when window regains focus (after reconnecting Instagram)
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchAccounts();
+      fetchAutomations(selectedAccountId);
+    };
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [selectedAccountId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleAccountChange = (accountId: string) => {
     setSelectedAccountId(accountId);
     fetchAutomations(accountId);
