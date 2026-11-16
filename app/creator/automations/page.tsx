@@ -199,6 +199,19 @@ export default function AutomationsPage() {
                     </div>
 
                     <div className="creator-list__meta mb-3">
+                      {/* Show Instagram account when viewing all accounts */}
+                      {selectedAccountId === 'all' && auto.instagramAccount && (
+                        <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--brand-from)', fontWeight: 600 }}>
+                          {auto.instagramAccount.profilePictureUrl && (
+                            <img 
+                              src={auto.instagramAccount.profilePictureUrl} 
+                              alt={auto.instagramAccount.igUsername}
+                              style={{ width: 16, height: 16, borderRadius: '50%' }}
+                            />
+                          )}
+                          @{auto.instagramAccount.igUsername}
+                        </span>
+                      )}
                       <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--text-secondary)' }}>
                         <Target size={12} /> Keywords: <strong style={{ color: 'var(--brand-from)' }}>&quot;{auto.keywords?.join(', ')}&quot;</strong>
                       </span>
