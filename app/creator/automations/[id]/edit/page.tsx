@@ -27,6 +27,8 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
   const [saving, setSaving] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [composer, setComposer] = useState<ResponseComposerValue>(defaultComposer);
+  const [automationAccountId, setAutomationAccountId] = useState<string>('');
+  const [automationAccountUsername, setAutomationAccountUsername] = useState<string>('');
   const [form, setForm] = useState<{
     name: string;
     keyword: string;
@@ -62,6 +64,15 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
         const data = await res.json();
         if (data.success) {
           const rule = data.data.automation;
+          
+          // Store the automation's Instagram account info
+          if (rule.instagramAccount) {
+            setAutomationAccountId(rule.instagramAccount._id || rule.instagramAccountId);
+            setAutomationAccountUsername(rule.instagramAccount.igUsername || '');
+          } else if (rule.instagramAccountId) {
+            setAutomationAccountId(rule.instagramAccountId);
+          }
+          
           const keywords = Array.isArray(rule.keywords)
             ? rule.keywords.join(', ')
             : Array.isArray(rule.trigger?.keywords)
@@ -230,6 +241,30 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
               <div className="input-field" style={{ color: 'var(--text-muted)', background: 'var(--bg-subtle)' }}>{form.name || 'Generated automatically from your Instagram account'}</div>
             </div>
 
+            {/* Show which Instagram account this automation belongs to */}
+            {automationAccountUsername && (
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>
+                  Instagram account (cannot be changed)
+                </label>
+                <div 
+                  className="input-field" 
+                  style={{ 
+                    color: 'var(--brand-from)', 
+                    background: 'var(--brand-subtle)', 
+                    border: '1px solid var(--brand-border)',
+                    fontWeight: 600,
+                    cursor: 'not-allowed'
+                  }}
+                >
+                  @{automationAccountUsername}
+                </div>
+                <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>
+                  This automation runs on this account only. Posts shown below are from this account.
+                </p>
+              </div>
+            )}
+
             <div style={{ marginBottom: 24 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Trigger Type *</label>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -254,6 +289,7 @@ export default function EditAutomationPage({ params }: { params: Promise<{ id: s
                 <InstagramPostSelector 
                   selectedPostIds={form.targetPosts} 
                   onChange={(ids) => setForm({ ...form, targetPosts: ids })} 
+                  instagramAccountId={automationAccountId}
                 />
               </div>
             )}
