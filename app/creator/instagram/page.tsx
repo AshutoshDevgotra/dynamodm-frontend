@@ -60,7 +60,9 @@ export default function InstagramPage() {
   const handleAccountSwitch = (accountId: string) => {
     setSelectedAccountId(accountId);
     localStorage.setItem('activeInstagramAccountId', accountId);
-    toast('Instagram account switched', 'success');
+    const accountUsername = accounts.find(acc => acc._id === accountId)?.igUsername;
+    console.log('🔄 Switched to Instagram account:', accountUsername, 'ID:', accountId);
+    toast(`Switched to @${accountUsername}`, 'success');
   };
 
   useEffect(() => {

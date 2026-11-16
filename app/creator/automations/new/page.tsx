@@ -67,9 +67,13 @@ export default function NewAutomationPage() {
         
         // Use the active account from localStorage
         const activeAccountId = localStorage.getItem('activeInstagramAccountId');
+        console.log('📱 Active Instagram Account ID from localStorage:', activeAccountId);
+        
         if (activeAccountId && accounts.some((acc: any) => acc._id === activeAccountId)) {
+          console.log('✅ Using saved active account:', accounts.find((acc: any) => acc._id === activeAccountId)?.igUsername);
           setSelectedAccountId(activeAccountId);
         } else {
+          console.log('⚠️ No saved account, using first account:', accounts[0]?.igUsername);
           setSelectedAccountId(accounts[0]?._id || '');
         }
         
