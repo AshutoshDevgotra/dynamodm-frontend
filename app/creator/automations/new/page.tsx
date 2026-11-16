@@ -181,7 +181,42 @@ export default function NewAutomationPage() {
               <div className="input-field" style={{ color: 'var(--text-muted)', background: 'var(--bg-subtle)' }}>Generated automatically from your Instagram account</div>
             </div>
 
-            {instagramAccounts.length > 1 && <div style={{ marginBottom: 20 }}><label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Instagram account for this automation</label><select className="input-field" value={selectedAccountId} onChange={(event) => { setSelectedAccountId(event.target.value); setForm({ ...form, targetPosts: [] }); }}>{instagramAccounts.map((account) => <option key={account._id} value={account._id}>@{account.igUsername || 'Instagram account'}</option>)}</select><p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>This automation will run only for the selected account.</p></div>}
+            {/* Instagram Account Selector - Always show to make it clear which account is being used */}
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>
+                Instagram account for this automation *
+              </label>
+              {instagramAccounts.length > 1 ? (
+                <>
+                  <select 
+                    className="input-field" 
+                    value={selectedAccountId} 
+                    onChange={(event) => { 
+                      setSelectedAccountId(event.target.value); 
+                      setForm({ ...form, targetPosts: [] }); 
+                    }}
+                  >
+                    {instagramAccounts.map((account) => (
+                      <option key={account._id} value={account._id}>
+                        @{account.igUsername || 'Instagram account'}
+                      </option>
+                    ))}
+                  </select>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>
+                    Posts, stats, and DMs will be specific to this account only.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="input-field" style={{ color: 'var(--text-primary)', background: 'var(--bg-subtle)', cursor: 'not-allowed' }}>
+                    @{instagramAccounts[0]?.igUsername || 'Instagram account'}
+                  </div>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 6 }}>
+                    This automation will run for your connected Instagram account.
+                  </p>
+                </>
+              )}
+            </div>
 
             <div style={{ marginBottom: 24 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Trigger Type *</label>
