@@ -17,9 +17,10 @@ interface InstagramPost {
 interface Props {
   selectedPostIds: string[];
   onChange: (ids: string[]) => void;
+  instagramAccountId?: string;
 }
 
-export function InstagramPostSelector({ selectedPostIds, onChange }: Props) {
+export function InstagramPostSelector({ selectedPostIds, onChange, instagramAccountId }: Props) {
   const [posts, setPosts] = useState<InstagramPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,8 +28,12 @@ export function InstagramPostSelector({ selectedPostIds, onChange }: Props) {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setLoading(true);
         const token = localStorage.getItem('token');
-        const res = await fetch('/api/instagram/posts', {
+        const url = instagramAccountId 
+          ? `/api/instagram/posts?instagramAccountId=${instagramAccountId}`
+          : '/api/instagram/posts';
+        const res = await fetch(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -46,7 +51,7 @@ export function InstagramPostSelector({ selectedPostIds, onChange }: Props) {
     };
 
     fetchPosts();
-  }, []);
+  }, [instagramAccountId]);
 
   const togglePost = (id: string) => {
     if (selectedPostIds.includes(id)) {
