@@ -20,24 +20,56 @@ interface Automation {
   createdAt: string;
   requireFollow?: boolean;
   publicReplyMessages?: string[];
+  instagramAccount?: {
+    _id: string;
+    igUsername: string;
+    profilePictureUrl?: string;
+  };
+}
+
+interface InstagramAccount {
+  _id: string;
+  igUsername: string;
+  profilePictureUrl?: string;
+  isConnected: boolean;
 }
 
 export default function AutomationsPage() {
   const [automations, setAutomations] = useState<Automation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [accounts, setAccounts] = useState<InstagramAccount[]>([]);
+  const [selectedAccountId, setSelectedAccountId] = useState<string>('all');
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-  const fetchAutomations = async () => {
-    const res = await fetch('/api/automations', { headers });
+  const fetchAccounts = async () => {
+    const res = await fetch('/api/instagram/accounts', { headers });
+    const data = await res.json();
+    if (data.success) {
+      setAccounts(data.data.accounts || []);
+    }
+  };
+
+  const fetchAutomations = async (accountId: string = 'all') => {
+    setLoading(true);
+    const url = accountId === 'all' ? '/api/automations' : `/api/automations?instagramAccountId=${accountId}`;
+    const res = await fetch(url, { headers });
     const data = await res.json();
     if (data.success) setAutomations(data.data.automations);
     setLoading(false);
   };
 
-  useEffect(() => { fetchAutomations(); }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { 
+    fetchAccounts();
+    fetchAutomations(); 
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
   []);
+
+  const handleAccountChange = (accountId: string) => {
+    setSelectedAccountId(accountId);
+    fetchAutomations(accountId);
+  };
 
   const handleToggle = async (id: string) => {
     await fetch(`/api/automations/${id}/toggle`, { method: 'PATCH', headers });
@@ -91,6 +123,49 @@ export default function AutomationsPage() {
           <div><h2 style={{ fontSize: 16, fontWeight: 750, marginBottom: 5 }}>Turn engagement into follower growth</h2><p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.6, maxWidth: 720 }}>Follow-to-unlock asks non-followers to follow before they receive your guide, PDF, or link. Three rotating public replies keep the comment experience warm and varied, helping more conversations become followers without repeating one bot-like line.</p></div>
         </div>
       </div>
+
+      {/* Instagram Account Selector */}
+      {accounts.length > 1 && (
+        <div className="creator-card creator-card--padded" style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+            <label style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+              Filter by Account:
+            </label>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <button
+                onClick={() => handleAccountChange('all')}
+                className={selectedAccountId === 'all' ? 'btn-primary' : 'btn-secondary'}
+                style={{ fontSize: 13, padding: '6px 14px' }}
+              >
+                All Accounts
+              </button>
+              {accounts.map((account) => (
+                <button
+                  key={account._id}
+                  onClick={() => handleAccountChange(account._id)}
+                  className={selectedAccountId === account._id ? 'btn-primary' : 'btn-secondary'}
+                  style={{ 
+                    fontSize: 13, 
+                    padding: '6px 14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6
+                  }}
+                >
+                  {account.profilePictureUrl && (
+                    <img 
+                      src={account.profilePictureUrl} 
+                      alt={account.igUsername}
+                      style={{ width: 20, height: 20, borderRadius: '50%' }}
+                    />
+                  )}
+                  @{account.igUsername}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-20"><div className="h-9 w-9 animate-spin rounded-full border-[3px] border-[var(--brand-border)] border-t-[var(--brand-from)]" /></div>
