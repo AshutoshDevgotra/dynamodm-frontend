@@ -63,8 +63,16 @@ export default function NewAutomationPage() {
       .then((res) => res.json())
       .then((data) => { 
         const accounts = Array.isArray(data.data?.accounts) ? data.data.accounts : []; 
-        setInstagramAccounts(accounts); 
-        setSelectedAccountId(accounts[0]?._id || ''); 
+        setInstagramAccounts(accounts);
+        
+        // Use the active account from localStorage
+        const activeAccountId = localStorage.getItem('activeInstagramAccountId');
+        if (activeAccountId && accounts.some((acc: any) => acc._id === activeAccountId)) {
+          setSelectedAccountId(activeAccountId);
+        } else {
+          setSelectedAccountId(accounts[0]?._id || '');
+        }
+        
         setInstagramConnected(Boolean(data.success && data.data?.isConnected)); 
       })
       .catch(() => setInstagramConnected(false))

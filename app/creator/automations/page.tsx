@@ -47,7 +47,19 @@ export default function AutomationsPage() {
     const res = await fetch('/api/instagram/accounts', { headers });
     const data = await res.json();
     if (data.success) {
-      setAccounts(data.data.accounts || []);
+      const accountsList = data.data.accounts || [];
+      setAccounts(accountsList);
+      
+      // Use the active account from localStorage
+      const activeAccountId = localStorage.getItem('activeInstagramAccountId');
+      if (activeAccountId && accountsList.some((acc: InstagramAccount) => acc._id === activeAccountId)) {
+        setSelectedAccountId(activeAccountId);
+        // Auto-fetch automations for the active account
+        fetchAutomations(activeAccountId);
+      } else {
+        setSelectedAccountId('all');
+        fetchAutomations('all');
+      }
     }
   };
 
@@ -61,8 +73,7 @@ export default function AutomationsPage() {
   };
 
   useEffect(() => { 
-    fetchAccounts();
-    fetchAutomations(); 
+    fetchAccounts(); // This will now also fetch automations for the active account
   }, // eslint-disable-next-line react-hooks/exhaustive-deps
   []);
 

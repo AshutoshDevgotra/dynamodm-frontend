@@ -26,6 +26,7 @@ export default function InstagramPage() {
   const [accounts, setAccounts] = useState<IGAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [connecting, setConnecting] = useState(false);
+  const [selectedAccountId, setSelectedAccountId] = useState<string>('');
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
   const headers = { Authorization: `Bearer ${token}` };
@@ -35,8 +36,19 @@ export default function InstagramPage() {
       const res = await fetch('/api/instagram/status', { headers });
       const d = await res.json();
       if (d.success && d.data) {
+        const allAccounts = Array.isArray(d.data.accounts) ? d.data.accounts : (d.data.account ? [d.data.account] : []);
         setAccount(d.data.account);
-        setAccounts(Array.isArray(d.data.accounts) ? d.data.accounts : (d.data.account ? [d.data.account] : []));
+        setAccounts(allAccounts);
+        
+        // Load saved selection or default to first account
+        const saved = localStorage.getItem('activeInstagramAccountId');
+        if (saved && allAccounts.some((acc: IGAccount) => acc._id === saved)) {
+          setSelectedAccountId(saved);
+        } else if (allAccounts.length > 0) {
+          const firstId = allAccounts[0]._id || '';
+          setSelectedAccountId(firstId);
+          localStorage.setItem('activeInstagramAccountId', firstId);
+        }
       }
     } catch {
       // Ignored
@@ -44,6 +56,12 @@ export default function InstagramPage() {
       setLoading(false);
     }
   }, [token]);
+
+  const handleAccountSwitch = (accountId: string) => {
+    setSelectedAccountId(accountId);
+    localStorage.setItem('activeInstagramAccountId', accountId);
+    toast('Instagram account switched', 'success');
+  };
 
   useEffect(() => {
     fetchStatus();
@@ -180,10 +198,96 @@ export default function InstagramPage() {
           </div>
           <div className="card" style={{ padding: 24, marginTop: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center', marginBottom: 14 }}>
-              <div><h2 style={{ fontSize: 16, fontWeight: 700 }}>Connected Instagram accounts</h2><p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Use one Creator subscription for up to 5 accounts.</p></div>
-              <button onClick={handleConnect} disabled={connecting} className="btn-secondary" style={{ fontSize: 13 }}>{connecting ? 'Opening…' : 'Add account'}</button>
+              <div>
+                <h2 style={{ fontSize: 16, fontWeight: 700 }}>Active Instagram account</h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>
+                  {accounts.length > 1 
+                    ? 'Select which account to use. Automations, posts, and stats will show for the selected account.' 
+                    : 'This is your connected Instagram account.'}
+                </p>
+              </div>
+              <button onClick={handleConnect} disabled={connecting} className="btn-secondary" style={{ fontSize: 13 }}>
+                {connecting ? 'Opening…' : 'Add account'}
+              </button>
             </div>
-            <div style={{ display: 'grid', gap: 10 }}>{accounts.map((item) => <div key={item._id || item.igUsername} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 10, borderRadius: 12, background: item.isConnected ? 'rgba(34,197,94,.08)' : 'var(--bg-subtle)' }}><div style={{ width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', color: '#fff', display: 'grid', placeItems: 'center', fontWeight: 700 }}>{(item.igUsername || '?')[0].toUpperCase()}</div><div><div style={{ fontSize: 13, fontWeight: 700 }}>@{item.igUsername}</div><div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{item.isConnected ? 'Connected and ready for automations' : 'Disconnected'}</div></div></div>)}</div>
+            
+            <div style={{ display: 'grid', gap: 10 }}>
+              {accounts.map((item) => {
+                const isActive = item._id === selectedAccountId;
+                return (
+                  <div 
+                    key={item._id || item.igUsername} 
+                    onClick={() => item._id && handleAccountSwitch(item._id)}
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: 12, 
+                      padding: 14, 
+                      borderRadius: 12, 
+                      background: isActive ? 'linear-gradient(135deg, rgba(139,92,246,0.12), rgba(255,90,31,0.12))' : 'var(--bg-subtle)',
+                      border: isActive ? '2px solid var(--brand-from)' : '2px solid transparent',
+                      cursor: accounts.length > 1 ? 'pointer' : 'default',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {item.profilePic ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img 
+                        src={item.profilePic} 
+                        alt={item.igUsername} 
+                        style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} 
+                      />
+                    ) : (
+                      <div style={{ 
+                        width: 40, 
+                        height: 40, 
+                        borderRadius: '50%', 
+                        background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', 
+                        color: '#fff', 
+                        display: 'grid', 
+                        placeItems: 'center', 
+                        fontWeight: 700,
+                        fontSize: 16
+                      }}>
+                        {(item.igUsername || '?')[0].toUpperCase()}
+                      </div>
+                    )}
+                    
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ fontSize: 14, fontWeight: 700 }}>@{item.igUsername}</div>
+                        {isActive && (
+                          <span className="badge badge-success" style={{ fontSize: 11, padding: '2px 8px' }}>
+                            Active
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
+                        {item.isConnected ? 'Connected and ready for automations' : 'Disconnected'}
+                      </div>
+                    </div>
+                    
+                    {isActive && (
+                      <CheckCircle size={20} color="var(--brand-from)" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            
+            {accounts.length > 1 && (
+              <div style={{ 
+                marginTop: 12, 
+                padding: 12, 
+                background: 'rgba(139,92,246,0.08)', 
+                border: '1px solid rgba(139,92,246,0.2)', 
+                borderRadius: 10,
+                fontSize: 12,
+                color: 'var(--text-secondary)'
+              }}>
+                💡 <strong>Tip:</strong> Click any account to switch. All pages (Automations, Analytics, etc.) will show data for the active account.
+              </div>
+            )}
           </div>
         </motion.div>
       ) : (
